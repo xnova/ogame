@@ -10,11 +10,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-'use strict';
+const getBabelRelayPlugin = require('babel-relay-plugin');
+const schema = require('../src/data/schema.json');
 
-import React, {
-  AppRegistry,
-} from 'react-native';
-import OGame from './app';
-
-AppRegistry.registerComponent('OGame', () => OGame);
+module.exports = getBabelRelayPlugin(schema.data);

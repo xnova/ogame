@@ -12,9 +12,14 @@ import UserType from '../types/UserType';
 const me = {
   type: UserType,
   resolve({ request }) {
-    return request.user && {
+    return (request.user) ? {
       id: request.user.id,
       email: request.user.email,
+      name: request.user.name,
+    } : {
+      id: -1,
+      email: null,
+      name: 'Anonymous',
     };
   },
 };
