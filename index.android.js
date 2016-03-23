@@ -15,6 +15,6 @@
 import React, {
   AppRegistry,
 } from 'react-native';
-import OGame from './app/app';
+import OGame from './app';
 
 AppRegistry.registerComponent('OGame', () => OGame);
