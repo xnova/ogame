@@ -116,8 +116,8 @@
     }
   },
   "scripts": {
-    "eslint": "eslint src components tools",
-    "jscs": "jscs src components tools --verbose",
+    "eslint": "eslint src app tools",
+    "jscs": "jscs src app tools --verbose",
     "stylelint": "stylelint \"src/**/*.scss\" --syntax scss",
     "lint": "npm run eslint && npm run jscs && npm run stylelint",
     "test": "npm run lint && jest",

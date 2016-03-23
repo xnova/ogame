@@ -3,7 +3,7 @@
 import React, {
   AppRegistry,
 } from 'react-native';
-import OGame from './app';
+import OGame from './app/app';
 
 console.ignoredYellowBox = [
   // FIXME: https://github.com/facebook/react-native/issues/1501

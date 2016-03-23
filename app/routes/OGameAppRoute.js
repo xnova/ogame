@@ -1,6 +1,4 @@
-'use strict';
-
-import {
+import Relay, {
   Route,
 } from 'react-relay';
 

@@ -18,7 +18,7 @@
  * ========================================================================== */
 
 html {
-  color: #ffffff;
+  color: #fff;
   font-weight: 100;
   font-size: 1em; /* ~16px; */
   font-family: $font-family-base;
@@ -27,7 +27,7 @@ html {
 
 body {
   // FIXME too ugly, but isomorphic
-  background: #000 url("../../../background.jpg") no-repeat 50% 0;
+  background: #000 url("../../../app/background.jpg") no-repeat 50% 0;
 }
 
 a {
