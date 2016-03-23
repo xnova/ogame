@@ -14,6 +14,10 @@ import Header from '../Header';
 import Feedback from '../Feedback';
 import Footer from '../Footer';
 
+const appStyle = {
+  // backgroundImage: require('./bg.jpg')
+};
+
 class App extends Component {
 
   static propTypes = {
@@ -55,7 +59,7 @@ class App extends Component {
 
   render() {
     return !this.props.error ? (
-      <div>
+      <div style={appStyle}>
         <Header />
         {this.props.children}
         <Feedback />
