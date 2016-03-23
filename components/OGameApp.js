@@ -1,29 +1,50 @@
-'use strict';
-
 import Relay from 'react-relay';
 // import IncidenceList from './IncidenceList';
 import React, {
-  AppRegistry,
   Component,
   StyleSheet,
   Text,
   Image,
-  ListView,
   View,
-  Navigator,
-  TouchableOpacity,
 } from 'react-native';
 import Dimensions from 'Dimensions';
 
 const { height, width } = Dimensions.get('window');
 
-class OGameApp extends Component {
-  constructor(props, context) {
-    super(props, context);
-  }
+const styles = StyleSheet.create({
+  wrapper: {
+    position: 'relative',
+  },
+  container: {
+    position: 'absolute',
+    top: 0,
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'transparent',
+    width,
+    height,
+  },
+  backgroundImage: {
+    flex: 1,
+    // remove width and height to override fixed static size
+    width,
+    height,
+  },
+  welcome: {
+    fontSize: 20,
+    textAlign: 'center',
+    margin: 10,
+  },
+  instructions: {
+    textAlign: 'center',
+    color: '#F0F0F0',
+    marginBottom: 5,
+  },
+});
 
+class OGameApp extends Component {
   render() {
-    //this.props.me.email
     const { name } = this.props.me;
     return (
       <View style={styles.wrapper}>
@@ -49,43 +70,11 @@ class OGameApp extends Component {
 
 export default Relay.createContainer(OGameApp, {
   fragments: {
-    me: variables => Relay.QL`
+    me: () => Relay.QL`
       fragment on User {
         id
         name
       }
     `,
-  },
-});
-
-const styles = StyleSheet.create({
-  wrapper: {
-    position: 'relative',
-  },
-  container: {
-    position: 'absolute',
-    top: 0,
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'transparent',
-    width: width,
-    height: height,
-  },
-  backgroundImage: {
-    flex: 1,
-    // remove width and height to override fixed static size
-    width: width,
-    height: height,
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#F0F0F0',
-    marginBottom: 5,
   },
 });
