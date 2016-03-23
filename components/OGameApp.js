@@ -30,6 +30,7 @@ const styles = StyleSheet.create({
     // remove width and height to override fixed static size
     width,
     height,
+    resizeMode: 'cover',
   },
   welcome: {
     fontSize: 20,
