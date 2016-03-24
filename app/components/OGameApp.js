@@ -1,4 +1,5 @@
 import Relay from 'react-relay';
+import ContentBox from './ContentBox';
 import React, {
   StyleSheet,
   Text,
@@ -31,6 +32,7 @@ const styles = StyleSheet.create({
   },
   welcome: {
     fontSize: 20,
+    color: '#ffffff',
     textAlign: 'center',
     margin: 10,
   },
@@ -57,6 +59,10 @@ const OGameApp = ({ me }) => (
       <Text style={styles.instructions}>
         Shake or press menu button for dev menu
       </Text>
+      <ContentBox title="Basic research" />
+      <ContentBox title="Drive research" />
+      <ContentBox title="Advanced research" />
+      <ContentBox title="Combat research" />
     </View>
   </View>
 );
