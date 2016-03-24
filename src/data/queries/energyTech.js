@@ -3,9 +3,8 @@ import EnergyTechType from '../types/EnergyTechType';
 const energyTech = {
   type: EnergyTechType,
   resolve({ user }) {
-    console.log("ENERGY");
     return {
-      id: 1000, // TODO
+      id: 10001, // TODO
       name: 'Energy Technology',
       description: 'The command of different types of energy is necessary ' +
       'for many new technologies.',

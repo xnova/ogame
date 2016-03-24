@@ -14,8 +14,23 @@ import {
   GraphQLNonNull as NonNull,
 } from 'graphql';
 
+// TODO manage better, this is a mess
 import energyTech from '../queries/energyTech';
 import laserTech from '../queries/laserTech';
+import ionTech from '../queries/ionTech';
+import hyperspaceTech from '../queries/hyperspaceTech';
+import plasmaTech from '../queries/plasmaTech';
+import combustionDrive from '../queries/combustionDrive';
+import impulseDrive from '../queries/impulseDrive';
+import hyperspaceDrive from '../queries/hyperspaceDrive';
+import espionageTech from '../queries/espionageTech';
+import computerTech from '../queries/computerTech';
+import astrophysics from '../queries/astrophysics';
+import intergalacticResearchNetwork from '../queries/intergalacticResearchNetwork';
+import gravitonTech from '../queries/gravitonTech';
+import weaponsTech from '../queries/weaponsTech';
+import shieldingTech from '../queries/shieldingTech';
+import armourTech from '../queries/armourTech';
 
 const UserType = new ObjectType({
   name: 'Player',
@@ -23,8 +38,26 @@ const UserType = new ObjectType({
     id: { type: new NonNull(ID) },
     email: { type: StringType },
     name: { type: StringType },
+    // basic research
     energyTech,
     laserTech,
+    ionTech,
+    hyperspaceTech,
+    plasmaTech,
+    // drive research
+    combustionDrive,
+    impulseDrive,
+    hyperspaceDrive,
+    // advanced research
+    espionageTech,
+    computerTech,
+    astrophysics,
+    intergalacticResearchNetwork,
+    gravitonTech,
+    // combat research
+    weaponsTech,
+    shieldingTech,
+    armourTech,
   },
 });
 

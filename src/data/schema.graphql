@@ -1,3 +1,31 @@
+type ArmourTech {
+  id: ID!
+  name: String
+  description: String
+  level: Int
+}
+
+type Astrophysics {
+  id: ID!
+  name: String
+  description: String
+  level: Int
+}
+
+type CombustionDrive {
+  id: ID!
+  name: String
+  description: String
+  level: Int
+}
+
+type ComputerTech {
+  id: ID!
+  name: String
+  description: String
+  level: Int
+}
+
 type Content {
   path: String!
   title: String!
@@ -6,6 +34,55 @@ type Content {
 }
 
 type EnergyTech {
+  id: ID!
+  name: String
+  description: String
+  level: Int
+}
+
+type EspionageTech {
+  id: ID!
+  name: String
+  description: String
+  level: Int
+}
+
+type GravitonTech {
+  id: ID!
+  name: String
+  description: String
+  level: Int
+}
+
+type HyperspaceDrive {
+  id: ID!
+  name: String
+  description: String
+  level: Int
+}
+
+type HyperspaceTech {
+  id: ID!
+  name: String
+  description: String
+  level: Int
+}
+
+type ImpulseDrive {
+  id: ID!
+  name: String
+  description: String
+  level: Int
+}
+
+type IntergalacticResearchNetwork {
+  id: ID!
+  name: String
+  description: String
+  level: Int
+}
+
+type IonTech {
   id: ID!
   name: String
   description: String
@@ -27,16 +104,51 @@ type NewsItem {
   contentSnippet: String
 }
 
+type PlasmaTech {
+  id: ID!
+  name: String
+  description: String
+  level: Int
+}
+
 type Player {
   id: ID!
   email: String
   name: String
   energyTech: EnergyTech
   laserTech: LaserTech
+  ionTech: IonTech
+  hyperspaceTech: HyperspaceTech
+  plasmaTech: PlasmaTech
+  combustionDrive: CombustionDrive
+  impulseDrive: ImpulseDrive
+  hyperspaceDrive: HyperspaceDrive
+  espionageTech: EspionageTech
+  computerTech: ComputerTech
+  astrophysics: Astrophysics
+  intergalacticResearchNetwork: IntergalacticResearchNetwork
+  gravitonTech: GravitonTech
+  weaponsTech: WeaponsTech
+  shieldingTech: ShieldingTech
+  armourTech: ArmourTech
 }
 
 type Query {
   me: Player
   content(path: String!): Content
   news: [NewsItem]
+}
+
+type ShieldingTech {
+  id: ID!
+  name: String
+  description: String
+  level: Int
+}
+
+type WeaponsTech {
+  id: ID!
+  name: String
+  description: String
+  level: Int
 }

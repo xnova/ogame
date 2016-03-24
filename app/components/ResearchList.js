@@ -5,14 +5,16 @@ import React, {
 } from 'react-native';
 
 const ResearchList = ({ me }) => {
-  const { energyTech, laserTech } = me;
-  const basicResearch = [energyTech, laserTech];
+  const basic = [me.energyTech, me.laserTech, me.ionTech, me.hyperspaceTech, me.plasmaTech];
+  const drives = [me.combustionDrive, me.impulseDrive, me.hyperspaceDrive];
+  const advanced = [me.espionageTech, me.computerTech, me.astrophysics, me.intergalacticResearchNetwork, me.gravitonTech];
+  const combat = [me.weaponsTech, me.shieldingTech, me.armourTech];
   return (
     <View>
-      <ContentBox title="Basic research" items={basicResearch} />
-      <ContentBox title="Drive research" items={[]} />
-      <ContentBox title="Advanced research" items={[]} />
-      <ContentBox title="Combat research" items={[]} />
+      <ContentBox title="Basic research" items={basic} />
+      <ContentBox title="Drive research" items={drives} />
+      <ContentBox title="Advanced research" items={advanced} />
+      <ContentBox title="Combat research" items={combat} />
     </View>
   );
 };
@@ -27,6 +29,20 @@ export default Relay.createContainer(ResearchList, {
       fragment on Player {
         energyTech { id, name, level }
         laserTech { id, name, level }
+        ionTech { id, name, level }
+        hyperspaceTech { id, name, level }
+        plasmaTech { id, name, level }
+        combustionDrive { id, name, level }
+        impulseDrive { id, name, level }
+        hyperspaceDrive { id, name, level }
+        espionageTech { id, name, level }
+        computerTech { id, name, level }
+        astrophysics { id, name, level }
+        intergalacticResearchNetwork { id, name, level }
+        gravitonTech { id, name, level }
+        weaponsTech { id, name, level }
+        shieldingTech { id, name, level }
+        armourTech { id, name, level }        
       }
     `,
   },
