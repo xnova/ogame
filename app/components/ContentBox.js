@@ -1,5 +1,4 @@
 import React, {
-  Component,
   StyleSheet,
   Text,
   Image,
@@ -58,29 +57,31 @@ const styles = StyleSheet.create({
   },
 });
 
-class ContentBox extends Component {
-  render() {
-    const { title, items } = this.props;
-    return (
-      <View style={styles.container}>
-        <View style={styles.header}>
-          <Image
-            source={require('../header-bg.png')}
-            style={styles.headerBg}
-          />
-          <Image
-            source={require('../header-left.png')}
-            style={styles.headerBgLeft}
-          />
-          <Image
-            source={require('../header-right.png')}
-            style={styles.headerBgRight}
-          />
-          <Text style={styles.title}>{title}</Text>
-        </View>
-      </View>
-    );
-  }
-}
+const ContentBox = ({ title, items }) => (
+  <View style={styles.container}>
+    <View style={styles.header}>
+      <Image
+        source={require('../header-bg.png')}
+        style={styles.headerBg}
+      />
+      <Image
+        source={require('../header-left.png')}
+        style={styles.headerBgLeft}
+      />
+      <Image
+        source={require('../header-right.png')}
+        style={styles.headerBgRight}
+      />
+      <Text style={styles.title}>{title}</Text>
+    </View>
+    <View style={styles.body}>
+      {items.map(item => (<Text>{item.name} (item.level)</Text>))}
+    </View>
+  </View>
+);
+ContentBox.propTypes = {
+  title: React.PropTypes.string.isRequired,
+  items: React.PropTypes.array.isRequired,
+};
 
 export default ContentBox;

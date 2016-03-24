@@ -1,5 +1,5 @@
 import Relay from 'react-relay';
-import ContentBox from './ContentBox';
+import ResearchList from './ResearchList';
 import React, {
   StyleSheet,
   Text,
@@ -59,10 +59,7 @@ const OGameApp = ({ me }) => (
       <Text style={styles.instructions}>
         Shake or press menu button for dev menu
       </Text>
-      <ContentBox title="Basic research" />
-      <ContentBox title="Drive research" />
-      <ContentBox title="Advanced research" />
-      <ContentBox title="Combat research" />
+      <ResearchList me={me} />
     </View>
   </View>
 );
@@ -73,9 +70,9 @@ OGameApp.propTypes = {
 export default Relay.createContainer(OGameApp, {
   fragments: {
     me: () => Relay.QL`
-      fragment on User {
-        id
+      fragment on Player {
         name
+        ${ResearchList.getFragment('me')}
       }
     `,
   },

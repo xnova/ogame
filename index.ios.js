@@ -10,5 +10,4 @@ console.ignoredYellowBox = [
   'Warning: ScrollView doesn\'t take rejection well - scrolls anyway',
 ];
 
-//TODO rename AwesomeProject where is necessary
 AppRegistry.registerComponent('OGame', () => OGame);

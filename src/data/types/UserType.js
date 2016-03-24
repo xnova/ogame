@@ -14,12 +14,17 @@ import {
   GraphQLNonNull as NonNull,
 } from 'graphql';
 
+import energyTech from '../queries/energyTech';
+import laserTech from '../queries/laserTech';
+
 const UserType = new ObjectType({
-  name: 'User',
+  name: 'Player',
   fields: {
     id: { type: new NonNull(ID) },
     email: { type: StringType },
     name: { type: StringType },
+    energyTech,
+    laserTech,
   },
 });
 

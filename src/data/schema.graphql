@@ -5,6 +5,20 @@ type Content {
   component: String!
 }
 
+type EnergyTech {
+  id: ID!
+  name: String
+  description: String
+  level: Int
+}
+
+type LaserTech {
+  id: ID!
+  name: String
+  description: String
+  level: Int
+}
+
 type NewsItem {
   title: String!
   link: String!
@@ -13,14 +27,16 @@ type NewsItem {
   contentSnippet: String
 }
 
-type Query {
-  me: User
-  content(path: String!): Content
-  news: [NewsItem]
-}
-
-type User {
+type Player {
   id: ID!
   email: String
   name: String
+  energyTech: EnergyTech
+  laserTech: LaserTech
+}
+
+type Query {
+  me: Player
+  content(path: String!): Content
+  news: [NewsItem]
 }
