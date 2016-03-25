@@ -14,6 +14,10 @@ import {
   GraphQLNonNull as NonNull,
 } from 'graphql';
 
+import homePlanet from '../queries/user.homePlanet';
+import planets from '../queries/user.planets';
+import planet from '../queries/user.planet';
+
 // TODO manage better, this is a mess
 import energyTech from '../queries/energyTech';
 import laserTech from '../queries/laserTech';
@@ -38,6 +42,9 @@ const UserType = new ObjectType({
     id: { type: new NonNull(ID) },
     email: { type: StringType },
     name: { type: StringType },
+    homePlanet,
+    planets,
+    planet,
     // basic research
     energyTech,
     laserTech,

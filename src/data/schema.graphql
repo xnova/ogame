@@ -46,6 +46,12 @@ type Content {
   component: String!
 }
 
+type Coordinates {
+  galaxy: Int
+  system: Int
+  position: Int
+}
+
 type EnergyTech implements Technology {
   id: ID!
   name: String
@@ -137,6 +143,15 @@ type NewsItem {
   contentSnippet: String
 }
 
+type Planet {
+  id: ID!
+  player: Player
+  name: String
+  diameter: Int
+  fields: Int
+  coordinates: Coordinates!
+}
+
 type PlasmaTech implements Technology {
   id: ID!
   name: String
@@ -150,6 +165,9 @@ type Player {
   id: ID!
   email: String
   name: String
+  homePlanet: Planet!
+  planets: [Planet]
+  planet(id: ID): Planet
   energyTech: EnergyTech
   laserTech: LaserTech
   ionTech: IonTech
