@@ -16,6 +16,9 @@ const gravitonTech = {
       'Thus it can destroy ships and even entire moons. ' +
       'To produce a sufficient amount of gravitons, huge amounts of energy are required.',
       level: 2, // TODO
+      requirements: [
+        { technology: 'lab', level: 12}, // TODO research lab
+      ],
     };
   },
 };

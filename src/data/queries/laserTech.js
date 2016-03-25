@@ -1,4 +1,5 @@
 import LaserTechType from '../types/LaserTechType';
+import energyTech from './energyTech';
 
 const laserTech = {
   type: LaserTechType,
@@ -14,6 +15,9 @@ const laserTech = {
       'which effortlessly cut through armour technology. ' +
       'The laser technology provides an important basis for research of other weapon technologies.',
       level: 6, // TODO
+      requirements: [
+        {technology: energyTech.resolve({ user }), level: 2}, // TODO check
+      ],
     };
   },
 };

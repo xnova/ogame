@@ -1,4 +1,6 @@
 import HyperspaceTechType from '../types/HyperspaceTechType';
+import shieldingTech from './shieldingTech';
+import energyTech from './energyTech';
 
 const hyperspaceTech = {
   type: HyperspaceTechType,
@@ -19,6 +21,11 @@ const hyperspaceTech = {
       'Once a sufficient level of Hyperspace Technology is researched, ' +
       'the Hyperspace Drive is no longer just a theory.',
       level: 12, // TODO
+      requirements: [
+        { technology: 'lab', level: 7}, // TODO research lab
+        {technology: shieldingTech.resolve({ user }), level: 5}, // TODO check
+        {technology: energyTech.resolve({ user }), level: 5}, // TODO check
+      ],
     };
   },
 };

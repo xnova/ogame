@@ -1,4 +1,5 @@
 import CombustionDriveType from '../types/CombustionDriveType';
+import laserTech from './laserTech';
 
 const combustionDrive = {
   type: CombustionDriveType,
@@ -24,6 +25,9 @@ const combustionDrive = {
       'light fighters, recyclers, and espionage probes are increased by 10%.',
       level,
       speedFactor: 1 + 0.1 * level,
+      requirements: [
+        {technology: laserTech.resolve({ user }), level: 1}, // TODO check
+      ],
     };
   },
 };

@@ -36,6 +36,9 @@ const espionageTech = {
       'as it informs you whether the victim fleet has defence available or not. ' +
       'That is why this technology should be researched very early on.',
       level: 2, // TODO
+      requirements: [
+        { technology: 'lab', level: 3}, // TODO research lab
+      ],
     };
   },
 };

@@ -21,6 +21,9 @@ const computerTech = {
       'your empire.',
       level,
       fleetSlots: level + 1, // TODO model logic
+      requirements: [
+        { technology: 'lab', level: 1}, // TODO research lab
+      ],
     };
   },
 };

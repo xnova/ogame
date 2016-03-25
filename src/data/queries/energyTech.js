@@ -17,6 +17,9 @@ const energyTech = {
       'new research can be conducted which unlocks development of ' +
       'more sophisticated ships and defences.',
       level: 13, // TODO
+      requirements: [
+        { technology: 'lab', level: 1}, // TODO research lab
+      ],
     };
   },
 };

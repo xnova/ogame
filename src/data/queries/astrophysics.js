@@ -1,4 +1,6 @@
 import AstrophysicsType from '../types/AstrophysicsType';
+import espionageTech from './espionageTech';
+import impulseDrive from './impulseDrive';
 
 const astrophysics = {
   type: AstrophysicsType,
@@ -17,6 +19,10 @@ const astrophysics = {
       level,
       maximumColonies: Math.ceil(level / 2), // TODO must go on model logic
       maximumExpeditions: Math.floor(Math.sqrt(level)), // TODO must go on model logic
+      requirements: [
+        {technology: espionageTech.resolve({ user }), level: 4}, // TODO check
+        {technology: impulseDrive.resolve({ user }), level: 3}, // TODO check
+      ],
     };
   },
 };

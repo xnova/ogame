@@ -1,4 +1,5 @@
 import ShieldingTechType from '../types/ShieldingTechType';
+import energyTech from './energyTech';
 
 const shieldingTech = {
   type: ShieldingTechType,
@@ -23,6 +24,10 @@ const shieldingTech = {
       'the shields base value.',
       level,
       bonus: level * 0.1,
+      requirements: [
+        { technology: 'lab', level: 6}, // TODO research lab
+        {technology: energyTech.resolve({ user }), level: 3}, // TODO check
+      ],
     };
   },
 };

@@ -1,4 +1,5 @@
 import ImpulseDriveType from '../types/ImpulseDriveType';
+import energyTech from './energyTech';
 
 const impulseDrive = {
   type: ImpulseDriveType,
@@ -24,6 +25,10 @@ const impulseDrive = {
       'Interplanetary missiles also travel farther with each level.',
       level,
       speedFactor: 1 + 0.2 * level,
+      requirements: [
+        { technology: 'lab', level: 2}, // TODO research lab
+        {technology: energyTech.resolve({ user }), level: 1}, // TODO check
+      ],
     };
   },
 };

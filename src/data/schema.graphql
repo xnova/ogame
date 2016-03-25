@@ -1,37 +1,41 @@
-type ArmourTech {
+type ArmourTech implements Technology {
   id: ID!
   name: String
   description: String
   longDescription: String
   level: Int
+  requirements: [Requirement]
   bonus: Float
 }
 
-type Astrophysics {
+type Astrophysics implements Technology {
   id: ID!
   name: String
   description: String
   longDescription: String
   level: Int
+  requirements: [Requirement]
   maximumColonies: Int
   maximumExpeditions: Int
 }
 
-type CombustionDrive {
+type CombustionDrive implements Technology {
   id: ID!
   name: String
   description: String
   longDescription: String
   level: Int
+  requirements: [Requirement]
   speedFactor: Float
 }
 
-type ComputerTech {
+type ComputerTech implements Technology {
   id: ID!
   name: String
   description: String
   longDescription: String
   level: Int
+  requirements: [Requirement]
   fleetSlots: Int
 }
 
@@ -42,78 +46,87 @@ type Content {
   component: String!
 }
 
-type EnergyTech {
+type EnergyTech implements Technology {
   id: ID!
   name: String
   description: String
   longDescription: String
   level: Int
+  requirements: [Requirement]
 }
 
-type EspionageTech {
+type EspionageTech implements Technology {
   id: ID!
   name: String
   description: String
   longDescription: String
   level: Int
+  requirements: [Requirement]
 }
 
-type GravitonTech {
+type GravitonTech implements Technology {
   id: ID!
   name: String
   description: String
   longDescription: String
   level: Int
+  requirements: [Requirement]
 }
 
-type HyperspaceDrive {
+type HyperspaceDrive implements Technology {
   id: ID!
   name: String
   description: String
   longDescription: String
   level: Int
+  requirements: [Requirement]
   speedFactor: Float
 }
 
-type HyperspaceTech {
+type HyperspaceTech implements Technology {
   id: ID!
   name: String
   description: String
   longDescription: String
   level: Int
+  requirements: [Requirement]
 }
 
-type ImpulseDrive {
+type ImpulseDrive implements Technology {
   id: ID!
   name: String
   description: String
   longDescription: String
   level: Int
+  requirements: [Requirement]
   speedFactor: Float
 }
 
-type IntergalacticResearchNetwork {
+type IntergalacticResearchNetwork implements Technology {
   id: ID!
   name: String
   description: String
   longDescription: String
   level: Int
+  requirements: [Requirement]
 }
 
-type IonTech {
+type IonTech implements Technology {
   id: ID!
   name: String
   description: String
   longDescription: String
   level: Int
+  requirements: [Requirement]
 }
 
-type LaserTech {
+type LaserTech implements Technology {
   id: ID!
   name: String
   description: String
   longDescription: String
   level: Int
+  requirements: [Requirement]
 }
 
 type NewsItem {
@@ -124,12 +137,13 @@ type NewsItem {
   contentSnippet: String
 }
 
-type PlasmaTech {
+type PlasmaTech implements Technology {
   id: ID!
   name: String
   description: String
   longDescription: String
   level: Int
+  requirements: [Requirement]
 }
 
 type Player {
@@ -160,20 +174,35 @@ type Query {
   news: [NewsItem]
 }
 
-type ShieldingTech {
+type Requirement {
+  technology: Technology
+  level: Int
+}
+
+type ShieldingTech implements Technology {
   id: ID!
   name: String
   description: String
   longDescription: String
   level: Int
+  requirements: [Requirement]
   bonus: Float
 }
 
-type WeaponsTech {
+interface Technology {
+  name: String
+  description: String
+  longDescription: String
+  level: Int
+  requirements: [Requirement]
+}
+
+type WeaponsTech implements Technology {
   id: ID!
   name: String
   description: String
   longDescription: String
   level: Int
+  requirements: [Requirement]
   bonus: Float
 }

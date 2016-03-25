@@ -20,6 +20,9 @@ const armourTech = {
       'which increases the armours strength by 10%.',
       level,
       bonus: level * 0.1,
+      requirements: [
+        { technology: 'lab', level: 2}, // TODO research lab
+      ],
     };
   },
 };

@@ -1,4 +1,6 @@
 import IonTechType from '../types/IonTechType';
+import laserTech from './laserTech';
+import energyTech from './energyTech';
 
 // TODO specialized data? deconstruction costs?
 
@@ -16,6 +18,11 @@ const ionTech = {
       'the deconstruction costs for buildings and systems. ' +
       'For each research level, the deconstruction costs will sink by 4%.',
       level: 6, // TODO
+      requirements: [
+        { technology: 'lab', level: 4}, // TODO research lab
+        {technology: laserTech.resolve({ user }), level: 5}, // TODO check
+        {technology: energyTech.resolve({ user }), level: 4}, // TODO check
+      ],
     };
   },
 };

@@ -1,4 +1,7 @@
 import PlasmaTechType from '../types/PlasmaTechType';
+import laserTech from './laserTech';
+import ionTech from './ionTech';
+import energyTech from './energyTech';
 
 // TODO specialized data? production factor? metalProductionFactor? crystalProductionFactor?
 
@@ -21,6 +24,11 @@ const plasmaTech = {
       'Metal production increases by 1% and crystal production by 0.66% ' +
       'per construction level of the plasma technology.',
       level: 2, // TODO
+      requirements: [
+        {technology: laserTech.resolve({ user }), level: 10}, // TODO check
+        {technology: ionTech.resolve({ user }), level: 5}, // TODO check
+        {technology: energyTech.resolve({ user }), level: 8}, // TODO check
+      ],
     };
   },
 };

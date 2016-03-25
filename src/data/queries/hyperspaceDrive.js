@@ -1,4 +1,5 @@
 import HyperspaceDriveType from '../types/HyperspaceDriveType';
+import hyperspaceTech from './hyperspaceTech';
 
 const hyperspaceDrive = {
   type: HyperspaceDriveType,
@@ -20,6 +21,9 @@ const hyperspaceDrive = {
       'Recyclers will be upgraded to HyperSpace Drives once research gains level 15.',
       level,
       speedFactor: 1 + 0.3 * level,
+      requirements: [
+        {technology: hyperspaceTech.resolve({ user }), level: 3}, // TODO check
+      ],
     };
   },
 };

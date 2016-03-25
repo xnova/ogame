@@ -18,6 +18,9 @@ const weaponsTech = {
       'Each level increases the base strength of your weapons by 10% of the base value.',
       level,
       bonus: level * 0.1,
+      requirements: [
+        { technology: 'lab', level: 4}, // TODO research lab
+      ],
     };
   },
 };
