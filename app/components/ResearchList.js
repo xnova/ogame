@@ -7,7 +7,8 @@ import React, {
 const ResearchList = ({ me }) => {
   const basic = [me.energyTech, me.laserTech, me.ionTech, me.hyperspaceTech, me.plasmaTech];
   const drives = [me.combustionDrive, me.impulseDrive, me.hyperspaceDrive];
-  const advanced = [me.espionageTech, me.computerTech, me.astrophysics, me.intergalacticResearchNetwork, me.gravitonTech];
+  const advanced = [me.espionageTech, me.computerTech, me.astrophysics,
+    me.intergalacticResearchNetwork, me.gravitonTech];
   const combat = [me.weaponsTech, me.shieldingTech, me.armourTech];
   return (
     <View>
@@ -42,7 +43,7 @@ export default Relay.createContainer(ResearchList, {
         gravitonTech { id, name, level }
         weaponsTech { id, name, level }
         shieldingTech { id, name, level }
-        armourTech { id, name, level }        
+        armourTech { id, name, level }
       }
     `,
   },

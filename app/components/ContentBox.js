@@ -75,7 +75,9 @@ const ContentBox = ({ title, items }) => (
       <Text style={styles.title}>{title}</Text>
     </View>
     <View style={styles.body}>
-      {items.map(item => (<Text key={item.id} style={{color:'#DDD'}}>{item.name} ({item.level})</Text>))}
+      {items.map(item => (
+        <Text key={item.id} style={{ color: '#DDD' }}>{item.name} ({item.level})</Text>
+      ))}
     </View>
   </View>
 );
