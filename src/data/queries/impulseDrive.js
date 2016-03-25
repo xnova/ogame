@@ -26,8 +26,8 @@ const impulseDrive = {
       level,
       speedFactor: 1 + 0.2 * level,
       requirements: [
-        { technology: 'lab', level: 2}, // TODO research lab
-        {technology: energyTech.resolve({ user }), level: 1}, // TODO check
+        { technology: 'lab', level: 2 }, // TODO research lab
+        { technology: energyTech.resolve({ user }), level: 1 }, // TODO check
       ],
     };
   },

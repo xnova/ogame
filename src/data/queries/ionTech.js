@@ -19,9 +19,9 @@ const ionTech = {
       'For each research level, the deconstruction costs will sink by 4%.',
       level: 6, // TODO
       requirements: [
-        { technology: 'lab', level: 4}, // TODO research lab
-        {technology: laserTech.resolve({ user }), level: 5}, // TODO check
-        {technology: energyTech.resolve({ user }), level: 4}, // TODO check
+        { technology: 'lab', level: 4 }, // TODO research lab
+        { technology: laserTech.resolve({ user }), level: 5 }, // TODO check
+        { technology: energyTech.resolve({ user }), level: 4 }, // TODO check
       ],
     };
   },

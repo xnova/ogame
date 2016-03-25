@@ -37,7 +37,7 @@ const espionageTech = {
       'That is why this technology should be researched very early on.',
       level: 2, // TODO
       requirements: [
-        { technology: 'lab', level: 3}, // TODO research lab
+        { technology: 'lab', level: 3 }, // TODO research lab
       ],
     };
   },

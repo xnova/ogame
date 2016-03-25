@@ -16,7 +16,7 @@ const laserTech = {
       'The laser technology provides an important basis for research of other weapon technologies.',
       level: 6, // TODO
       requirements: [
-        {technology: energyTech.resolve({ user }), level: 2}, // TODO check
+        { technology: energyTech.resolve({ user }), level: 2 }, // TODO check
       ],
     };
   },

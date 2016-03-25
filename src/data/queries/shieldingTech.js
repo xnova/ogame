@@ -25,8 +25,8 @@ const shieldingTech = {
       level,
       bonus: level * 0.1,
       requirements: [
-        { technology: 'lab', level: 6}, // TODO research lab
-        {technology: energyTech.resolve({ user }), level: 3}, // TODO check
+        { technology: 'lab', level: 6 }, // TODO research lab
+        { technology: energyTech.resolve({ user }), level: 3 }, // TODO check
       ],
     };
   },

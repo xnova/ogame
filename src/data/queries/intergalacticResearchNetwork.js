@@ -20,9 +20,9 @@ const intergalacticResearchNetwork = {
       'In order to function, each colony must be able to conduct the research independently.',
       level: 25, // TODO
       requirements: [
-        { technology: 'lab', level: 10}, // TODO research lab
-        {technology: computerTech.resolve({ user }), level: 8}, // TODO check
-        {technology: hyperspaceTech.resolve({ user }), level: 8}, // TODO check
+        { technology: 'lab', level: 10 }, // TODO research lab
+        { technology: computerTech.resolve({ user }), level: 8 }, // TODO check
+        { technology: hyperspaceTech.resolve({ user }), level: 8 }, // TODO check
       ],
     };
   },

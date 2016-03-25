@@ -26,7 +26,7 @@ const combustionDrive = {
       level,
       speedFactor: 1 + 0.1 * level,
       requirements: [
-        {technology: laserTech.resolve({ user }), level: 1}, // TODO check
+        { technology: laserTech.resolve({ user }), level: 1 }, // TODO check
       ],
     };
   },

@@ -22,9 +22,9 @@ const hyperspaceTech = {
       'the Hyperspace Drive is no longer just a theory.',
       level: 12, // TODO
       requirements: [
-        { technology: 'lab', level: 7}, // TODO research lab
-        {technology: shieldingTech.resolve({ user }), level: 5}, // TODO check
-        {technology: energyTech.resolve({ user }), level: 5}, // TODO check
+        { technology: 'lab', level: 7 }, // TODO research lab
+        { technology: shieldingTech.resolve({ user }), level: 5 }, // TODO check
+        { technology: energyTech.resolve({ user }), level: 5 }, // TODO check
       ],
     };
   },

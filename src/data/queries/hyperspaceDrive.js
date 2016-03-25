@@ -22,7 +22,7 @@ const hyperspaceDrive = {
       level,
       speedFactor: 1 + 0.3 * level,
       requirements: [
-        {technology: hyperspaceTech.resolve({ user }), level: 3}, // TODO check
+        { technology: hyperspaceTech.resolve({ user }), level: 3 }, // TODO check
       ],
     };
   },

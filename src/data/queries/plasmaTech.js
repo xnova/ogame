@@ -25,9 +25,9 @@ const plasmaTech = {
       'per construction level of the plasma technology.',
       level: 2, // TODO
       requirements: [
-        {technology: laserTech.resolve({ user }), level: 10}, // TODO check
-        {technology: ionTech.resolve({ user }), level: 5}, // TODO check
-        {technology: energyTech.resolve({ user }), level: 8}, // TODO check
+        { technology: laserTech.resolve({ user }), level: 10 }, // TODO check
+        { technology: ionTech.resolve({ user }), level: 5 }, // TODO check
+        { technology: energyTech.resolve({ user }), level: 8 }, // TODO check
       ],
     };
   },

@@ -17,7 +17,7 @@ const gravitonTech = {
       'To produce a sufficient amount of gravitons, huge amounts of energy are required.',
       level: 2, // TODO
       requirements: [
-        { technology: 'lab', level: 12}, // TODO research lab
+        { technology: 'lab', level: 12 }, // TODO research lab
       ],
     };
   },

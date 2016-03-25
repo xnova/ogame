@@ -21,7 +21,7 @@ const armourTech = {
       level,
       bonus: level * 0.1,
       requirements: [
-        { technology: 'lab', level: 2}, // TODO research lab
+        { technology: 'lab', level: 2 }, // TODO research lab
       ],
     };
   },
