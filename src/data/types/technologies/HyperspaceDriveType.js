@@ -4,11 +4,11 @@ import {
   GraphQLNonNull as NonNull,
 } from 'graphql';
 import TechnologyType, { TechnologyMixin } from '../TechnologyType';
-import DriveMixin from './DriveMixin';
+import DriveType, { DriveMixin } from './DriveType';
 
 const HyperspaceDriveType = new ObjectType({
   name: 'HyperspaceDrive',
-  interfaces: [TechnologyType],
+  interfaces: [TechnologyType, DriveType],
   fields: {
     id: { type: new NonNull(ID) },
     ...TechnologyMixin,

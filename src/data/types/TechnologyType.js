@@ -4,6 +4,7 @@ import {
   GraphQLList as List,
   GraphQLString as StringType,
   GraphQLInt as IntType,
+  GraphQLNonNull as NonNull,
 } from 'graphql';
 
 // http://stackoverflow.com/questions/32551022/how-do-i-create-a-graphql-schema-for-a-self-referencing-data-hierarchy
@@ -26,7 +27,7 @@ const ApplicationType = new ObjectType({
 });
 
 const mixin = {
-  name: { type: StringType },
+  name: { type: new NonNull(StringType) },
   description: { type: StringType },
   longDescription: { type: StringType },
   level: { type: IntType },
@@ -43,4 +44,5 @@ const TechnologyType = new InterfaceType({
 });
 
 export default TechnologyType;
+export const RequirementsType = new List(RequirementType);
 export const TechnologyMixin = mixin;

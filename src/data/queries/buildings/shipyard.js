@@ -1,5 +1,5 @@
 import { ShipyardType } from '../../types/buildings';
-import shipyard from './shipyard';
+import roboticsFactory from './roboticsFactory';
 
 const shipyard = {
   type: ShipyardType,
@@ -15,7 +15,7 @@ const shipyard = {
       level,
       duration: 123,
       requirements: [
-        { technology: shipyard.resolve({ planet }), level: 2 }, // TODO check
+        { technology: roboticsFactory.resolve({ planet }), level: 2 }, // TODO check
       ],
       applications: [],
       canDismantle: true,
