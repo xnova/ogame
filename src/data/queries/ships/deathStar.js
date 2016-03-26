@@ -8,6 +8,7 @@ const deathStar = {
   type: DeathStarType,
   resolve({ planet }) {
     const amount = 999; // TODO
+    const user = null; // TODO
     return {
       id: 11812, // TODO
       name: 'Death Star',
@@ -24,15 +25,15 @@ const deathStar = {
       amount,
       duration: null,
       requirements: [
-        { technology: shipyard.resolve({ user }), level: 12 }, // TODO check
-        { technology: hyperspaceDrive.resolve({ player: planet.user }), level: 7 }, // TODO check
-        { technology: gravitonTech.resolve({ player: planet.user }), level: 1 }, // TODO check
-        { technology: hyperspaceTech.resolve({ player: planet.user }), level: 6 }, // TODO check
+        { technology: shipyard.resolve({ planet }), level: 12 }, // TODO check
+        { technology: hyperspaceDrive.resolve({ user }), level: 7 }, // TODO check
+        { technology: gravitonTech.resolve({ user }), level: 1 }, // TODO check
+        { technology: hyperspaceTech.resolve({ user }), level: 6 }, // TODO check
       ],
       structuralIntegrity: 9000000,
       shieldStrength: 50000,
       attackStrength: 200000,
-      drive: hyperspaceDrive.resolve({ player: planet.user }),
+      drive: hyperspaceDrive.resolve({ user }),
       speed: 100,
       cargoCapacity: 1000000,
       fuelUsage: 1,

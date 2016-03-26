@@ -1,4 +1,4 @@
-import HyperspaceDriveType from '../../types/technologies/HyperspaceDriveType';
+import { HyperspaceDriveType } from '../../types/technologies';
 import hyperspaceTech from './hyperspaceTech';
 
 const hyperspaceDrive = {

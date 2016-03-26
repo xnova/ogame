@@ -1,4 +1,4 @@
-import LaserTechType from '../../types/technologies/LaserTechType';
+import { LaserTechType } from '../../types/technologies';
 import energyTech from './energyTech';
 
 const laserTech = {

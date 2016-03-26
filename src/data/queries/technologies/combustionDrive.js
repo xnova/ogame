@@ -1,4 +1,4 @@
-import CombustionDriveType from '../../types/technologies/CombustionDriveType';
+import { CombustionDriveType } from '../../types/technologies';
 import laserTech from './laserTech';
 
 const combustionDrive = {

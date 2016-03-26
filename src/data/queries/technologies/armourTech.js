@@ -1,4 +1,4 @@
-import ArmourTechType from '../../types/technologies/ArmourTechType';
+import { ArmourTechType } from '../../types/technologies';
 
 const armourTech = {
   type: ArmourTechType,

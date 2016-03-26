@@ -10,7 +10,8 @@ const crystalStorage = {
       description: 'Provides storage for excess crystal.',
       longDescription: 'Raw crystal is stored in this building. ' +
       'With each level of upgrade, it increases the amount of crystal can be stored. ' +
-      'Once the mines output exceeds the storage capacity, the crystal mines automatically shut down to prevent a collapse in the mines.',
+      'Once the mines output exceeds the storage capacity, ' +
+      'the crystal mines automatically shut down to prevent a collapse in the mines.',
       level,
       duration: 308,
       requirements: [],

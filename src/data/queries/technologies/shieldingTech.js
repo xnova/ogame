@@ -1,4 +1,4 @@
-import ShieldingTechType from '../../types/technologies/ShieldingTechType';
+import { ShieldingTechType } from '../../types/technologies';
 import energyTech from './energyTech';
 
 const shieldingTech = {

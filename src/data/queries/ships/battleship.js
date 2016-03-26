@@ -20,7 +20,8 @@ const battleship = {
       'After extensive development, the Battleship was born. ' +
       'Built to withstand the largest of battles, the Battleship features large cargo spaces, ' +
       'heavy cannons, and high hyperdrive speed. ' +
-      'Once developed, it eventually turned out to be the backbone of every raiding Emperors fleet.',
+      'Once developed, ' +
+      'it eventually turned out to be the backbone of every raiding Emperors fleet.',
       amount,
       duration: null,
       requirements: [

@@ -6,6 +6,7 @@ const terraformer = {
   type: TerraformerType,
   resolve({ planet }) {
     const level = 8; // TODO
+    const user = null; // TODO
     return {
       id: 11812, // TODO
       name: 'Terraformer',
@@ -15,7 +16,8 @@ const terraformer = {
       'The land is being mined out and the atmosphere is deteriorating. ' +
       'Mining a colony to capacity can not only destroy the planet, ' +
       'but may kill all life on it. ' +
-      'Scientists working feverishly discovered a method of creating enormous land masses using nanomachines. ' +
+      'Scientists working feverishly discovered a method of ' +
+      'creating enormous land masses using nanomachines. ' +
       'The Terraformer was born.' +
       '' + // TODO check new paragraph
       ' Once built, the Terraformer cannot be torn down.',

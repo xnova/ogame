@@ -6,6 +6,7 @@ const colonyShip = {
   type: ColonyShipType,
   resolve({ planet }) {
     const amount = 999; // TODO
+    const user = null; // TODO
     return {
       id: 11812, // TODO
       name: 'Colony Ship',
@@ -15,24 +16,28 @@ const colonyShip = {
       'After that, a space station was built. ' +
       'Mars was colonized soon afterwards. ' +
       'It was soon determined that our growth depended on colonizing other worlds. ' +
-      'Scientists and engineers all over the world gathered together to develop mans greatest achievement ever. ' +
+      'Scientists and engineers all over the world gathered together ' +
+      'to develop mans greatest achievement ever. ' +
       'The Colony Ship is born. ' +
       '' + // TODO new paragraph
       'This ship is used to prepare a newly discovered planet for colonization. ' +
       'Once it arrives at the destination, ' +
-      'the ship is instantly transformed into habitual living space to assist in populating and mining the new world. ' +
-      'The maximum number of planets is thereby determined by the progress in astrophysics research. ' +
-      'Two new levels of Astrotechnology allow for the colonization of one additional planet.', // TODO wtf name?
+      'the ship is instantly transformed into habitual living space to assist in ' +
+      'populating and mining the new world. ' +
+      'The maximum number of planets is thereby determined by ' +
+      'the progress in astrophysics research. ' +
+      'Two new levels of Astrotechnology allow for the colonization of one additional planet.',
+      // TODO wtf is Astrotechnology?
       amount,
       duration: null,
       requirements: [
-        { technology: shipyard.resolve({ user }), level: 4 }, // TODO check
+        { technology: shipyard.resolve({ planet }), level: 4 }, // TODO check
         { technology: impulseDrive.resolve({ user }), level: 3 }, // TODO check
       ],
       structuralIntegrity: 30000,
       shieldStrength: 100,
       attackStrength: 50,
-      drive: impulseDrive.resolve({ player: planet.user }),
+      drive: impulseDrive.resolve({ user }),
       speed: 2500,
       cargoCapacity: 7500,
       fuelUsage: 1000,

@@ -11,7 +11,8 @@ const metalStorage = {
       longDescription: 'This storage facility is used to store metal ore. ' +
       'Each level of upgrading increases the amount of metal ore that can be stored. ' +
       'If the storage capacity is exceeded, ' +
-      'the metal mines are automatically shut down to prevent a catastrophic collapse in the metal mine shafts.',
+      'the metal mines are automatically shut down ' +
+      'to prevent a catastrophic collapse in the metal mine shafts.',
       level,
       duration: 205,
       requirements: [],

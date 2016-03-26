@@ -1,4 +1,4 @@
-import EspionageTechType from '../../types/technologies/EspionageTechType';
+import { EspionageTechType } from '../../types/technologies';
 
 // TODO specialized data?
 

@@ -3,7 +3,7 @@ import {
   GraphQLInt as IntType,
   GraphQLNonNull as NonNull,
 } from 'graphql';
-import DriveType from './technologies/DriveType';
+import DriveType from './DriveType';
 
 
 const mixin = {

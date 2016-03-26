@@ -1,4 +1,4 @@
-import ComputerTechType from '../../types/technologies/ComputerTechType';
+import { ComputerTechType } from '../../types/technologies';
 
 const computerTech = {
   type: ComputerTechType,

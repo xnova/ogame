@@ -1,4 +1,4 @@
-import AstrophysicsType from '../../types/technologies/AstrophysicsType';
+import { AstrophysicsType } from '../../types/technologies';
 import espionageTech from './espionageTech';
 import impulseDrive from './impulseDrive';
 

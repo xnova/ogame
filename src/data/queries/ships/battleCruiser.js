@@ -11,7 +11,8 @@ const battleCruiser = {
       id: 11812, // TODO
       name: 'Battlecruiser',
       description: 'The Battlecruiser is highly specialized in the interception of hostile fleets.',
-      longDescription: 'This ship is one of the most advanced fighting ships ever to be developed, ' +
+      longDescription: 'This ship is one of the most advanced fighting ships ever ' +
+      'to be developed, ' +
       'and is particularly deadly when it comes to destroying attacking fleets. ' +
       'With its improved laser cannons on board and advanced Hyperspace engine, ' +
       'the Battlecruiser is a serious force to be dealt with in any attack. ' +

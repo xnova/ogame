@@ -1,4 +1,4 @@
-import ImpulseDriveType from '../../types/technologies/ImpulseDriveType';
+import { ImpulseDriveType } from '../../types/technologies';
 import energyTech from './energyTech';
 
 const impulseDrive = {

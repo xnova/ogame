@@ -1,4 +1,4 @@
-import HyperspaceTechType from '../../types/technologies/HyperspaceTechType';
+import { HyperspaceTechType } from '../../types/technologies';
 import shieldingTech from './shieldingTech';
 import energyTech from './energyTech';
 

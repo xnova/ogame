@@ -1,4 +1,4 @@
-import WeaponsTechType from '../../types/technologies/WeaponsTechType';
+import { WeaponsTechType } from '../../types/technologies';
 
 const weaponsTech = {
   type: WeaponsTechType,

@@ -11,7 +11,8 @@ const deuteriumTank = {
       longDescription: 'The Deuterium tank is for storing newly-synthesized deuterium. ' +
       'Once it is processed by the synthesizer, it is piped into this tank for later use. ' +
       'With each upgrade of the tank, the total storage capacity is increased. ' +
-      'Once the capacity is reached, the Deuterium Synthesizer is shut down to prevent the tanks rupture.',
+      'Once the capacity is reached, ' +
+      'the Deuterium Synthesizer is shut down to prevent the tanks rupture.',
       level,
       duration: 411,
       requirements: [],

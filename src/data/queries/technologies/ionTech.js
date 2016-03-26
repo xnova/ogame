@@ -1,4 +1,4 @@
-import IonTechType from '../../types/technologies/IonTechType';
+import { IonTechType } from '../../types/technologies';
 import laserTech from './laserTech';
 import energyTech from './energyTech';
 

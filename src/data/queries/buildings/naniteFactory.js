@@ -15,8 +15,11 @@ const naniteFactory = {
       'is a mechanical or electromechanical device whose dimensions are measured in nanometers ' +
       '(millionths of a millimeter, or units of 10^-9 meter). ' +
       'The microscopic size of nanomachines translates into higher operational speed. ' +
-      'This factory produces nanomachines that are the ultimate evolution in robotics technology. ' +
-      'Once constructed, each upgrade significantly decreases production time for buildings, ships, and defensive structures.',
+      'This factory produces nanomachines that are ' +
+      'the ultimate evolution in robotics technology. ' +
+      'Once constructed, ' +
+      'each upgrade significantly decreases production time for buildings, ships, ' +
+      'and defensive structures.',
       level,
       duration: 123,
       requirements: [

@@ -1,4 +1,4 @@
-import EnergyTechType from '../../types/technologies/EnergyTechType';
+import { EnergyTechType } from '../../types/technologies';
 
 // TODO maybe specialized data like efficiency?
 

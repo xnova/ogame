@@ -8,6 +8,8 @@ import {
 } from 'graphql';
 import CoordinatesType from './CoordinatesType';
 import buildings from '../queries/buildings';
+import ships from '../queries/ships';
+import defenses from '../queries/defenses';
 
 const PlanetType = new ObjectType({
   name: 'Planet',
@@ -20,6 +22,8 @@ const PlanetType = new ObjectType({
     coordinates: { type: new NonNull(CoordinatesType) },
     productionFactor: { type: FloatType }, // 0.00 to 1.00
     ...buildings,
+    ...ships,
+    ...defenses,
   }),
 });
 

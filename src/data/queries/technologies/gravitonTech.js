@@ -1,8 +1,10 @@
-import GravitonTechType from '../../types/technologies/GravitonTechType';
+import { GravitonTechType } from '../../types/technologies';
+import researchLab from '../buildings/researchLab';
 
 const gravitonTech = {
   type: GravitonTechType,
   resolve({ user }) {
+    const planet = null; // TODO
     return {
       id: 222220, // TODO
       name: 'Graviton Technology',
@@ -17,7 +19,7 @@ const gravitonTech = {
       'To produce a sufficient amount of gravitons, huge amounts of energy are required.',
       level: 2, // TODO
       requirements: [
-        { technology: 'lab', level: 12 }, // TODO research lab
+        { technology: researchLab.resolve({ planet }), level: 12 }, // TODO research lab
       ],
     };
   },

@@ -1,4 +1,4 @@
-import IntergalacticResearchNetworkType from '../../types/technologies/IntergalacticResearchNetworkType';
+import { IntergalacticResearchNetworkType } from '../../types/technologies';
 import computerTech from './computerTech';
 import hyperspaceTech from './hyperspaceTech';
 

@@ -7,6 +7,7 @@ const destroyer = {
   type: DestroyerType,
   resolve({ planet }) {
     const amount = 999; // TODO
+    const user = null; // TODO
     return {
       id: 11812, // TODO
       name: 'Destroyer',
@@ -25,14 +26,14 @@ const destroyer = {
       amount,
       duration: null,
       requirements: [
-        { technology: shipyard.resolve({ user }), level: 9 }, // TODO check
-        { technology: hyperspaceDrive.resolve({ player: planet.user }), level: 6 }, // TODO check
-        { technology: hyperspaceTech.resolve({ player: planet.user }), level: 5 }, // TODO check
+        { technology: shipyard.resolve({ planet }), level: 9 }, // TODO check
+        { technology: hyperspaceDrive.resolve({ user }), level: 6 }, // TODO check
+        { technology: hyperspaceTech.resolve({ user }), level: 5 }, // TODO check
       ],
       structuralIntegrity: 110000,
       shieldStrength: 500,
       attackStrength: 2000,
-      drive: hyperspaceDrive.resolve({ player: planet.user }),
+      drive: hyperspaceDrive.resolve({ user }),
       speed: 5000,
       cargoCapacity: 2000,
       fuelUsage: 1000,

@@ -13,7 +13,8 @@ const missileSilo = {
       'store and launch interplanetary and anti-ballistic missiles. ' +
       'With each level of the silo, ' +
       'five interplanetary missiles or ten anti-ballistic missiles can be stored. ' +
-      'Storage of both Interplanetary missiles and Anti-Ballistic missiles in the same silo is allowed.',
+      'Storage of both Interplanetary missiles and Anti-Ballistic missiles ' +
+      'in the same silo is allowed.',
       level,
       duration: 123,
       requirements: [

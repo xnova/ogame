@@ -6,22 +6,26 @@ import {
 import UnitType, { UnitMixin } from './UnitType';
 import DefenseType, { DefenseMixin } from './DefenseType';
 
-const Defense = (name) => new ObjectType({
-  name,
-  interfaces: [UnitType, DefenseType],
-  fields: {
-    id: { type: new NonNull(ID) },
-    ...UnitMixin,
-    ...DefenseMixin,
-  },
-  isTypeOf: (value) => true, // TODO
-});
+class Defense extends ObjectType {
+  constructor(name) {
+    super({
+      name,
+      interfaces: [UnitType, DefenseType],
+      fields: {
+        id: { type: new NonNull(ID) },
+        ...UnitMixin,
+        ...DefenseMixin,
+      },
+      isTypeOf: (value) => true, // TODO
+    });
+  }
+}
 
-export const RocketLauncherType = Defense('RocketLauncher');
-export const LightLaserType = Defense('LightLaser');
-export const HeavyLaserType = Defense('HeavyLaser');
-export const GaussCannonType = Defense('GaussCannon');
-export const IonCannonType = Defense('IonCannon');
-export const PlasmaTurretType = Defense('PlasmaTurret');
-export const SmallShieldDomeType = Defense('SmallShieldDome');
-export const LargeShieldDomeType = Defense('LargeShieldDome');
+export const RocketLauncherType = new Defense('RocketLauncher');
+export const LightLaserType = new Defense('LightLaser');
+export const HeavyLaserType = new Defense('HeavyLaser');
+export const GaussCannonType = new Defense('GaussCannon');
+export const IonCannonType = new Defense('IonCannon');
+export const PlasmaTurretType = new Defense('PlasmaTurret');
+export const SmallShieldDomeType = new Defense('SmallShieldDome');
+export const LargeShieldDomeType = new Defense('LargeShieldDome');
