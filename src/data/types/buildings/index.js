@@ -1,0 +1,15 @@
+export const AllianceDepotType = require('./AllianceDepotType').default;
+export const CrystalMineType = require('./CrystalMineType').default;
+export const CrystalStorageType = require('./CrystalStorageType').default;
+export const DeuteriumSynthesizerType = require('./DeuteriumSynthesizerType').default;
+export const DeuteriumTankType = require('./DeuteriumTankType').default;
+export const FusionReactorType = require('./FusionReactorType').default;
+export const MetalMineType = require('./MetalMineType').default;
+export const MetalStorageType = require('./MetalStorageType').default;
+export const MissileSiloType = require('./MissileSiloType').default;
+export const NaniteFactoryType = require('./NaniteFactoryType').default;
+export const ResearchLabType = require('./ResearchLabType').default;
+export const RoboticsFactoryType = require('./RoboticsFactoryType').default;
+export const ShipyardType = require('./ShipyardType').default;
+export const SolarPlantType = require('./SolarPlantType').default;
+export const TerraformerType = require('./TerraformerType').default;

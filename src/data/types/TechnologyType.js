@@ -16,12 +16,23 @@ const RequirementType = new ObjectType({
   }),
 });
 
+// TODO on another file?
+const ApplicationType = new ObjectType({
+  name: 'Application',
+  fields: () => ({
+    technology: { type: TechnologyType },
+    level: { type: IntType },
+  }),
+});
+
 const mixin = {
   name: { type: StringType },
   description: { type: StringType },
   longDescription: { type: StringType },
   level: { type: IntType },
+  duration: { type: IntType }, // improve duration in seconds
   requirements: { type: new List(RequirementType) }, // TODO requirements
+  applications: { type: new List(ApplicationType) }, // TODO requirements
 };
 
 const TechnologyType = new InterfaceType({
@@ -30,14 +41,6 @@ const TechnologyType = new InterfaceType({
     ...mixin,
   },
 });
-
-// const RequirementType = new ObjectType({
-//   name: 'Requirement',
-//   fields: {
-//     technology: { type: TechnologyType },
-//     level: { type: StringType },
-//   },
-// });
 
 export default TechnologyType;
 export const TechnologyMixin = mixin;

@@ -3,22 +3,24 @@ import {
   GraphQLID as ID,
   GraphQLString as StringType,
   GraphQLInt as IntType,
+  GraphQLFloat as FloatType,
   GraphQLNonNull as NonNull,
 } from 'graphql';
 import CoordinatesType from './CoordinatesType';
+import buildings from '../queries/buildings';
 
 const PlanetType = new ObjectType({
   name: 'Planet',
-  fields() {
-    return {
-      id: { type: new NonNull(ID) },
-      player: { type: require('./UserType').default }, // TODO chapuza?
-      name: { type: StringType },
-      diameter: { type: IntType },
-      fields: { type: IntType },
-      coordinates: { type: new NonNull(CoordinatesType) },
-    };
-  },
+  fields: () => ({
+    id: { type: new NonNull(ID) },
+    player: { type: require('./UserType').default }, // TODO chapuza?
+    name: { type: StringType },
+    diameter: { type: IntType },
+    fields: { type: IntType },
+    coordinates: { type: new NonNull(CoordinatesType) },
+    productionFactor: { type: FloatType }, // 0.00 to 1.00
+    ...buildings,
+  }),
 });
 
 export default PlanetType;

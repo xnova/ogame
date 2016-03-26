@@ -19,22 +19,23 @@ import planets from '../queries/user.planets';
 import planet from '../queries/user.planet';
 
 // TODO manage better, this is a mess
-import energyTech from '../queries/energyTech';
-import laserTech from '../queries/laserTech';
-import ionTech from '../queries/ionTech';
-import hyperspaceTech from '../queries/hyperspaceTech';
-import plasmaTech from '../queries/plasmaTech';
-import combustionDrive from '../queries/combustionDrive';
-import impulseDrive from '../queries/impulseDrive';
-import hyperspaceDrive from '../queries/hyperspaceDrive';
-import espionageTech from '../queries/espionageTech';
-import computerTech from '../queries/computerTech';
-import astrophysics from '../queries/astrophysics';
-import intergalacticResearchNetwork from '../queries/intergalacticResearchNetwork';
-import gravitonTech from '../queries/gravitonTech';
-import weaponsTech from '../queries/weaponsTech';
-import shieldingTech from '../queries/shieldingTech';
-import armourTech from '../queries/armourTech';
+// TODO do like I did in planet !!!
+import energyTech from '../queries/technologies/energyTech';
+import laserTech from '../queries/technologies/laserTech';
+import ionTech from '../queries/technologies/ionTech';
+import hyperspaceTech from '../queries/technologies/hyperspaceTech';
+import plasmaTech from '../queries/technologies/plasmaTech';
+import combustionDrive from '../queries/technologies/combustionDrive';
+import impulseDrive from '../queries/technologies/impulseDrive';
+import hyperspaceDrive from '../queries/technologies/hyperspaceDrive';
+import espionageTech from '../queries/technologies/espionageTech';
+import computerTech from '../queries/technologies/computerTech';
+import astrophysics from '../queries/technologies/astrophysics';
+import intergalacticResearchNetwork from '../queries/technologies/intergalacticResearchNetwork';
+import gravitonTech from '../queries/technologies/gravitonTech';
+import weaponsTech from '../queries/technologies/weaponsTech';
+import shieldingTech from '../queries/technologies/shieldingTech';
+import armourTech from '../queries/technologies/armourTech';
 
 const UserType = new ObjectType({
   name: 'Player',
