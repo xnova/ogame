@@ -1,11 +1,12 @@
 import {
   GraphQLInterfaceType as InterfaceType,
   GraphQLBoolean as BooleanType,
+  GraphQLNonNull as NonNull,
 } from 'graphql';
 
 
 const mixin = {
-  canDismantle: { type: BooleanType },
+  canDismantle: { type: new NonNull(BooleanType) },
 };
 
 const BuildingType = new InterfaceType({

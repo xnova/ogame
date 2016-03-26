@@ -1,16 +1,19 @@
-import { CrystalMineType } from '../../types/buildings';
+import { MetalStorageType } from '../../types/buildings';
 
-const crystalMine = {
-  type: CrystalMineType,
+const metalStorage = {
+  type: MetalStorageType,
   resolve({ planet }) {
     const level = 8; // TODO
     return {
       id: 11812, // TODO
-      name: 'Crystal Mine',
-      description: 'LOREM IPSUM',
-      longDescription: 'LOREM IPSUM',
+      name: 'Metal Storage',
+      description: 'Provides storage for excess metal.',
+      longDescription: 'This storage facility is used to store metal ore. ' +
+      'Each level of upgrading increases the amount of metal ore that can be stored. ' +
+      'If the storage capacity is exceeded, ' +
+      'the metal mines are automatically shut down to prevent a catastrophic collapse in the metal mine shafts.',
       level,
-      duration: 123,
+      duration: 205,
       requirements: [],
       applications: [],
       canDismantle: true,
@@ -18,4 +21,4 @@ const crystalMine = {
   },
 };
 
-export default crystalMine;
+export default metalStorage;
