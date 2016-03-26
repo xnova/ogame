@@ -17,25 +17,8 @@ import {
 import homePlanet from '../queries/user.homePlanet';
 import planets from '../queries/user.planets';
 import planet from '../queries/user.planet';
+import technologies from '../queries/technologies';
 
-// TODO manage better, this is a mess
-// TODO do like I did in planet !!!
-import energyTech from '../queries/technologies/energyTech';
-import laserTech from '../queries/technologies/laserTech';
-import ionTech from '../queries/technologies/ionTech';
-import hyperspaceTech from '../queries/technologies/hyperspaceTech';
-import plasmaTech from '../queries/technologies/plasmaTech';
-import combustionDrive from '../queries/technologies/combustionDrive';
-import impulseDrive from '../queries/technologies/impulseDrive';
-import hyperspaceDrive from '../queries/technologies/hyperspaceDrive';
-import espionageTech from '../queries/technologies/espionageTech';
-import computerTech from '../queries/technologies/computerTech';
-import astrophysics from '../queries/technologies/astrophysics';
-import intergalacticResearchNetwork from '../queries/technologies/intergalacticResearchNetwork';
-import gravitonTech from '../queries/technologies/gravitonTech';
-import weaponsTech from '../queries/technologies/weaponsTech';
-import shieldingTech from '../queries/technologies/shieldingTech';
-import armourTech from '../queries/technologies/armourTech';
 
 const UserType = new ObjectType({
   name: 'Player',
@@ -46,26 +29,7 @@ const UserType = new ObjectType({
     homePlanet,
     planets,
     planet,
-    // basic research
-    energyTech,
-    laserTech,
-    ionTech,
-    hyperspaceTech,
-    plasmaTech,
-    // drive research
-    combustionDrive,
-    impulseDrive,
-    hyperspaceDrive,
-    // advanced research
-    espionageTech,
-    computerTech,
-    astrophysics,
-    intergalacticResearchNetwork,
-    gravitonTech,
-    // combat research
-    weaponsTech,
-    shieldingTech,
-    armourTech,
+    ...technologies,
   },
 });
 

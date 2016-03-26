@@ -1,25 +1,26 @@
 import { GraphQLID as ID } from 'graphql';
 import PlanetType from '../types/PlanetType';
+import { Planet } from '../database';
 
-const planet = {
+const query = { // TODO better name
   type: PlanetType,
   args: {
     id: { type: ID },
   },
-  resolve({ user }) {
-    return {
-      id: 123456987, // TODO
-      player: user,
-      name: 'Homeworld',
-      diameter: 12800,
-      fields: 163,
-      coordinates: { // TODO
-        galaxy: 1,
-        system: 271,
-        position: 12,
-      },
+  async resolve({ request }, { id }) {
+    const planet = await Planet.findById(id);
+    // TODO filter by user
+    if (planet.name === '') {
+      // TODO Colony, Abandoned planet...
+      planet.name = 'Homeworld';
+    }
+    planet.coordinates = { // TODO c'mon! I can do it better!
+      galaxy: planet.galaxy,
+      system: planet.system,
+      position: planet.position,
     };
+    return planet;
   },
 };
 
-export default planet;
+export default query;
