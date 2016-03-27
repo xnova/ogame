@@ -1,6 +1,6 @@
 import { GraphQLID as ID } from 'graphql';
 import PlanetType from '../types/PlanetType';
-import { Planet } from '../database';
+import { Planet } from '../models';
 
 const query = { // TODO better name
   type: PlanetType,
@@ -10,7 +10,7 @@ const query = { // TODO better name
   async resolve({ request }, { id }) {
     const planet = await Planet.findById(id);
     // TODO filter by user
-    if (planet.name === '') {
+    if (!planet.name) {
       // TODO Colony, Abandoned planet...
       planet.name = 'Homeworld';
     }
@@ -19,7 +19,7 @@ const query = { // TODO better name
       system: planet.system,
       position: planet.position,
     };
-    return planet;
+    return planet; // TODO dangerous!
   },
 };
 

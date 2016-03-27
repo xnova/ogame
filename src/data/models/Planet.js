@@ -1,16 +1,15 @@
-
-export default (sequelize, DataTypes) => sequelize.define('planet', {
+export default (sequelize, DataTypes) => sequelize.define('Planet', {
   // TODO player
   name: DataTypes.STRING,
-  diameter:  {
+  diameter: {
     type: DataTypes.INTEGER,
     allowNull: false,
   },
   fields: {
     // TODO terraformer
     type: new DataTypes.VIRTUAL(DataTypes.INTEGER, ['diameter']),
-    get() { 
-      return Math.floor(Math.pow(this.diameter / 1000, 2))
+    get() {
+      return Math.floor(Math.pow(this.diameter / 1000, 2));
     },
   },
   galaxy: {
