@@ -1,16 +1,39 @@
-export default (sequelize, DataTypes) => sequelize.define('User', {
+/**
+ * React Starter Kit (https://www.reactstarterkit.com/)
+ *
+ * Copyright © 2014-2016 Kriasoft, LLC. All rights reserved.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE.txt file in the root directory of this source tree.
+ */
+
+import DataType from 'sequelize';
+import Model from '../sequelize';
+
+const User = Model.define('User', {
+
+  id: {
+    type: DataType.UUID,
+    defaultValue: DataType.UUIDV1,
+    primaryKey: true,
+  },
+
   email: {
-    type: DataTypes.STRING,
-    validate: {
-      isEmail: true,
-    }
+    type: DataType.STRING(256),
+    validate: { isEmail: true },
   },
+
+  emailConfirmed: {
+    type: DataType.BOOLEAN,
+    defaultValue: false,
+  },
+
 }, {
-  classMethods: {
-    associate({ User, UserLogin, UserClaim, UserProfile }) {
-      User.hasMany(UserLogin, {as: 'logins'});
-      User.hasMany(UserClaim, {as: 'claims'});
-      User.hasOne(UserProfile, { as: 'profile' });
-    },
-  },
+
+  indexes: [
+    { fields: ['email'] },
+  ],
+
 });
+
+export default User;

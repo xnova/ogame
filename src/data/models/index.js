@@ -1,35 +1,43 @@
-import Sequelize from 'sequelize';
-import db from '../../core/db';
+/**
+ * React Starter Kit (https://www.reactstarterkit.com/)
+ *
+ * Copyright © 2014-2016 Kriasoft, LLC. All rights reserved.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE.txt file in the root directory of this source tree.
+ */
 
-const models = {
-  User: require('./User').default(db, Sequelize),
-  UserLogin: require('./UserLogin').default(db, Sequelize),
-  UserClaim: require('./UserClaim').default(db, Sequelize),
-  UserProfile: require('./UserProfile').default(db, Sequelize),
-  Planet: require('./Planet').default(db, Sequelize),
-};
+import sequelize from '../sequelize';
+import Planet from './Planet';
+import User from './User';
+import UserLogin from './UserLogin';
+import UserClaim from './UserClaim';
+import UserProfile from './UserProfile';
 
-Object.keys(models).forEach((modelName) => {
-  if (models[modelName].associate) {
-    // console.log('Associating... ${modelName}');
-    models[modelName].associate(models);
-  }
+User.hasMany(UserLogin, {
+  foreignKey: 'userId',
+  as: 'logins',
+  onUpdate: 'cascade',
+  onDelete: 'cascade',
 });
 
-db
-  .sync({ force: true })
-  .then(() => models
-    .Planet
-    .create({
-      diameter: 12800,
-      galaxy: 1,
-      system: 271,
-      position: 12,
-    })
-  );
+User.hasMany(UserClaim, {
+  foreignKey: 'userId',
+  as: 'claims',
+  onUpdate: 'cascade',
+  onDelete: 'cascade',
+});
 
-export const User = models.User;
-export const UserLogin = models.UserLogin;
-export const UserClaim = models.UserClaim;
-export const UserProfile = models.UserProfile;
-export const Planet = models.Planet;
+User.hasOne(UserProfile, {
+  foreignKey: 'userId',
+  as: 'profile',
+  onUpdate: 'cascade',
+  onDelete: 'cascade',
+});
+
+function sync(...args) {
+  return sequelize.sync(...args);
+}
+
+export default { sync };
+export { User, UserLogin, UserClaim, UserProfile };

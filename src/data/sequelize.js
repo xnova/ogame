@@ -10,13 +10,10 @@
 import Sequelize from 'sequelize';
 import { databaseUrl } from '../config';
 
-// TODO: Customize database connection settings
-/* jscs:disable requireCamelCaseOrUpperCaseIdentifiers */
-// db.defaults.ssl = true;
-// db.defaults.poolSize = 2;
-// db.defaults.application_name = 'RSK';
-/* jscs:enable requireCamelCaseOrUpperCaseIdentifiers */
+const sequelize = new Sequelize(databaseUrl, {
+  define: {
+    freezeTableName: true,
+  },
+});
 
-const db = new Sequelize(databaseUrl);
-
-export default db;
+export default sequelize;

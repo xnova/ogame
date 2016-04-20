@@ -34,10 +34,7 @@ local.properties
 # node.js
 #
 build
-node_modules/
+database.sqlite
+node_modules
 ncp-debug.log
 npm-debug.log
-
-# project specific
-#
-database.sqlite3

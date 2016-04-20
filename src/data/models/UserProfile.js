@@ -1,12 +1,33 @@
-export default (sequelize, DataTypes) => sequelize.define('UserProfile', {
-  // TODO check userID is unique, ie, check is a true 1 to 1 relationship
-  displayName: DataTypes.INTEGER, // profile.displayName
-  gender: DataTypes.INTEGER, // profile._json.gender
-  picture: DataTypes.INTEGER, // `https://graph.facebook.com/${profile.id}/picture?type=large`
-}, {
-  classMethods: {
-    associate({ User, UserProfile }) {
-      UserProfile.belongsTo(User);
-    },
+import DataType from 'sequelize';
+import Model from '../sequelize';
+
+const UserProfile = Model.define('UserProfile', {
+
+  userId: {
+    type: DataType.UUID,
+    primaryKey: true,
   },
+
+  displayName: {
+    type: DataType.STRING(100),
+  },
+
+  picture: {
+    type: DataType.STRING(256),
+  },
+
+  gender: {
+    type: DataType.STRING(50),
+  },
+
+  location: {
+    type: DataType.STRING(100),
+  },
+
+  website: {
+    type: DataType.STRING(256),
+  },
+
 });
+
+export default UserProfile;
