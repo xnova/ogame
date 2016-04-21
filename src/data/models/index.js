@@ -9,10 +9,13 @@
 
 import sequelize from '../sequelize';
 import Planet from './Planet';
+import Point from './Point';
 import User from './User';
 import UserLogin from './UserLogin';
 import UserClaim from './UserClaim';
 import UserProfile from './UserProfile';
+
+User.hasMany(Point);
 
 User.hasMany(UserLogin, {
   foreignKey: 'userId',

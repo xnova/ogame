@@ -105,17 +105,33 @@
     "webpack-middleware": "^1.5.1"
   },
   "babel": {
-    "presets": [
-      "react",
-      "node5",
-      "stage-0"
-    ],
-    "env": {
-      "test": {
-        "plugins": [
-          "rewire"
+   "env": {
+      "development": {
+        "passPerPreset": true,
+        "presets": [
+          {
+            "plugins": [
+              "./plugins/babelRelayPlugin"
+            ]
+          },
+          "react-native"
         ]
-      }
+      },
+      "server": {
+        "plugins": [
+          "./plugins/babelRelayPlugin"
+        ],
+        "presets": [
+          "react",
+          "node5",
+          "stage-0"
+        ]
+      },
+       "test": {
+         "plugins": [
+           "rewire"
+         ]
+       }
     }
   },
   "eslintConfig": {

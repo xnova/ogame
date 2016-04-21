@@ -12,21 +12,6 @@ export default (sequelize, DataTypes) => sequelize.define('Planet', {
       return Math.floor(Math.pow(this.diameter / 1000, 2));
     },
   },
-  galaxy: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    unique: 'coordinates',
-  },
-  system: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    unique: 'coordinates',
-  },
-  position: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    unique: 'coordinates',
-  },
 }, {
   classMethods: {
     // associate({ Incidence, Place, Client, Company, Worker }) {
