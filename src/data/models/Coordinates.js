@@ -1,8 +1,8 @@
 import DataType from 'sequelize';
 import Model from '../sequelize';
 
-const Point = Model.define('Point', {
-  
+const Coordinates = Model.define('Coordinates', {
+
   galaxy: {
     type: DataType.INTEGER,
     allowNull: false,
@@ -17,13 +17,13 @@ const Point = Model.define('Point', {
     type: DataType.INTEGER,
     allowNull: false,
   },
-  
+
 }, {
 
   indexes: [
-    { fields: ['galaxy', 'system', 'position'] },
+    { fields: ['galaxy', 'system', 'position'] }, // TODO check
   ],
 
 });
 
-export default Point;
+export default Coordinates;

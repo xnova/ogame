@@ -1,26 +1,23 @@
-export default (sequelize, DataTypes) => sequelize.define('Planet', {
-  // TODO player
-  name: DataTypes.STRING,
+import DataType from 'sequelize';
+import Model from '../sequelize';
+
+const Planet = Model.define('Planet', {
+
+  name: DataType.STRING,
+
   diameter: {
-    type: DataTypes.INTEGER,
+    type: DataType.INTEGER,
     allowNull: false,
   },
+
   fields: {
     // TODO terraformer
-    type: new DataTypes.VIRTUAL(DataTypes.INTEGER, ['diameter']),
+    type: new DataType.VIRTUAL(DataType.INTEGER, ['diameter']),
     get() {
       return Math.floor(Math.pow(this.diameter / 1000, 2));
     },
   },
-}, {
-  classMethods: {
-    // associate({ Incidence, Place, Client, Company, Worker }) {
-    //   Incidence.belongsTo(Place);
-    //   Incidence.belongsTo(Client);
-    //   Incidence.belongsTo(Company);
-    //
-    //   // TODO verificacion de que worker es de company
-    //   Incidence.belongsTo(Worker);
-    // },
-  },
+
 });
+
+export default Planet;

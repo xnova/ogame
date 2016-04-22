@@ -11,7 +11,7 @@ const mixin = {
   name: { type: new NonNull(StringType) },
   description: { type: StringType },
   longDescription: { type: StringType },
-  amount: { type: IntType }, // TODO think better name and think better
+  quantity: { type: IntType },
   duration: { type: IntType }, // improve duration in seconds
   requirements: { type: RequirementsType },
   //

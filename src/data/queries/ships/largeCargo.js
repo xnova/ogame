@@ -1,14 +1,13 @@
 import { LargeCargoType } from '../../types/ships';
-import shipyard from '../buildings/shipyard';
-import combustionDrive from '../technologies/combustionDrive';
+import { Ship } from '../../models';
 
 const largeCargo = {
   type: LargeCargoType,
-  resolve({ planet }) {
-    const amount = 999; // TODO
-    const user = null; // TODO
-    return {
-      id: 11812, // TODO
+  async resolve({ planet }) { // TODO
+    const ship = await Ship.findOne({
+      where: { PlanetId: 1, techId: 203 },
+    });
+    return Object.assign(ship, {
       name: 'Large Cargo',
       description: 'This cargo ship has a much larger cargo capacity than the small cargo, ' +
       'and is generally faster thanks to an improved drive.',
@@ -26,20 +25,7 @@ const largeCargo = {
       'Thanks to the highly developed combustion engine installed, ' +
       'it serves as the most economical resource supplier between planets, ' +
       'and most effective in raids on hostile worlds.',
-      amount,
-      duration: null,
-      requirements: [
-        { technology: shipyard.resolve({ planet }), level: 4 }, // TODO check
-        { technology: combustionDrive.resolve({ user }), level: 6 }, // TODO check
-      ],
-      structuralIntegrity: 12000,
-      shieldStrength: 25,
-      attackStrength: 5,
-      drive: combustionDrive.resolve({ user }),
-      speed: 7500,
-      cargoCapacity: 25000,
-      fuelUsage: 50,
-    };
+    });
   },
 };
 
