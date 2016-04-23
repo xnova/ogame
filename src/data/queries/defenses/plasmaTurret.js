@@ -1,14 +1,15 @@
 import { PlasmaTurretType } from '../../types/defenses';
-import shipyard from '../buildings/shipyard';
-import plasmaTech from '../technologies/plasmaTech';
+import { Defense } from '../../models';
 
 const plasmaTurret = {
   type: PlasmaTurretType,
-  resolve({ planet }) {
-    const amount = 999; // TODO
-    const user = null; // TODO
-    return {
-      id: 11812, // TODO
+  async resolve({ planet }) {
+    const where = { PlanetId: 1, techId: Defense.PLASMA_TURRET_ID };
+    let defense = await Defense.findOne({ where });
+    if (!defense) {
+      defense = Defense.build(where);
+    }
+    return Object.assign(defense, {
       name: 'Plasma Turret',
       description: 'Concentrated firing at a target with photons can ' +
       'produce significantly greater damage than standard ballistic weapons.',
@@ -30,16 +31,7 @@ const plasmaTurret = {
       'Defensive facilities deactivate as soon as they are too heavily damaged. ' +
       'After a battle, ' +
       'there is up to a 70% chance that failed defensive facilities can be returned to use.',
-      amount,
-      duration: null,
-      requirements: [
-        { technology: shipyard.resolve({ planet }), level: 8 }, // TODO check
-        { technology: plasmaTech.resolve({ user }), level: 7 }, // TODO check
-      ],
-      structuralIntegrity: 100000,
-      shieldStrength: 300,
-      attackStrength: 3000,
-    };
+    });
   },
 };
 

@@ -9,36 +9,32 @@ const DefenseTech = Model.define('DefenseTech', {
   },
 
   basicStructuralIntegrity: {
-    // TODO costs
     type: new DataType.VIRTUAL(DataType.INTEGER), // TODO
     get() {
-      return this.unit.structuralIntegrity; // TODO
+      return this.getUnit().get('basicStructuralIntegrity');
     },
   },
 
   basicShield: {
-    type: new DataType.VIRTUAL(DataType.INTEGER, ['unit']), // TODO
+    type: new DataType.VIRTUAL(DataType.FLOAT, ['unit']), // TODO
     get() {
-      return this.unit.basicShield; // TODO
+      return this.getUnit().get('basicShield');
     },
   },
 
   basicAttack: {
-    type: new DataType.VIRTUAL(DataType.INTEGER, ['unit']), // TODO
+    type: new DataType.VIRTUAL(DataType.FLOAT, ['unit']), // TODO
     get() {
-      return this.unit.basicAttack; // TODO
+      return this.getUnit().get('basicAttack');
     },
   },
 
-});
+  maxQuantity: {
+    type: DataType.INTEGER,
+    allowNull: false,
+    defaultValue: 0,
+  },
 
-DefenseTech.ROCKET_LAUNCHER_ID = 401;
-DefenseTech.LIGHT_LASER_ID = 402;
-DefenseTech.HEAVY_LASER_ID = 403;
-DefenseTech.GAUSS_CANNON_ID = 404;
-DefenseTech.ION_CANNON_ID = 405;
-DefenseTech.PLASMA_TURRET_ID = 406;
-DefenseTech.SMALL_SHIELD_DOME_ID = 407;
-DefenseTech.LARGE_SHIELD_DOME_ID = 408;
+});
 
 export default DefenseTech;

@@ -1,14 +1,15 @@
 import { LargeShieldDomeType } from '../../types/defenses';
-import shipyard from '../buildings/shipyard';
-import shieldingTech from '../technologies/shieldingTech';
+import { Defense } from '../../models';
 
 const largeShieldDome = {
   type: LargeShieldDomeType,
-  resolve({ planet }) {
-    const amount = 999; // TODO
-    const user = null; // TODO
-    return {
-      id: 11812, // TODO
+  async resolve({ planet }) {
+    const where = { PlanetId: 1, techId: Defense.LARGE_SHIELD_DOME_ID };
+    let defense = await Defense.findOne({ where });
+    if (!defense) {
+      defense = Defense.build(where);
+    }
+    return Object.assign(defense, {
       name: 'Large Shield Dome',
       description: 'The evolution of the small shield dome can employ significantly ' +
       'more energy to withstand attacks.',
@@ -21,16 +22,7 @@ const largeShieldDome = {
       '' + // TODO paragraph
       'After a battle, ' +
       'there is up to a 70 % chance that failed defensive facilities can be returned to use.',
-      amount,
-      duration: null,
-      requirements: [
-        { technology: shipyard.resolve({ planet }), level: 6 }, // TODO check
-        { technology: shieldingTech.resolve({ user }), level: 6 }, // TODO check
-      ],
-      structuralIntegrity: 100000,
-      shieldStrength: 10000,
-      attackStrength: 1,
-    };
+    });
   },
 };
 

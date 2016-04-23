@@ -6,7 +6,7 @@ import {
 
 
 const mixin = {
-  maxAmount: { type: new NonNull(IntType) }, // TODO think better name and think better
+  maxQuantity: { type: new NonNull(IntType) }, // TODO think better name and think better
   // TODO rapidFireAgainst
 };
 

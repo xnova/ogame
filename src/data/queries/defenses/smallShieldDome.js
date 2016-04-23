@@ -1,14 +1,15 @@
 import { SmallShieldDomeType } from '../../types/defenses';
-import shipyard from '../buildings/shipyard';
-import shieldingTech from '../technologies/shieldingTech';
+import { Defense } from '../../models';
 
 const smallShieldDome = {
   type: SmallShieldDomeType,
-  resolve({ planet }) {
-    const amount = 999; // TODO
-    const user = null; // TODO
-    return {
-      id: 11812, // TODO
+  async resolve({ planet }) {
+    const where = { PlanetId: 1, techId: Defense.SMALL_SHIELD_DOME_ID };
+    let defense = await Defense.findOne({ where });
+    if (!defense) {
+      defense = Defense.build(where);
+    }
+    return Object.assign(defense, {
       name: 'Small Shield Dome',
       description: 'The small shield dome covers an entire planet with a field which can ' +
       'absorb a tremendous amount of energy.',
@@ -29,16 +30,7 @@ const smallShieldDome = {
       '' + // TODO new paragraph
       'After a battle, ' +
       'there is up to a 70 % chance that failed defensive facilities can be returned to use.',
-      amount,
-      duration: null,
-      requirements: [
-        { technology: shipyard.resolve({ planet }), level: 1 }, // TODO check
-        { technology: shieldingTech.resolve({ user }), level: 2 }, // TODO check
-      ],
-      structuralIntegrity: 20000,
-      shieldStrength: 2000,
-      attackStrength: 1,
-    };
+    });
   },
 };
 

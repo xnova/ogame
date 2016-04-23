@@ -1,15 +1,15 @@
 import { CruiserType } from '../../types/ships';
-import shipyard from '../buildings/shipyard';
-import impulseDrive from '../technologies/impulseDrive';
-import ionTech from '../technologies/ionTech';
+import { Ship } from '../../models';
 
 const cruiser = {
   type: CruiserType,
-  resolve({ planet }) {
-    const amount = 999; // TODO
-    const user = null; // TODO
-    return {
-      id: 11812, // TODO
+  async resolve({ planet }) {
+    const where = { PlanetId: 1, techId: Ship.CRUISER_ID };
+    let ship = await Ship.findOne({ where });
+    if (!ship) {
+      ship = Ship.build(where);
+    }
+    return Object.assign(ship, {
       name: 'Cruiser',
       description: 'Cruisers are armoured almost three times as heavily as heavy fighters and ' +
       'have more than twice the firepower. ' +
@@ -31,21 +31,7 @@ const cruiser = {
       'However, with the development of Gauss cannons and plasma turrets, ' +
       'their predominance ended. ' +
       'They are still used today against fighter groups, but not as predominantly as before.',
-      amount,
-      duration: null,
-      requirements: [
-        { technology: shipyard.resolve({ planet }), level: 5 }, // TODO check
-        { technology: impulseDrive.resolve({ user }), level: 4 }, // TODO check
-        { technology: ionTech.resolve({ user }), level: 2 }, // TODO check
-      ],
-      structuralIntegrity: 27000,
-      shieldStrength: 50,
-      attackStrength: 400,
-      drive: impulseDrive.resolve({ user }),
-      speed: 15000,
-      cargoCapacity: 800,
-      fuelUsage: 300,
-    };
+    });
   },
 };
 

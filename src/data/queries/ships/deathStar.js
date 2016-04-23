@@ -1,16 +1,15 @@
 import { DeathStarType } from '../../types/ships';
-import shipyard from '../buildings/shipyard';
-import hyperspaceDrive from '../technologies/hyperspaceDrive';
-import gravitonTech from '../technologies/gravitonTech';
-import hyperspaceTech from '../technologies/hyperspaceTech';
+import { Ship } from '../../models';
 
 const deathStar = {
   type: DeathStarType,
-  resolve({ planet }) {
-    const amount = 999; // TODO
-    const user = null; // TODO
-    return {
-      id: 11812, // TODO
+  async resolve({ planet }) {
+    const where = { PlanetId: 1, techId: Ship.DEATH_STAR_ID };
+    let ship = await Ship.findOne({ where });
+    if (!ship) {
+      ship = Ship.build(where);
+    }
+    return Object.assign(ship, {
       name: 'Death Star',
       description: 'The destructive power of the deathstar is unsurpassed.',
       longDescription: 'The Deathstar is the most powerful ship ever created. ' +
@@ -22,22 +21,7 @@ const deathStar = {
       'this massive ship has not only the capability of destroying entire fleets and defences, ' +
       'but also has the capability of destroying entire moons. ' +
       'Only the most advanced empires have the capability to build a ship of this mammoth size.',
-      amount,
-      duration: null,
-      requirements: [
-        { technology: shipyard.resolve({ planet }), level: 12 }, // TODO check
-        { technology: hyperspaceDrive.resolve({ user }), level: 7 }, // TODO check
-        { technology: gravitonTech.resolve({ user }), level: 1 }, // TODO check
-        { technology: hyperspaceTech.resolve({ user }), level: 6 }, // TODO check
-      ],
-      structuralIntegrity: 9000000,
-      shieldStrength: 50000,
-      attackStrength: 200000,
-      drive: hyperspaceDrive.resolve({ user }),
-      speed: 100,
-      cargoCapacity: 1000000,
-      fuelUsage: 1,
-    };
+    });
   },
 };
 

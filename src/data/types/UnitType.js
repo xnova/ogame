@@ -2,6 +2,7 @@ import {
   GraphQLInterfaceType as InterfaceType,
   GraphQLString as StringType,
   GraphQLInt as IntType,
+  GraphQLFloat as FloatType,
   GraphQLNonNull as NonNull,
 } from 'graphql';
 import { RequirementsType } from './TechnologyType';
@@ -16,8 +17,8 @@ const mixin = {
   requirements: { type: RequirementsType },
   //
   structuralIntegrity: { type: IntType },
-  shieldStrength: { type: IntType },
-  attackStrength: { type: IntType },
+  shieldStrength: { type: FloatType },
+  attackStrength: { type: FloatType },
   // TODO rapidFireFrom
 };
 

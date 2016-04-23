@@ -1,16 +1,15 @@
 import { BomberType } from '../../types/ships';
-import shipyard from '../buildings/shipyard';
-import impulseDrive from '../technologies/impulseDrive';
-import hyperspaceDrive from '../technologies/hyperspaceDrive';
-import plasmaTech from '../technologies/plasmaTech';
+import { Ship } from '../../models';
 
 const bomber = {
   type: BomberType,
-  resolve({ planet }) {
-    const amount = 999; // TODO
-    const user = null; // TODO
-    return {
-      id: 11812, // TODO
+  async resolve({ planet }) {
+    const where = { PlanetId: 1, techId: Ship.BOMBER_ID };
+    let ship = await Ship.findOne({ where });
+    if (!ship) {
+      ship = Ship.build(where);
+    }
+    return Object.assign(ship, {
       name: 'Bomber',
       description: 'The bomber was developed especially to ' +
       'destroy the planetary defences of a world.',
@@ -24,22 +23,7 @@ const bomber = {
       'the Bomber seeks out and destroys any defence mechanism it can find. ' +
       'As soon as the hyperspace drive is developed to Level 8, ' +
       'the Bomber is retrofitted with the hyperspace engine and can fly at higher speeds.',
-      amount,
-      duration: null,
-      requirements: [
-        { technology: shipyard.resolve({ planet }), level: 8 }, // TODO check
-        { technology: impulseDrive.resolve({ user }), level: 6 }, // TODO check
-        { technology: plasmaTech.resolve({ user }), level: 5 }, // TODO check
-      ],
-      structuralIntegrity: 7500,
-      shieldStrength: 500,
-      attackStrength: 1000,
-      drive: planet.hyperspaceDrive.level < 8 ?
-        impulseDrive.resolve({ user }) : hyperspaceDrive.resolve({ user }),
-      speed: 4000,
-      cargoCapacity: 500,
-      fuelUsage: 1000,
-    };
+    });
   },
 };
 

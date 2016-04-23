@@ -1,12 +1,15 @@
 import { RocketLauncherType } from '../../types/defenses';
-import shipyard from '../buildings/shipyard';
+import { Defense } from '../../models';
 
 const rocketLauncher = {
   type: RocketLauncherType,
-  resolve({ planet }) {
-    const amount = 999; // TODO
-    return {
-      id: 11812, // TODO
+  async resolve({ planet }) {
+    const where = { PlanetId: 1, techId: Defense.ROCKET_LAUNCHER_ID };
+    let defense = await Defense.findOne({ where });
+    if (!defense) {
+      defense = Defense.build(where);
+    }
+    return Object.assign(defense, {
       name: 'Rocket Launcher',
       description: 'The rocket launcher is a simple, cost-effective defensive option.',
       longDescription: 'Your first basic line of defence. ' +
@@ -21,15 +24,7 @@ const rocketLauncher = {
       '' + // TODO new paragraph
       'After a battle, ' +
       'there is up to a 70 % chance that failed defensive facilities can be returned to use.',
-      amount,
-      duration: null,
-      requirements: [
-        { technology: shipyard.resolve({ planet }), level: 1 }, // TODO check
-      ],
-      structuralIntegrity: 2000,
-      shieldStrength: 20,
-      attackStrength: 80,
-    };
+    });
   },
 };
 

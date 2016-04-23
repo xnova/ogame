@@ -4,9 +4,11 @@ import { Ship } from '../../models';
 const lightFighter = {
   type: LightFighterType,
   async resolve({ planet }) {
-    const ship = await Ship.findOne({
-      where: { PlanetId: 1, techId: 203 },
-    });
+    const where = { PlanetId: 1, techId: Ship.LIGHT_FIGHTER_ID };
+    let ship = await Ship.findOne({ where });
+    if (!ship) {
+      ship = Ship.build(where);
+    }
     return Object.assign(ship, {
       name: 'Light Fighter',
       description: 'This is the first fighting ship all emperors will build. ' +

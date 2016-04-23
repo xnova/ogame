@@ -1,15 +1,15 @@
 import { DestroyerType } from '../../types/ships';
-import shipyard from '../buildings/shipyard';
-import hyperspaceDrive from '../technologies/hyperspaceDrive';
-import hyperspaceTech from '../technologies/hyperspaceTech';
+import { Ship } from '../../models';
 
 const destroyer = {
   type: DestroyerType,
-  resolve({ planet }) {
-    const amount = 999; // TODO
-    const user = null; // TODO
-    return {
-      id: 11812, // TODO
+  async resolve({ planet }) {
+    const where = { PlanetId: 1, techId: Ship.DESTROYER_ID };
+    let ship = await Ship.findOne({ where });
+    if (!ship) {
+      ship = Ship.build(where);
+    }
+    return Object.assign(ship, {
       name: 'Destroyer',
       description: 'The destroyer is the king of the warships.',
       longDescription: 'The Destroyer is the result of years of work and development. ' +
@@ -23,21 +23,7 @@ const destroyer = {
       'which makes it more of a battle station than a fighting ship. ' +
       'The lack of manoeuvrability is made up for by its sheer firepower, ' +
       'but it also costs significant amounts of deuterium to build and operate.',
-      amount,
-      duration: null,
-      requirements: [
-        { technology: shipyard.resolve({ planet }), level: 9 }, // TODO check
-        { technology: hyperspaceDrive.resolve({ user }), level: 6 }, // TODO check
-        { technology: hyperspaceTech.resolve({ user }), level: 5 }, // TODO check
-      ],
-      structuralIntegrity: 110000,
-      shieldStrength: 500,
-      attackStrength: 2000,
-      drive: hyperspaceDrive.resolve({ user }),
-      speed: 5000,
-      cargoCapacity: 2000,
-      fuelUsage: 1000,
-    };
+    });
   },
 };
 

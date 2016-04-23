@@ -24,6 +24,14 @@ import UserProfile from './UserProfile';
 DefenseTech.belongsToMany(Planet, { through: Defense, foreignKey: 'techId' });
 Planet.belongsToMany(DefenseTech, { as: 'defenses', through: Defense });
 
+// TODO chapuza
+Defense.belongsTo(DefenseTech, {
+  foreignKey: 'techId',
+  as: 'Tech',
+  onUpdate: 'cascade', // TODO check
+  onDelete: 'cascade', // TODO check
+});
+
 DefenseTech.hasOne(UnitTech, {
   foreignKey: 'techId',
   as: 'unit',
@@ -88,7 +96,7 @@ function sync(...args) {
       { model: UnitTech, as: 'unit', include: [{ model: Resources, as: 'costs' }] },
     ];
     const SMALL_CARGO = await ShipTech.create({
-      techId: ShipTech.SMALL_CARGO_ID,
+      techId: Ship.SMALL_CARGO_ID,
       unit: {
         costs: {
           metal: 2000,
@@ -102,8 +110,12 @@ function sync(...args) {
       fuelUsage: 10,
     }, { include });
     const LARGE_CARGO = await ShipTech.create({
-      techId: ShipTech.LARGE_CARGO_ID,
+      techId: Ship.LARGE_CARGO_ID,
       unit: {
+        costs: {
+          metal: 6000,
+          crystal: 6000,
+        },
         basicShield: 25,
         basicAttack: 5,
       },
@@ -112,8 +124,12 @@ function sync(...args) {
       fuelUsage: 50,
     }, { include });
     ShipTech.create({
-      techId: ShipTech.LIGHT_FIGHTER_ID,
+      techId: Ship.LIGHT_FIGHTER_ID,
       unit: {
+        costs: {
+          metal: 3000,
+          crystal: 1000,
+        },
         basicShield: 10,
         basicAttack: 50,
       },
@@ -121,82 +137,261 @@ function sync(...args) {
       cargoCapacity: 50,
       fuelUsage: 20,
     }, { include });
+    ShipTech.create({
+      techId: Ship.HEAVY_FIGHTER_ID,
+      unit: {
+        costs: {
+          metal: 6000,
+          crystal: 4000,
+        },
+        basicShield: 25,
+        basicAttack: 150,
+      },
+      basicSpeed: 10000,
+      cargoCapacity: 100,
+      fuelUsage: 75,
+    }, { include });
+    ShipTech.create({
+      techId: Ship.CRUISER_ID,
+      unit: {
+        costs: {
+          metal: 20000,
+          crystal: 7000,
+          deuterium: 2000,
+        },
+        basicShield: 50,
+        basicAttack: 400,
+      },
+      basicSpeed: 15000,
+      cargoCapacity: 800,
+      fuelUsage: 300,
+    }, { include });
+    ShipTech.create({
+      techId: Ship.BATTLESHIP_ID,
+      unit: {
+        costs: {
+          metal: 45000,
+          crystal: 15000,
+        },
+        basicShield: 200,
+        basicAttack: 1000,
+      },
+      basicSpeed: 10000,
+      cargoCapacity: 1500,
+      fuelUsage: 500,
+    }, { include });
+    ShipTech.create({
+      techId: Ship.COLONY_SHIP_ID,
+      unit: {
+        costs: {
+          metal: 10000,
+          crystal: 20000,
+          deuterium: 10000,
+        },
+        basicShield: 100,
+        basicAttack: 50,
+      },
+      basicSpeed: 2500,
+      cargoCapacity: 7500,
+      fuelUsage: 1000,
+    }, { include });
+    ShipTech.create({
+      techId: Ship.RECYCLER_ID,
+      unit: {
+        costs: {
+          metal: 10000,
+          crystal: 6000,
+          deuterium: 2000,
+        },
+        basicShield: 10,
+        basicAttack: 1,
+      },
+      basicSpeed: 2000,
+      cargoCapacity: 20000,
+      fuelUsage: 300,
+    }, { include });
+    ShipTech.create({
+      techId: Ship.ESPIONAGE_PROBE_ID,
+      unit: {
+        costs: {
+          crystal: 1000,
+        },
+        basicShield: 0.01,
+        basicAttack: 0.01,
+      },
+      basicSpeed: 100 * 10**6,
+      cargoCapacity: 0,
+      fuelUsage: 1,
+    }, { include });
+    ShipTech.create({
+      techId: Ship.BOMBER_ID,
+      unit: {
+        costs: {
+          metal: 50000,
+          crystal: 25000,
+          deuterium: 15000,
+        },
+        basicShield: 500,
+        basicAttack: 1000,
+      },
+      basicSpeed: 4000,
+      cargoCapacity: 500,
+      fuelUsage: 1000,
+    }, { include });
+    ShipTech.create({
+      techId: Ship.SOLAR_SATELLITE_ID,
+      unit: {
+        costs: {
+          crystal: 2000,
+          deuterium: 500,
+        },
+        basicShield: 1,
+        basicAttack: 1,
+      },
+      basicSpeed: 0,
+      cargoCapacity: 0,
+      fuelUsage: 0,
+    }, { include });
+    ShipTech.create({
+      techId: Ship.DESTROYER_ID,
+      unit: {
+        costs: {
+          metal: 60000,
+          crystal: 50000,
+          deuterium: 15000,
+        },
+        basicShield: 500,
+        basicAttack: 2000,
+      },
+      basicSpeed: 5000,
+      cargoCapacity: 2000,
+      fuelUsage: 1000,
+    }, { include });
+    const DEATH_STAR = await ShipTech.create({
+      techId: Ship.DEATH_STAR_ID,
+      unit: {
+        costs: {
+          metal: 5000000,
+          crystal: 4000000,
+          deuterium: 1000000,
+        },
+        basicShield: 50000,
+        basicAttack: 200000,
+      },
+      basicSpeed: 100,
+      cargoCapacity: 1000000,
+      fuelUsage: 1,
+    }, { include });
+    ShipTech.create({
+      techId: Ship.BATTLE_CRUISER_ID,
+      unit: {
+        costs: {
+          metal: 30000,
+          crystal: 40000,
+          deuterium: 15000,
+        },
+        basicShield: 400,
+        basicAttack: 700,
+      },
+      basicSpeed: 10000,
+      cargoCapacity: 750,
+      fuelUsage: 250,
+    }, { include });
 
     /****************
      *** Defenses ***
      ****************/
-    DefenseTech.create({
-      techId: DefenseTech.ROCKET_LAUNCHER_ID,
+    const ROCKET_LAUNCHER = await DefenseTech.create({
+      techId: Defense.ROCKET_LAUNCHER_ID,
       unit: {
+        costs: {
+          metal: 2000,
+        },
         basicShield: 20,
         basicAttack: 80,
       },
-    }, {
-      include: [{ model: UnitTech, as: 'unit' }],
-    });
+    }, { include });
     DefenseTech.create({
-      techId: DefenseTech.LIGHT_LASER_ID,
+      techId: Defense.LIGHT_LASER_ID,
       unit: {
+        costs: {
+          metal: 1500,
+          crystal: 500,
+        },
         basicShield: 25,
         basicAttack: 100,
       },
-    }, {
-      include: [{ model: UnitTech, as: 'unit' }],
-    });
+    }, { include });
     DefenseTech.create({
-      techId: DefenseTech.HEAVY_LASER_ID,
+      techId: Defense.HEAVY_LASER_ID,
       unit: {
+        costs: {
+          metal: 6000,
+          crystal: 2000,
+        },
         basicShield: 100,
         basicAttack: 250,
       },
-    }, {
-      include: [{ model: UnitTech, as: 'unit' }],
-    });
+    }, { include });
     DefenseTech.create({
-      techId: DefenseTech.GAUSS_CANNON_ID,
+      techId: Defense.GAUSS_CANNON_ID,
       unit: {
+        costs: {
+          metal: 20000,
+          crystal: 15000,
+          deuterium: 2000,
+        },
         basicShield: 200,
         basicAttack: 1100,
       },
-    }, {
-      include: [{ model: UnitTech, as: 'unit' }],
-    });
+    }, { include });
     DefenseTech.create({
-      techId: DefenseTech.ION_CANNON_ID,
+      techId: Defense.ION_CANNON_ID,
       unit: {
+        costs: {
+          metal: 2000,
+          crystal: 6000,
+        },
         basicShield: 500,
         basicAttack: 150,
       },
-    }, {
-      include: [{ model: UnitTech, as: 'unit' }],
-    });
+    }, { include });
     DefenseTech.create({
-      techId: DefenseTech.PLASMA_TURRET_ID,
+      techId: Defense.PLASMA_TURRET_ID,
       unit: {
+        costs: {
+          metal: 50000,
+          crystal: 50000,
+          deuterium: 30000,
+        },
         basicShield: 300,
         basicAttack: 3000,
       },
-    }, {
-      include: [{ model: UnitTech, as: 'unit' }],
-    });
+    }, { include });
     DefenseTech.create({
-      techId: DefenseTech.SMALL_SHIELD_DOME_ID,
+      techId: Defense.SMALL_SHIELD_DOME_ID,
       unit: {
+        costs: {
+          metal: 10000,
+          crystal: 10000,
+        },
         basicShield: 2000,
         basicAttack: 1,
+        maxQuantity: 1,
       },
-    }, {
-      include: [{ model: UnitTech, as: 'unit' }],
-    });
+    }, { include });
     DefenseTech.create({
-      techId: DefenseTech.LARGE_SHIELD_DOME_ID,
+      techId: Defense.LARGE_SHIELD_DOME_ID,
       unit: {
+        costs: {
+          metal: 50000,
+          crystal: 50000,
+        },
         basicShield: 10000,
         basicAttack: 1,
+        maxQuantity: 1,
       },
-    }, {
-      include: [{ model: UnitTech, as: 'unit' }],
-    });
+    }, { include });
 
     /***********
      * arkeros *
@@ -207,8 +402,10 @@ function sync(...args) {
     });
     hyperion.addShip(SMALL_CARGO, { quantity: 4400 });
     hyperion.addShip(LARGE_CARGO, { quantity: 299 });
+    hyperion.addShip(DEATH_STAR, { quantity: 2 });
+    hyperion.addShip(ROCKET_LAUNCHER, { quantity: 300000 });
   });
 }
 
 export default { sync };
-export { Ship, User, UserLogin, UserClaim, UserProfile };
+export { Defense, Ship, User, UserLogin, UserClaim, UserProfile };

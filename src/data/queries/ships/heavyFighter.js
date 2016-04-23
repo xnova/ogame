@@ -1,15 +1,15 @@
 import { HeavyFighterType } from '../../types/ships';
-import shipyard from '../buildings/shipyard';
-import impulseDrive from '../technologies/impulseDrive';
-import armourTech from '../technologies/armourTech';
+import { Ship } from '../../models';
 
 const heavyFighter = {
   type: HeavyFighterType,
-  resolve({ planet }) {
-    const amount = 999; // TODO
-    const user = null; // TODO
-    return {
-      id: 11812, // TODO
+  async resolve({ planet }) {
+    const where = { PlanetId: 1, techId: Ship.HEAVY_FIGHTER_ID };
+    let ship = await Ship.findOne({ where });
+    if (!ship) {
+      ship = Ship.build(where);
+    }
+    return Object.assign(ship, {
       name: 'Heavy Fighter',
       description: 'This fighter is better armoured and ' +
       'has a higher attack strength than the light fighter.',
@@ -26,21 +26,7 @@ const heavyFighter = {
       '' + // TODO new paragraph
       'Slightly larger than the light fighter, ' +
       'the heavy fighter has thicker hulls, providing more protection, and stronger weaponry.',
-      amount,
-      duration: null,
-      requirements: [
-        { technology: shipyard.resolve({ planet }), level: 3 }, // TODO check
-        { technology: impulseDrive.resolve({ user }), level: 2 }, // TODO check
-        { technology: armourTech.resolve({ user }), level: 2 }, // TODO check
-      ],
-      structuralIntegrity: 10000,
-      shieldStrength: 25,
-      attackStrength: 150,
-      drive: impulseDrive.resolve({ user }),
-      speed: 10000,
-      cargoCapacity: 100,
-      fuelUsage: 75,
-    };
+    });
   },
 };
 

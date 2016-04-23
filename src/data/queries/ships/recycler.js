@@ -1,23 +1,15 @@
 import { RecyclerType } from '../../types/ships';
-import shipyard from '../buildings/shipyard';
-import combustionDrive from '../technologies/combustionDrive';
-import shieldingTech from '../technologies/shieldingTech';
+import { Ship } from '../../models';
 
 const recycler = {
   type: RecyclerType,
-  resolve({ planet }) {
-    const amount = 999; // TODO
-    let drive = null;
-    if (planet.hyperspaceDrive.level >= 15) {
-      drive = planet.hyperspaceDrive;
-    } else if (planet.impulseDrive.level >= 17) {
-      drive = planet.impulseDrive;
-    } else {
-      drive = planet.combustionDrive;
+  async resolve({ planet }) {
+    const where = { PlanetId: 1, techId: Ship.RECYCLER_ID };
+    let ship = await Ship.findOne({ where });
+    if (!ship) {
+      ship = Ship.build(where);
     }
-    const user = null; // TODO
-    return {
-      id: 11812, // TODO
+    return Object.assign(ship, {
       name: 'Recycler',
       description: 'Recyclers are the only ships able to ' +
       'harvest debris fields floating in a planet\'s orbit after combat.',
@@ -39,21 +31,7 @@ const recycler = {
       'Recyclers are refitted with Impulse Drives. ' +
       'As soon as Hyperspace Drive research has reached level 15, ' +
       'Recyclers are refitted with Hyperspace Drives.',
-      amount,
-      duration: null,
-      requirements: [
-        { technology: shipyard.resolve({ planet }), level: 4 }, // TODO check
-        { technology: combustionDrive.resolve({ user }), level: 6 }, // TODO check
-        { technology: shieldingTech.resolve({ user }), level: 2 }, // TODO check
-      ],
-      structuralIntegrity: 16000,
-      shieldStrength: 10,
-      attackStrength: 1,
-      drive,
-      speed: 2000,
-      cargoCapacity: 20000,
-      fuelUsage: 300,
-    };
+    });
   },
 };
 

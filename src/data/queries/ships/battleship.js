@@ -1,13 +1,15 @@
 import { BattleshipType } from '../../types/ships';
-import shipyard from '../buildings/shipyard';
-import hyperspaceDrive from '../technologies/hyperspaceDrive';
+import { Ship } from '../../models';
 
 const battleship = {
   type: BattleshipType,
-  resolve({ planet }) {
-    const amount = 999; // TODO
-    return {
-      id: 11812, // TODO
+  async resolve({ planet }) {
+    const where = { PlanetId: 1, techId: Ship.BATTLESHIP_ID };
+    let ship = await Ship.findOne({ where });
+    if (!ship) {
+      ship = Ship.build(where);
+    }
+    return Object.assign(ship, {
       name: 'Battleship',
       description: 'Battleships form the backbone of a fleet. ' +
       'Their heavy cannons, ' +
@@ -22,20 +24,7 @@ const battleship = {
       'heavy cannons, and high hyperdrive speed. ' +
       'Once developed, ' +
       'it eventually turned out to be the backbone of every raiding Emperors fleet.',
-      amount,
-      duration: null,
-      requirements: [
-        { technology: shipyard.resolve({ planet }), level: 7 }, // TODO check
-        { technology: hyperspaceDrive.resolve({ player: planet.user }), level: 4 }, // TODO check
-      ],
-      structuralIntegrity: 60000,
-      shieldStrength: 200,
-      attackStrength: 1000,
-      drive: hyperspaceDrive.resolve({ player: planet.user }),
-      speed: 10000,
-      cargoCapacity: 1500,
-      fuelUsage: 500,
-    };
+    });
   },
 };
 

@@ -16,14 +16,14 @@ const ShipTech = Model.define('ShipTech', {
   },
 
   basicShield: {
-    type: new DataType.VIRTUAL(DataType.INTEGER, ['unit']), // TODO
+    type: new DataType.VIRTUAL(DataType.FLOAT, ['unit']), // TODO
     get() {
       return this.getUnit().get('basicShield');
     },
   },
 
   basicAttack: {
-    type: new DataType.VIRTUAL(DataType.INTEGER, ['unit']), // TODO
+    type: new DataType.VIRTUAL(DataType.FLOAT, ['unit']), // TODO
     get() {
       return this.getUnit().get('basicAttack');
     },
@@ -45,23 +45,5 @@ const ShipTech = Model.define('ShipTech', {
   },
 
 });
-
-ShipTech.LIGHT_FIGHTER_ID = 204;
-ShipTech.HEAVY_FIGHTER_ID = 205;
-ShipTech.CRUISER_ID = 206;
-ShipTech.BATTLESHIP_ID = 207;
-
-ShipTech.BATTLE_CRUISER_ID = 215;
-ShipTech.BOMBER_ID = 211;
-ShipTech.DESTROYER_ID = 213;
-ShipTech.DEATH_STAR_ID = 214;
-
-ShipTech.SMALL_CARGO_ID = 202;
-ShipTech.LARGE_CARGO_ID = 203;
-ShipTech.COLONY_SHIP_ID = 208;
-
-ShipTech.RECYCLER_ID = 209;
-ShipTech.ESPIONAGE_PROBE_ID = 210;
-ShipTech.SOLAR_SATELLITE_ID = 212;
 
 export default ShipTech;

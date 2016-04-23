@@ -4,9 +4,11 @@ import { Ship } from '../../models';
 const largeCargo = {
   type: LargeCargoType,
   async resolve({ planet }) { // TODO
-    const ship = await Ship.findOne({
-      where: { PlanetId: 1, techId: 203 },
-    });
+    const where = { PlanetId: 1, techId: Ship.LARGE_CARGO_ID };
+    let ship = await Ship.findOne({ where });
+    if (!ship) {
+      ship = Ship.build(where);
+    }
     return Object.assign(ship, {
       name: 'Large Cargo',
       description: 'This cargo ship has a much larger cargo capacity than the small cargo, ' +

@@ -1,12 +1,15 @@
 import { SolarSatelliteType } from '../../types/ships';
-import shipyard from '../buildings/shipyard';
+import { Ship } from '../../models';
 
 const solarSatellite = {
   type: SolarSatelliteType,
-  resolve({ planet }) {
-    const amount = 999; // TODO
-    return {
-      id: 11812, // TODO
+  async resolve({ planet }) {
+    const where = { PlanetId: 1, techId: Ship.SOLAR_SATELLITE_ID };
+    let ship = await Ship.findOne({ where });
+    if (!ship) {
+      ship = Ship.build(where);
+    }
+    return Object.assign(ship, {
       name: 'Solar Satellite',
       description: 'Solar satellites are simple platforms of solar cells, ' +
       'located in a high, stationary orbit. ' +
@@ -24,19 +27,7 @@ const solarSatellite = {
       'Due to their good cost/performance ratio solar satellites can ' +
       'solve a lot of energy problems. ' +
       'But beware: Solar satellites can be easily destroyed in battle.',
-      amount,
-      duration: null,
-      requirements: [
-        { technology: shipyard.resolve({ planet }), level: 1 }, // TODO check
-      ],
-      structuralIntegrity: 2000,
-      shieldStrength: 1,
-      attackStrength: 1,
-      drive: null,
-      speed: 0,
-      cargoCapacity: 0,
-      fuelUsage: 0,
-    };
+    });
   },
 };
 

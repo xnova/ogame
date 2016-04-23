@@ -1,14 +1,15 @@
 import { ColonyShipType } from '../../types/ships';
-import shipyard from '../buildings/shipyard';
-import impulseDrive from '../technologies/impulseDrive';
+import { Ship } from '../../models';
 
 const colonyShip = {
   type: ColonyShipType,
-  resolve({ planet }) {
-    const amount = 999; // TODO
-    const user = null; // TODO
-    return {
-      id: 11812, // TODO
+  async resolve({ planet }) {
+    const where = { PlanetId: 1, techId: Ship.COLONY_SHIP_ID };
+    let ship = await Ship.findOne({ where });
+    if (!ship) {
+      ship = Ship.build(where);
+    }
+    return Object.assign(ship, {
       name: 'Colony Ship',
       description: 'Vacant planets can be colonised with this ship.',
       longDescription: 'In the 20th Century, Man decided to go for the stars. ' +
@@ -28,20 +29,7 @@ const colonyShip = {
       'the progress in astrophysics research. ' +
       'Two new levels of Astrotechnology allow for the colonization of one additional planet.',
       // TODO wtf is Astrotechnology?
-      amount,
-      duration: null,
-      requirements: [
-        { technology: shipyard.resolve({ planet }), level: 4 }, // TODO check
-        { technology: impulseDrive.resolve({ user }), level: 3 }, // TODO check
-      ],
-      structuralIntegrity: 30000,
-      shieldStrength: 100,
-      attackStrength: 50,
-      drive: impulseDrive.resolve({ user }),
-      speed: 2500,
-      cargoCapacity: 7500,
-      fuelUsage: 1000,
-    };
+    });    
   },
 };
 

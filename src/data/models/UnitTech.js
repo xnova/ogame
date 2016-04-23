@@ -18,12 +18,12 @@ const UnitTech = Model.define('UnitTech', {
   },
 
   basicShield: {
-    type: DataType.INTEGER,
+    type: DataType.FLOAT,
     allowNull: false,
   },
 
   basicAttack: {
-    type: DataType.INTEGER,
+    type: DataType.FLOAT,
     allowNull: false,
   },
 

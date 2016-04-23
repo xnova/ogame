@@ -1,14 +1,15 @@
 import { IonCannonType } from '../../types/defenses';
-import shipyard from '../buildings/shipyard';
-import ionTech from '../technologies/ionTech';
+import { Defense } from '../../models';
 
 const ionCannon = {
   type: IonCannonType,
-  resolve({ planet }) {
-    const amount = 999; // TODO
-    const user = null; // TODO
-    return {
-      id: 11812, // TODO
+  async resolve({ planet }) {
+    const where = { PlanetId: 1, techId: Defense.ION_CANNON_ID };
+    let defense = await Defense.findOne({ where });
+    if (!defense) {
+      defense = Defense.build(where);
+    }
+    return Object.assign(defense, {
       name: 'Ion Cannon',
       description: 'The Ion Cannon fires a continuous beam of accelerating ions, ' +
       'causing considerable damage to objects it strikes.',
@@ -26,16 +27,7 @@ const ionCannon = {
       '' + // TODO new paragraph
       'After a battle, ' +
       'there is up to a 70 % chance that failed defensive facilities can be returned to use.',
-      amount,
-      duration: null,
-      requirements: [
-        { technology: shipyard.resolve({ planet }), level: 4 }, // TODO check
-        { technology: ionTech.resolve({ user }), level: 4 }, // TODO check
-      ],
-      structuralIntegrity: 8000,
-      shieldStrength: 500,
-      attackStrength: 150,
-    };
+    });
   },
 };
 

@@ -4,9 +4,11 @@ import { Ship } from '../../models';
 const smallCargo = {
   type: SmallCargoType,
   async resolve({ planet }) { // TODO
-    const ship = await Ship.findOne({
-      where: { PlanetId: 1, techId: 202 },
-    });
+    const where = { PlanetId: 1, techId: Ship.SMALL_CARGO_ID };
+    let ship = await Ship.findOne({ where });
+    if (!ship) {
+      ship = Ship.build(where);
+    }
     return Object.assign(ship, {
       name: 'Small Cargo',
       description: 'The small cargo is an agile ship which ' +

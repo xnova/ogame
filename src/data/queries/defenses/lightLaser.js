@@ -1,14 +1,15 @@
 import { LightLaserType } from '../../types/defenses';
-import shipyard from '../buildings/shipyard';
-import laserTech from '../technologies/laserTech';
+import { Defense } from '../../models';
 
 const lightLaser = {
   type: LightLaserType,
-  resolve({ planet }) {
-    const amount = 999; // TODO
-    const user = null; // TODO
-    return {
-      id: 11812, // TODO
+  async resolve({ planet }) {
+    const where = { PlanetId: 1, techId: Defense.LIGHT_LASER_ID };
+    let defense = await Defense.findOne({ where });
+    if (!defense) {
+      defense = Defense.build(where);
+    }
+    return Object.assign(defense, {
       name: 'Light Laser',
       description: 'Concentrated firing at a target with photons can ' +
       'produce significantly greater damage than standard ballistic weapons.',
@@ -24,16 +25,7 @@ const lightLaser = {
       '' + // TODO new paragraph
       'After a battle, ' +
       'there is up to a 70 % chance that failed defensive facilities can be returned to use.',
-      amount,
-      duration: null,
-      requirements: [
-        { technology: shipyard.resolve({ planet }), level: 2 }, // TODO check
-        { technology: laserTech.resolve({ user }), level: 3 }, // TODO check
-      ],
-      structuralIntegrity: 2000,
-      shieldStrength: 25,
-      attackStrength: 100,
-    };
+    });
   },
 };
 
