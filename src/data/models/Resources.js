@@ -4,7 +4,7 @@ import Model from '../sequelize';
 const Resources = Model.define('Resources', {
 
   metal: {
-    type: DataType.INTEGER,
+    type: DataType.INTEGER, // TODO think. unsigned or signed?
     defaultValue: 0,
     allowNull: false,
   },

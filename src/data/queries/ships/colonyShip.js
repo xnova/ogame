@@ -29,7 +29,7 @@ const colonyShip = {
       'the progress in astrophysics research. ' +
       'Two new levels of Astrotechnology allow for the colonization of one additional planet.',
       // TODO wtf is Astrotechnology?
-    });    
+    });
   },
 };
 

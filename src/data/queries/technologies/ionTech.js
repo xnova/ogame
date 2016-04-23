@@ -1,14 +1,17 @@
 import { IonTechType } from '../../types/technologies';
-import laserTech from './laserTech';
-import energyTech from './energyTech';
+import { Technology } from '../../models';
 
 // TODO specialized data? deconstruction costs?
 
 const ionTech = {
   type: IonTechType,
-  resolve({ user }) {
-    return {
-      id: 10003, // TODO
+  async resolve({ user }) {
+    const where = { UserId: 1, techId: Technology.ION_TECH_ID };
+    let technology = await Technology.findOne({ where });
+    if (!technology) {
+      technology = Technology.build(where);
+    }
+    return Object.assign(technology, {
       name: 'Ion Technology',
       description: 'The concentration of ions allows for the construction of cannons, ' +
       'which can inflict enormous damage and reduce the deconstruction costs per level by 4%.',
@@ -17,13 +20,7 @@ const ionTech = {
       'Our scientists have also developed a technique that will clearly reduce ' +
       'the deconstruction costs for buildings and systems. ' +
       'For each research level, the deconstruction costs will sink by 4%.',
-      level: 6, // TODO
-      requirements: [
-        { technology: 'lab', level: 4 }, // TODO research lab
-        { technology: laserTech.resolve({ user }), level: 5 }, // TODO check
-        { technology: energyTech.resolve({ user }), level: 4 }, // TODO check
-      ],
-    };
+    });
   },
 };
 

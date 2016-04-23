@@ -1,14 +1,17 @@
 import { IntergalacticResearchNetworkType } from '../../types/technologies';
-import computerTech from './computerTech';
-import hyperspaceTech from './hyperspaceTech';
+import { Technology } from '../../models';
 
 // TODO specialized data?
 
 const intergalacticResearchNetwork = {
   type: IntergalacticResearchNetworkType,
-  resolve({ user }) {
-    return {
-      id: 20005, // TODO
+  async resolve({ user }) {
+    const where = { UserId: 1, techId: Technology.INTERGALACTIC_RESEARCH_NETWORK_ID };
+    let technology = await Technology.findOne({ where });
+    if (!technology) {
+      technology = Technology.build(where);
+    }
+    return Object.assign(technology, {
       name: 'Intergalactic Research Network',
       description: 'Researchers on different planets communicate via this network.',
       longDescription: 'This is your deep space network to communicate research results to ' +
@@ -18,13 +21,7 @@ const intergalacticResearchNetwork = {
       'to the level of the IRN developed. ' +
       '' + // TODO check new paragraph
       'In order to function, each colony must be able to conduct the research independently.',
-      level: 25, // TODO
-      requirements: [
-        { technology: 'lab', level: 10 }, // TODO research lab
-        { technology: computerTech.resolve({ user }), level: 8 }, // TODO check
-        { technology: hyperspaceTech.resolve({ user }), level: 8 }, // TODO check
-      ],
-    };
+    });
   },
 };
 

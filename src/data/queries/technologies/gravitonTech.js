@@ -1,12 +1,15 @@
 import { GravitonTechType } from '../../types/technologies';
-import researchLab from '../buildings/researchLab';
+import { Technology } from '../../models';
 
 const gravitonTech = {
   type: GravitonTechType,
-  resolve({ user }) {
-    const planet = null; // TODO
-    return {
-      id: 222220, // TODO
+  async resolve({ user }) {
+    const where = { UserId: 1, techId: Technology.GRAVITON_TECH_ID };
+    let technology = await Technology.findOne({ where });
+    if (!technology) {
+      technology = Technology.build(where);
+    }
+    return Object.assign(technology, {
       name: 'Graviton Technology',
       description: 'Firing a concentrated charge of graviton particles can create an ' +
       'artificial gravity field, which can destroy ships or even moons.',
@@ -17,11 +20,7 @@ const gravitonTech = {
       'Not unlike a black hole, it draws mass into itself. ' +
       'Thus it can destroy ships and even entire moons. ' +
       'To produce a sufficient amount of gravitons, huge amounts of energy are required.',
-      level: 2, // TODO
-      requirements: [
-        { technology: researchLab.resolve({ planet }), level: 12 }, // TODO research lab
-      ],
-    };
+    });
   },
 };
 

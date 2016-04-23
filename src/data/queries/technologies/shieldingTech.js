@@ -1,12 +1,15 @@
 import { ShieldingTechType } from '../../types/technologies';
-import energyTech from './energyTech';
+import { Technology } from '../../models';
 
 const shieldingTech = {
   type: ShieldingTechType,
-  resolve({ user }) {
-    const level = 12; // TODO
-    return {
-      id: 413975, // TODO
+  async resolve({ user }) {
+    const where = { UserId: 1, techId: Technology.SHIELDING_TECH_ID };
+    let technology = await Technology.findOne({ where });
+    if (!technology) {
+      technology = Technology.build(where);
+    }
+    return Object.assign(technology, {
       name: 'Shielding Technology',
       description: 'Shielding technology makes the shields on ships and defensive facilities ' +
       'more efficient. ' +
@@ -22,13 +25,7 @@ const shieldingTech = {
       'As the technology is advanced to each level, ' +
       'the magnetosphere generator is upgraded which provides an additional 10% strength to ' +
       'the shields base value.',
-      level,
-      bonus: level * 0.1,
-      requirements: [
-        { technology: 'lab', level: 6 }, // TODO research lab
-        { technology: energyTech.resolve({ user }), level: 3 }, // TODO check
-      ],
-    };
+    });
   },
 };
 

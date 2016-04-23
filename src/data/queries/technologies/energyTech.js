@@ -1,12 +1,17 @@
 import { EnergyTechType } from '../../types/technologies';
+import { Technology } from '../../models';
 
 // TODO maybe specialized data like efficiency?
 
 const energyTech = {
   type: EnergyTechType,
-  resolve({ user }) {
-    return {
-      id: 10001, // TODO
+  async resolve({ user }) {
+    const where = { UserId: 1, techId: Technology.ENERGY_TECH_ID };
+    let technology = await Technology.findOne({ where });
+    if (!technology) {
+      technology = Technology.build(where);
+    }
+    return Object.assign(technology, {
       name: 'Energy Technology',
       description: 'The command of different types of energy is necessary ' +
       'for many new technologies.',
@@ -16,11 +21,7 @@ const energyTech = {
       'With each upgrade of your Energy Technology, ' +
       'new research can be conducted which unlocks development of ' +
       'more sophisticated ships and defences.',
-      level: 13, // TODO
-      requirements: [
-        { technology: 'lab', level: 1 }, // TODO research lab
-      ],
-    };
+    });
   },
 };
 

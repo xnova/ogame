@@ -1,11 +1,15 @@
 import { LaserTechType } from '../../types/technologies';
-import energyTech from './energyTech';
+import { Technology } from '../../models';
 
 const laserTech = {
   type: LaserTechType,
-  resolve({ user }) {
-    return {
-      id: 5, // TODO
+  async resolve({ user }) {
+    const where = { UserId: 1, techId: Technology.LASER_TECH_ID };
+    let technology = await Technology.findOne({ where });
+    if (!technology) {
+      technology = Technology.build(where);
+    }
+    return Object.assign(technology, {
       name: 'Laser Technology',
       description: 'Focusing light produces a beam that causes damage when it strikes an object.',
       longDescription: 'Lasers (light amplification by stimulated emission of radiation) produce ' +
@@ -14,11 +18,7 @@ const laserTech = {
       'from optical computers to heavy laser weapons, ' +
       'which effortlessly cut through armour technology. ' +
       'The laser technology provides an important basis for research of other weapon technologies.',
-      level: 6, // TODO
-      requirements: [
-        { technology: energyTech.resolve({ user }), level: 2 }, // TODO check
-      ],
-    };
+    });
   },
 };
 

@@ -4,12 +4,13 @@ import Model from '../sequelize';
 const Defense = Model.define('Defense', {
 
   quantity: {
-    type: DataType.INTEGER,
+    type: DataType.INTEGER.UNSIGNED,
+    allowNull: false,
     defaultValue: 0,
   },
 
   duration: {
-    type: new DataType.VIRTUAL(DataType.INTEGER),
+    type: new DataType.VIRTUAL(DataType.INTEGER.UNSIGNED),
     async get() {
       const basicStructuralIntegrity = await this.getTech().get('basicStructuralIntegrity');
       return 3600 * basicStructuralIntegrity / (2500); // TODO buildings and universe speed
@@ -17,28 +18,28 @@ const Defense = Model.define('Defense', {
   },
 
   structuralIntegrity: {
-    type: new DataType.VIRTUAL(DataType.FLOAT),
+    type: new DataType.VIRTUAL(DataType.FLOAT.UNSIGNED),
     get() {
       return this.getTech().get('basicStructuralIntegrity'); // TODO armour technology
     },
   },
 
   shieldStrength: {
-    type: new DataType.VIRTUAL(DataType.FLOAT),
+    type: new DataType.VIRTUAL(DataType.FLOAT.UNSIGNED),
     get() {
       return this.getTech().get('basicShield'); // TODO shield technology
     },
   },
 
   attackStrength: {
-    type: new DataType.VIRTUAL(DataType.INTEGER),
+    type: new DataType.VIRTUAL(DataType.INTEGER.UNSIGNED),
     get() {
       return this.getTech().get('basicAttack'); // TODO attack technology
     },
   },
 
   maxQuantity: {
-    type: new DataType.VIRTUAL(DataType.INTEGER),
+    type: new DataType.VIRTUAL(DataType.INTEGER.UNSIGNED),
     get() {
       return this.getTech().get('maxQuantity');
     },

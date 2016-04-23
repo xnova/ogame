@@ -1,12 +1,15 @@
 import { CombustionDriveType } from '../../types/technologies';
-import laserTech from './laserTech';
+import { Technology } from '../../models';
 
 const combustionDrive = {
   type: CombustionDriveType,
-  resolve({ user }) {
-    const level = 14; // TODO
-    return {
-      id: 999, // TODO
+  async resolve({ user }) {
+    const where = { UserId: 1, techId: Technology.COMBUSTION_DRIVE_ID };
+    let technology = await Technology.findOne({ where });
+    if (!technology) {
+      technology = Technology.build(where);
+    }
+    return Object.assign(technology, {
       name: 'Combustion Drive',
       description: 'The development of this drive makes some ships faster, ' +
       'although each level increases speed by only 10% of the base value.',
@@ -23,12 +26,7 @@ const combustionDrive = {
       'With each level of the Combustion Drive developed, ' +
       'the speed of small and large cargo ships, ' +
       'light fighters, recyclers, and espionage probes are increased by 10%.',
-      level,
-      speedFactor: 1 + 0.1 * level,
-      requirements: [
-        { technology: laserTech.resolve({ user }), level: 1 }, // TODO check
-      ],
-    };
+    });
   },
 };
 

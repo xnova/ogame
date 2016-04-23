@@ -1,12 +1,15 @@
 import { HyperspaceTechType } from '../../types/technologies';
-import shieldingTech from './shieldingTech';
-import energyTech from './energyTech';
+import { Technology } from '../../models';
 
 const hyperspaceTech = {
   type: HyperspaceTechType,
-  resolve({ user }) {
-    return {
-      id: 10002, // TODO
+  async resolve({ user }) {
+    const where = { UserId: 1, techId: Technology.HYPERSPACE_TECH_ID };
+    let technology = await Technology.findOne({ where });
+    if (!technology) {
+      technology = Technology.build(where);
+    }
+    return Object.assign(technology, {
       name: 'Hyperspace Technology',
       description: 'By integrating the 4th and 5th dimensions it is now possible ' +
       'to research a new kind of drive that is more economical and efficient.',
@@ -20,13 +23,7 @@ const hyperspaceTech = {
       '' + // TODO check newline?
       'Once a sufficient level of Hyperspace Technology is researched, ' +
       'the Hyperspace Drive is no longer just a theory.',
-      level: 12, // TODO
-      requirements: [
-        { technology: 'lab', level: 7 }, // TODO research lab
-        { technology: shieldingTech.resolve({ user }), level: 5 }, // TODO check
-        { technology: energyTech.resolve({ user }), level: 5 }, // TODO check
-      ],
-    };
+    });
   },
 };
 

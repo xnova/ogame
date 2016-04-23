@@ -15,6 +15,8 @@ import Planet from './Planet';
 import Resources from './Resources';
 import Ship from './Ship';
 import ShipTech from './ShipTech';
+import Technology from './Technology';
+import TechnologyTech from './TechnologyTech';
 import UnitTech from './UnitTech';
 import User from './User';
 import UserLogin from './UserLogin';
@@ -57,6 +59,24 @@ ShipTech.hasOne(UnitTech, {
   onDelete: 'cascade', // TODO check
 });
 
+TechnologyTech.belongsToMany(User, { through: Technology, foreignKey: 'techId' });
+User.belongsToMany(TechnologyTech, { as: 'technologies', through: Technology });
+
+// TODO chapuza
+Technology.belongsTo(TechnologyTech, {
+  foreignKey: 'techId',
+  as: 'Tech',
+  onUpdate: 'cascade', // TODO check
+  onDelete: 'cascade', // TODO check
+});
+
+TechnologyTech.belongsTo(Resources, {
+  foreignKey: 'basicCostsId',
+  as: 'basicCosts',
+  onUpdate: 'cascade', // TODO check
+  onDelete: 'cascade', // TODO check
+});
+
 UnitTech.belongsTo(Resources, {
   foreignKey: 'costsId',
   as: 'costs',
@@ -89,6 +109,129 @@ User.hasOne(UserProfile, {
 
 function sync(...args) {
   return sequelize.sync(...args).then(async () => {
+    /**********************
+     **** Technologies ****
+     **********************/
+    TechnologyTech.create({
+      techId: Technology.ENERGY_TECH_ID,
+      basicCosts: {
+        metal: 800,
+        crystal: 400,
+      },
+    }, { include: [{ model: Resources, as: 'basicCosts' }] });
+    TechnologyTech.create({
+      techId: Technology.LASER_TECH_ID,
+      basicCosts: {
+        metal: 200,
+        crystal: 100,
+      },
+    }, { include: [{ model: Resources, as: 'basicCosts' }] });
+    TechnologyTech.create({
+      techId: Technology.ION_TECH_ID,
+      basicCosts: {
+        metal: 1000,
+        crystal: 300,
+        deuterium: 100,
+      },
+    }, { include: [{ model: Resources, as: 'basicCosts' }] });
+    TechnologyTech.create({
+      techId: Technology.HYPERSPACE_TECH_ID,
+      basicCosts: {
+        metal: 4000,
+        crystal: 2000,
+      },
+    }, { include: [{ model: Resources, as: 'basicCosts' }] });
+    TechnologyTech.create({
+      techId: Technology.PLASMA_TECH_ID,
+      basicCosts: {
+        metal: 2000,
+        crystal: 4000,
+        deuterium: 1000,
+      },
+    }, { include: [{ model: Resources, as: 'basicCosts' }] });
+    TechnologyTech.create({
+      techId: Technology.COMBUSTION_DRIVE_ID,
+      basicCosts: {
+        metal: 400,
+        crystal: 600,
+      },
+    }, { include: [{ model: Resources, as: 'basicCosts' }] });
+    TechnologyTech.create({
+      techId: Technology.IMPULSE_DRIVE_ID,
+      basicCosts: {
+        metal: 2000,
+        crystal: 4000,
+        deuterium: 600,
+      },
+    }, { include: [{ model: Resources, as: 'basicCosts' }] });
+    TechnologyTech.create({
+      techId: Technology.HYPERSPACE_DRIVE_ID,
+      basicCosts: {
+        metal: 10000,
+        crystal: 20000,
+        deuterium: 6000,
+      },
+    }, { include: [{ model: Resources, as: 'basicCosts' }] });
+    TechnologyTech.create({
+      techId: Technology.ESPIONAGE_TECH_ID,
+      basicCosts: {
+        metal: 200,
+        crystal: 1000,
+        deuterium: 200,
+      },
+    }, { include: [{ model: Resources, as: 'basicCosts' }] });
+    TechnologyTech.create({
+      techId: Technology.COMPUTER_TECH_ID,
+      basicCosts: {
+        crystal: 400,
+        deuterium: 600,
+      },
+    }, { include: [{ model: Resources, as: 'basicCosts' }] });
+    TechnologyTech.create({
+      techId: Technology.ASTROPHYSICS_ID,
+      basicCosts: {
+        metal: 4000,
+        crystal: 8000,
+        deuterium: 4000,
+      },
+      costFactor: 1.75,
+    }, { include: [{ model: Resources, as: 'basicCosts' }] });
+    TechnologyTech.create({
+      techId: Technology.INTERGALACTIC_RESEARCH_NETWORK_ID,
+      basicCosts: {
+        metal: 240000,
+        crystal: 400000,
+        deuterium: 160000,
+      },
+    }, { include: [{ model: Resources, as: 'basicCosts' }] });
+    TechnologyTech.create({
+      techId: Technology.GRAVITON_TECH_ID,
+      basicCosts: {
+        energy: 300000,
+      },
+      costFactor: 3,
+    }, { include: [{ model: Resources, as: 'basicCosts' }] });
+    TechnologyTech.create({
+      techId: Technology.WEAPONS_TECH_ID,
+      basicCosts: {
+        metal: 800,
+        crystal: 200,
+      },
+    }, { include: [{ model: Resources, as: 'basicCosts' }] });
+    TechnologyTech.create({
+      techId: Technology.SHIELDING_TECH_ID,
+      basicCosts: {
+        metal: 200,
+        crystal: 600,
+      },
+    }, { include: [{ model: Resources, as: 'basicCosts' }] });
+    TechnologyTech.create({
+      techId: Technology.ARMOUR_TECH_ID,
+      basicCosts: {
+        metal: 1000,
+      },
+    }, { include: [{ model: Resources, as: 'basicCosts' }] });
+
     /***************
      **** Ships ****
      ***************/
@@ -408,4 +551,4 @@ function sync(...args) {
 }
 
 export default { sync };
-export { Defense, Ship, User, UserLogin, UserClaim, UserProfile };
+export { Defense, Ship, Technology, User, UserLogin, UserClaim, UserProfile };

@@ -4,13 +4,13 @@ import Model from '../sequelize';
 const UnitTech = Model.define('UnitTech', {
 
   techId: {
-    type: DataType.INTEGER,
+    type: DataType.INTEGER.UNSIGNED,
     primaryKey: true,
   },
 
   basicStructuralIntegrity: {
     // TODO costs
-    type: new DataType.VIRTUAL(DataType.INTEGER, ['costs']), // TODO
+    type: new DataType.VIRTUAL(DataType.INTEGER.UNSIGNED, ['costs']), // TODO
     async get() { // TODO chapuzaaa
       const costs = await this.getCosts();
       return costs.metal + costs.crystal;
@@ -18,12 +18,12 @@ const UnitTech = Model.define('UnitTech', {
   },
 
   basicShield: {
-    type: DataType.FLOAT,
+    type: DataType.FLOAT.UNSIGNED,
     allowNull: false,
   },
 
   basicAttack: {
-    type: DataType.FLOAT,
+    type: DataType.FLOAT.UNSIGNED,
     allowNull: false,
   },
 

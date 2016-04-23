@@ -1,12 +1,17 @@
 import { EspionageTechType } from '../../types/technologies';
+import { Technology } from '../../models';
 
 // TODO specialized data?
 
 const espionageTech = {
   type: EspionageTechType,
-  resolve({ user }) {
-    return {
-      id: 78031, // TODO
+  async resolve({ user }) {
+    const where = { UserId: 1, techId: Technology.ESPIONAGE_TECH_ID };
+    let technology = await Technology.findOne({ where });
+    if (!technology) {
+      technology = Technology.build(where);
+    }
+    return Object.assign(technology, {
       name: 'Espionage Technology',
       description: 'Information about other planets and moons can be gained using this technology.',
       longDescriion: 'Espionage Technology is, ' +
@@ -35,11 +40,7 @@ const espionageTech = {
       'This technology is indispensable for an upcoming attack, ' +
       'as it informs you whether the victim fleet has defence available or not. ' +
       'That is why this technology should be researched very early on.',
-      level: 2, // TODO
-      requirements: [
-        { technology: 'lab', level: 3 }, // TODO research lab
-      ],
-    };
+    });
   },
 };
 

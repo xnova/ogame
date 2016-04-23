@@ -1,13 +1,15 @@
 import { AstrophysicsType } from '../../types/technologies';
-import espionageTech from './espionageTech';
-import impulseDrive from './impulseDrive';
+import { Technology } from '../../models';
 
 const astrophysics = {
   type: AstrophysicsType,
-  resolve({ user }) {
-    const level = 23; // TODO
-    return {
-      id: 8520, // TODO
+  async resolve({ user }) {
+    const where = { UserId: 1, techId: Technology.ASTROPHYSICS_ID };
+    let technology = await Technology.findOne({ where });
+    if (!technology) {
+      technology = Technology.build(where);
+    }
+    return Object.assign(technology, {
       name: 'Astrophysics',
       description: 'With an astrophysics research module, ships can undertake long expeditions. ' +
       'Every second level of this technology will allow you to colonise an extra planet.',
@@ -16,14 +18,7 @@ const astrophysics = {
       'This makes long expeditions far into unexplored areas of space possible. ' +
       'In addition these advancements can be used to further colonise the universe. ' +
       'For every two levels of this technology an additional planet can be made usable.',
-      level,
-      maximumColonies: Math.ceil(level / 2), // TODO must go on model logic
-      maximumExpeditions: Math.floor(Math.sqrt(level)), // TODO must go on model logic
-      requirements: [
-        { technology: espionageTech.resolve({ user }), level: 4 }, // TODO check
-        { technology: impulseDrive.resolve({ user }), level: 3 }, // TODO check
-      ],
-    };
+    });
   },
 };
 

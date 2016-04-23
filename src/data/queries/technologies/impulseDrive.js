@@ -1,12 +1,15 @@
 import { ImpulseDriveType } from '../../types/technologies';
-import energyTech from './energyTech';
+import { Technology } from '../../models';
 
 const impulseDrive = {
   type: ImpulseDriveType,
-  resolve({ user }) {
-    const level = 7; // TODO
-    return {
-      id: 99, // TODO
+  async resolve({ user }) {
+    const where = { UserId: 1, techId: Technology.IMPULSE_DRIVE_ID };
+    let technology = await Technology.findOne({ where });
+    if (!technology) {
+      technology = Technology.build(where);
+    }
+    return Object.assign(technology, {
       name: 'Impulse Drive',
       description: 'The impulse drive is based on the reaction principle. ' +
       'Further development of this drive makes some ships faster, ' +
@@ -23,13 +26,7 @@ const impulseDrive = {
       'Recyclers will be equipped with an impulse drive once researched to level 17. ' +
       '' + // TODO check newline
       'Interplanetary missiles also travel farther with each level.',
-      level,
-      speedFactor: 1 + 0.2 * level,
-      requirements: [
-        { technology: 'lab', level: 2 }, // TODO research lab
-        { technology: energyTech.resolve({ user }), level: 1 }, // TODO check
-      ],
-    };
+    });
   },
 };
 

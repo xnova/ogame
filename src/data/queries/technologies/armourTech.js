@@ -1,11 +1,15 @@
 import { ArmourTechType } from '../../types/technologies';
+import { Technology } from '../../models';
 
 const armourTech = {
   type: ArmourTechType,
-  resolve({ user }) {
-    const level = 8; // TODO
-    return {
-      id: 654, // TODO
+  async resolve({ user }) {
+    const where = { UserId: 1, techId: Technology.ARMOUR_TECH_ID };
+    let technology = await Technology.findOne({ where });
+    if (!technology) {
+      technology = Technology.build(where);
+    }
+    return Object.assign(technology, {
       name: 'Armour Technology',
       description: 'Special alloys improve the armour on ships and defensive structures. ' +
       'The effectiveness of the armour can be increased by 10% per level.',
@@ -18,12 +22,7 @@ const armourTech = {
       'this afforded the crew a certain degree of protection. ' +
       'With each level of Armour Technology developed, a higher quality alloy is produced, ' +
       'which increases the armours strength by 10%.',
-      level,
-      bonus: level * 0.1,
-      requirements: [
-        { technology: 'lab', level: 2 }, // TODO research lab
-      ],
-    };
+    });
   },
 };
 
