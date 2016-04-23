@@ -12,6 +12,7 @@ import Coordinates from './Coordinates';
 import Defense from './Defense';
 import DefenseTech from './DefenseTech';
 import Planet from './Planet';
+import RapidFire from './RapidFire';
 import Resources from './Resources';
 import Ship from './Ship';
 import ShipTech from './ShipTech';
@@ -58,6 +59,9 @@ ShipTech.hasOne(UnitTech, {
   onUpdate: 'cascade', // TODO check
   onDelete: 'cascade', // TODO check
 });
+
+UnitTech.belongsToMany(ShipTech, { through: RapidFire, foreignKey: 'againstId' });
+ShipTech.belongsToMany(UnitTech, { as: 'rapidFire', through: RapidFire, foreignKey: 'fromId' });
 
 TechnologyTech.belongsToMany(User, { through: Technology, foreignKey: 'techId' });
 User.belongsToMany(TechnologyTech, { as: 'technologies', through: Technology });
@@ -266,7 +270,7 @@ function sync(...args) {
       cargoCapacity: 25000,
       fuelUsage: 50,
     }, { include });
-    ShipTech.create({
+    const LIGHT_FIGHTER = await ShipTech.create({
       techId: Ship.LIGHT_FIGHTER_ID,
       unit: {
         costs: {
@@ -280,7 +284,7 @@ function sync(...args) {
       cargoCapacity: 50,
       fuelUsage: 20,
     }, { include });
-    ShipTech.create({
+    const HEAVY_FIGHTER = await ShipTech.create({
       techId: Ship.HEAVY_FIGHTER_ID,
       unit: {
         costs: {
@@ -294,7 +298,7 @@ function sync(...args) {
       cargoCapacity: 100,
       fuelUsage: 75,
     }, { include });
-    ShipTech.create({
+    const CRUISER = await ShipTech.create({
       techId: Ship.CRUISER_ID,
       unit: {
         costs: {
@@ -309,7 +313,7 @@ function sync(...args) {
       cargoCapacity: 800,
       fuelUsage: 300,
     }, { include });
-    ShipTech.create({
+    const BATTLESHIP = await ShipTech.create({
       techId: Ship.BATTLESHIP_ID,
       unit: {
         costs: {
@@ -323,7 +327,7 @@ function sync(...args) {
       cargoCapacity: 1500,
       fuelUsage: 500,
     }, { include });
-    ShipTech.create({
+    const COLONY_SHIP = await ShipTech.create({
       techId: Ship.COLONY_SHIP_ID,
       unit: {
         costs: {
@@ -338,7 +342,7 @@ function sync(...args) {
       cargoCapacity: 7500,
       fuelUsage: 1000,
     }, { include });
-    ShipTech.create({
+    const RECYCLER = await ShipTech.create({
       techId: Ship.RECYCLER_ID,
       unit: {
         costs: {
@@ -353,7 +357,7 @@ function sync(...args) {
       cargoCapacity: 20000,
       fuelUsage: 300,
     }, { include });
-    ShipTech.create({
+    const ESPIONAGE_PROBE = await ShipTech.create({
       techId: Ship.ESPIONAGE_PROBE_ID,
       unit: {
         costs: {
@@ -366,7 +370,7 @@ function sync(...args) {
       cargoCapacity: 0,
       fuelUsage: 1,
     }, { include });
-    ShipTech.create({
+    const BOMBER = await ShipTech.create({
       techId: Ship.BOMBER_ID,
       unit: {
         costs: {
@@ -381,7 +385,7 @@ function sync(...args) {
       cargoCapacity: 500,
       fuelUsage: 1000,
     }, { include });
-    ShipTech.create({
+    const SOLAR_SATELLITE = await ShipTech.create({
       techId: Ship.SOLAR_SATELLITE_ID,
       unit: {
         costs: {
@@ -395,7 +399,7 @@ function sync(...args) {
       cargoCapacity: 0,
       fuelUsage: 0,
     }, { include });
-    ShipTech.create({
+    const DESTROYER = await ShipTech.create({
       techId: Ship.DESTROYER_ID,
       unit: {
         costs: {
@@ -425,7 +429,7 @@ function sync(...args) {
       cargoCapacity: 1000000,
       fuelUsage: 1,
     }, { include });
-    ShipTech.create({
+    const BATTLE_CRUISER = await ShipTech.create({
       techId: Ship.BATTLE_CRUISER_ID,
       unit: {
         costs: {
@@ -454,7 +458,7 @@ function sync(...args) {
         basicAttack: 80,
       },
     }, { include });
-    DefenseTech.create({
+    const LIGHT_LASER = await DefenseTech.create({
       techId: Defense.LIGHT_LASER_ID,
       unit: {
         costs: {
@@ -465,7 +469,7 @@ function sync(...args) {
         basicAttack: 100,
       },
     }, { include });
-    DefenseTech.create({
+    const HEAVY_LASER = await DefenseTech.create({
       techId: Defense.HEAVY_LASER_ID,
       unit: {
         costs: {
@@ -476,7 +480,7 @@ function sync(...args) {
         basicAttack: 250,
       },
     }, { include });
-    DefenseTech.create({
+    const GAUSS_CANNON = await DefenseTech.create({
       techId: Defense.GAUSS_CANNON_ID,
       unit: {
         costs: {
@@ -488,7 +492,7 @@ function sync(...args) {
         basicAttack: 1100,
       },
     }, { include });
-    DefenseTech.create({
+    const ION_CANNON = await DefenseTech.create({
       techId: Defense.ION_CANNON_ID,
       unit: {
         costs: {
@@ -499,7 +503,7 @@ function sync(...args) {
         basicAttack: 150,
       },
     }, { include });
-    DefenseTech.create({
+    const PLASMA_TURRET = await DefenseTech.create({
       techId: Defense.PLASMA_TURRET_ID,
       unit: {
         costs: {
@@ -535,6 +539,75 @@ function sync(...args) {
         maxQuantity: 1,
       },
     }, { include });
+
+    /*****************
+     *** RapidFire ***
+     *****************/
+    SMALL_CARGO.addRapidFire(Ship.ESPIONAGE_PROBE_ID);
+    SMALL_CARGO.addRapidFire(Ship.SOLAR_SATELLITE_ID);
+
+    LARGE_CARGO.addRapidFire(Ship.ESPIONAGE_PROBE_ID);
+    LARGE_CARGO.addRapidFire(Ship.SOLAR_SATELLITE_ID);
+
+    LIGHT_FIGHTER.addRapidFire(Ship.ESPIONAGE_PROBE_ID);
+    LIGHT_FIGHTER.addRapidFire(Ship.SOLAR_SATELLITE_ID);
+
+    HEAVY_FIGHTER.addRapidFire(Ship.ESPIONAGE_PROBE_ID);
+    HEAVY_FIGHTER.addRapidFire(Ship.SOLAR_SATELLITE_ID);
+    HEAVY_FIGHTER.addRapidFire(Ship.SMALL_CARGO_ID, { value: 3 });
+
+    CRUISER.addRapidFire(Ship.ESPIONAGE_PROBE_ID);
+    CRUISER.addRapidFire(Ship.SOLAR_SATELLITE_ID);
+    CRUISER.addRapidFire(Ship.LIGHT_FIGHTER_ID, { value: 6 });
+    CRUISER.addRapidFire(Defense.ROCKET_LAUNCHER_ID, { value: 10 });
+
+    BATTLESHIP.addRapidFire(Ship.ESPIONAGE_PROBE_ID);
+    BATTLESHIP.addRapidFire(Ship.SOLAR_SATELLITE_ID);
+
+    COLONY_SHIP.addRapidFire(Ship.ESPIONAGE_PROBE_ID);
+    COLONY_SHIP.addRapidFire(Ship.SOLAR_SATELLITE_ID);
+
+    RECYCLER.addRapidFire(Ship.ESPIONAGE_PROBE_ID);
+    RECYCLER.addRapidFire(Ship.SOLAR_SATELLITE_ID);
+
+    BOMBER.addRapidFire(Ship.ESPIONAGE_PROBE_ID);
+    BOMBER.addRapidFire(Ship.SOLAR_SATELLITE_ID);
+    BOMBER.addRapidFire(Defense.ROCKET_LAUNCHER_ID, { value: 20 });
+    BOMBER.addRapidFire(Defense.LIGHT_LASER_ID, { value: 20 });
+    BOMBER.addRapidFire(Defense.HEAVY_LASER_ID, { value: 10 });
+    BOMBER.addRapidFire(Defense.ION_CANNON_ID, { value: 10 });
+
+    DESTROYER.addRapidFire(Ship.ESPIONAGE_PROBE_ID);
+    DESTROYER.addRapidFire(Ship.SOLAR_SATELLITE_ID);
+    DESTROYER.addRapidFire(Defense.LIGHT_LASER_ID, { value: 10 });
+    DESTROYER.addRapidFire(Ship.BATTLE_CRUISER_ID, { value: 2 });
+
+    DEATH_STAR.addRapidFire(Ship.SMALL_CARGO_ID, { value: 250 });
+    DEATH_STAR.addRapidFire(Ship.LARGE_CARGO_ID, { value: 250 });
+    DEATH_STAR.addRapidFire(Ship.LIGHT_FIGHTER_ID, { value: 200 });
+    DEATH_STAR.addRapidFire(Ship.HEAVY_FIGHTER_ID, { value: 100 });
+    DEATH_STAR.addRapidFire(Ship.CRUISER_ID, { value: 33 });
+    DEATH_STAR.addRapidFire(Ship.BATTLESHIP_ID, { value: 30 });
+    DEATH_STAR.addRapidFire(Ship.COLONY_SHIP_ID, { value: 250 });
+    DEATH_STAR.addRapidFire(Ship.RECYCLER_ID, { value: 250 });
+    DEATH_STAR.addRapidFire(Ship.ESPIONAGE_PROBE_ID, { value: 1250 });
+    DEATH_STAR.addRapidFire(Ship.SOLAR_SATELLITE_ID, { value: 1250 });
+    DEATH_STAR.addRapidFire(Ship.BOMBER_ID, { value: 25 });
+    DEATH_STAR.addRapidFire(Ship.DESTROYER_ID, { value: 5 });
+    DEATH_STAR.addRapidFire(Defense.ROCKET_LAUNCHER_ID, { value: 200 });
+    DEATH_STAR.addRapidFire(Defense.LIGHT_LASER_ID, { value: 200 });
+    DEATH_STAR.addRapidFire(Defense.HEAVY_LASER_ID, { value: 100 });
+    DEATH_STAR.addRapidFire(Defense.GAUSS_CANNON_ID, { value: 50 });
+    DEATH_STAR.addRapidFire(Defense.ION_CANNON_ID, { value: 100 });
+    DEATH_STAR.addRapidFire(Ship.BATTLE_CRUISER_ID, { value: 15 });
+
+    BATTLE_CRUISER.addRapidFire(Ship.ESPIONAGE_PROBE_ID);
+    BATTLE_CRUISER.addRapidFire(Ship.SOLAR_SATELLITE_ID);
+    BATTLE_CRUISER.addRapidFire(Ship.SMALL_CARGO_ID, { value: 3 });
+    BATTLE_CRUISER.addRapidFire(Ship.LARGE_CARGO_ID, { value: 3 });
+    BATTLE_CRUISER.addRapidFire(Ship.HEAVY_FIGHTER_ID, { value: 4 });
+    BATTLE_CRUISER.addRapidFire(Ship.CRUISER_ID, { value: 4 });
+    BATTLE_CRUISER.addRapidFire(Ship.BATTLESHIP_ID, { value: 7 });
 
     /***********
      * arkeros *
