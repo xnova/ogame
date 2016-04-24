@@ -8,6 +8,8 @@
  */
 
 import sequelize from '../sequelize';
+import Building from './Building';
+import BuildingTech from './BuildingTech';
 import Coordinates from './Coordinates';
 import Defense from './Defense';
 import DefenseTech from './DefenseTech';
@@ -24,8 +26,23 @@ import UserLogin from './UserLogin';
 import UserClaim from './UserClaim';
 import UserProfile from './UserProfile';
 
-DefenseTech.belongsToMany(Planet, { through: Defense, foreignKey: 'techId' });
-Planet.belongsToMany(DefenseTech, { as: 'defenses', through: Defense });
+// TODO chapuza
+Building.belongsTo(BuildingTech, {
+  foreignKey: 'techId',
+  as: 'Tech',
+  onUpdate: 'cascade', // TODO check
+  onDelete: 'cascade', // TODO check
+});
+
+BuildingTech.belongsToMany(Planet, { through: Building, foreignKey: 'techId' });
+Planet.belongsToMany(BuildingTech, { as: 'buildings', through: Building });
+
+BuildingTech.belongsTo(Resources, {
+  foreignKey: 'basicCostsId',
+  as: 'basicCosts',
+  onUpdate: 'cascade', // TODO check
+  onDelete: 'cascade', // TODO check
+});
 
 // TODO chapuza
 Defense.belongsTo(DefenseTech, {
@@ -34,6 +51,9 @@ Defense.belongsTo(DefenseTech, {
   onUpdate: 'cascade', // TODO check
   onDelete: 'cascade', // TODO check
 });
+
+DefenseTech.belongsToMany(Planet, { through: Defense, foreignKey: 'techId' });
+Planet.belongsToMany(DefenseTech, { as: 'defenses', through: Defense });
 
 DefenseTech.hasOne(UnitTech, {
   foreignKey: 'techId',
@@ -63,9 +83,6 @@ ShipTech.hasOne(UnitTech, {
 UnitTech.belongsToMany(ShipTech, { through: RapidFire, foreignKey: 'againstId' });
 ShipTech.belongsToMany(UnitTech, { as: 'rapidFire', through: RapidFire, foreignKey: 'fromId' });
 
-TechnologyTech.belongsToMany(User, { through: Technology, foreignKey: 'techId' });
-User.belongsToMany(TechnologyTech, { as: 'technologies', through: Technology });
-
 // TODO chapuza
 Technology.belongsTo(TechnologyTech, {
   foreignKey: 'techId',
@@ -73,6 +90,9 @@ Technology.belongsTo(TechnologyTech, {
   onUpdate: 'cascade', // TODO check
   onDelete: 'cascade', // TODO check
 });
+
+TechnologyTech.belongsToMany(User, { through: Technology, foreignKey: 'techId' });
+User.belongsToMany(TechnologyTech, { as: 'technologies', through: Technology });
 
 TechnologyTech.belongsTo(Resources, {
   foreignKey: 'basicCostsId',
@@ -113,6 +133,122 @@ User.hasOne(UserProfile, {
 
 function sync(...args) {
   return sequelize.sync(...args).then(async () => {
+    /*
+     * Buildings
+     */
+    BuildingTech.create({
+      techId: Building.METAL_MINE_ID,
+      basicCosts: {
+        metal: 60,
+        crystal: 15,
+      },
+    }, { include: [{ model: Resources, as: 'basicCosts' }] });
+    BuildingTech.create({
+      techId: Building.CRYSTAL_MINE_ID,
+      basicCosts: {
+        metal: 48,
+        crystal: 24,
+      },
+    }, { include: [{ model: Resources, as: 'basicCosts' }] });
+    BuildingTech.create({
+      techId: Building.DEUTERIUM_SYNTHESIZER_ID,
+      basicCosts: {
+        metal: 225,
+        crystal: 75,
+      },
+    }, { include: [{ model: Resources, as: 'basicCosts' }] });
+    BuildingTech.create({
+      techId: Building.SOLAR_PLANT_ID,
+      basicCosts: {
+        metal: 75,
+        crystal: 30,
+      },
+    }, { include: [{ model: Resources, as: 'basicCosts' }] });
+    BuildingTech.create({
+      techId: Building.FUSION_REACTOR_ID,
+      basicCosts: {
+        metal: 900,
+        crystal: 360,
+        deuterium: 180,
+      },
+    }, { include: [{ model: Resources, as: 'basicCosts' }] });
+    BuildingTech.create({
+      techId: Building.ROBOTICS_FACTORY_ID,
+      basicCosts: {
+        metal: 400,
+        crystal: 120,
+        deuterium: 200,
+      },
+    }, { include: [{ model: Resources, as: 'basicCosts' }] });
+    BuildingTech.create({
+      techId: Building.NANITE_FACTORY_ID,
+      basicCosts: {
+        metal: 10 ** 6,
+        crystal: 500000,
+        deuterium: 10 ** 5,
+      },
+    }, { include: [{ model: Resources, as: 'basicCosts' }] });
+    BuildingTech.create({
+      techId: Building.SHIPYARD_ID,
+      basicCosts: {
+        metal: 400,
+        crystal: 200,
+        deuterium: 100,
+      },
+    }, { include: [{ model: Resources, as: 'basicCosts' }] });
+    BuildingTech.create({
+      techId: Building.METAL_STORAGE_ID,
+      basicCosts: {
+        metal: 2000,
+      },
+    }, { include: [{ model: Resources, as: 'basicCosts' }] });
+    BuildingTech.create({
+      techId: Building.CRYSTAL_STORAGE_ID,
+      basicCosts: {
+        metal: 1000,
+        crystal: 500,
+      },
+    }, { include: [{ model: Resources, as: 'basicCosts' }] });
+    BuildingTech.create({
+      techId: Building.DEUTERIUM_TANK_ID,
+      basicCosts: {
+        metal: 1000,
+        crystal: 1000,
+      },
+    }, { include: [{ model: Resources, as: 'basicCosts' }] });
+    BuildingTech.create({
+      techId: Building.RESEARCH_LAB_ID,
+      basicCosts: {
+        metal: 200,
+        crystal: 400,
+        deuterium: 200,
+      },
+    }, { include: [{ model: Resources, as: 'basicCosts' }] });
+    BuildingTech.create({
+      techId: Building.TERRAFORMER_ID,
+      basicCosts: {
+        crystal: 50000,
+        deuterium: 10 ** 5,
+        energy: 1000,
+      },
+      canDismantle: false,
+    }, { include: [{ model: Resources, as: 'basicCosts' }] });
+    BuildingTech.create({
+      techId: Building.ALLIANCE_DEPOT_ID,
+      basicCosts: {
+        metal: 20000,
+        crystal: 40000,
+      },
+    }, { include: [{ model: Resources, as: 'basicCosts' }] });
+    BuildingTech.create({
+      techId: Building.MISSILE_SILO_ID,
+      basicCosts: {
+        metal: 20000,
+        crystal: 20000,
+        deuterium: 1000,
+      },
+    }, { include: [{ model: Resources, as: 'basicCosts' }] });
+
     /*
      * Technologies
      */
@@ -624,4 +760,4 @@ function sync(...args) {
 }
 
 export default { sync };
-export { Defense, Ship, Technology, User, UserLogin, UserClaim, UserProfile };
+export { Building, Defense, Ship, Technology, User, UserLogin, UserClaim, UserProfile };
