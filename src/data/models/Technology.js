@@ -14,7 +14,7 @@ const Technology = Model.define('Technology', {
     async get() {
       const costs = await this.get('costs');
       // TODO buildings and universe speed
-      let duration = 3600 * (costs.metal + costs.crystal) / (1000); 
+      let duration = 3600 * (costs.metal + costs.crystal) / (1000);
       if (duration < 1) duration = 1;
       return duration;
     },

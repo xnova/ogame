@@ -113,9 +113,9 @@ User.hasOne(UserProfile, {
 
 function sync(...args) {
   return sequelize.sync(...args).then(async () => {
-    /**********************
-     **** Technologies ****
-     **********************/
+    /*
+     * Technologies
+     */
     TechnologyTech.create({
       techId: Technology.ENERGY_TECH_ID,
       basicCosts: {
@@ -236,9 +236,9 @@ function sync(...args) {
       },
     }, { include: [{ model: Resources, as: 'basicCosts' }] });
 
-    /***************
-     **** Ships ****
-     ***************/
+    /*
+     * Ships
+     */
     const include = [
       { model: UnitTech, as: 'unit', include: [{ model: Resources, as: 'costs' }] },
     ];
@@ -366,7 +366,7 @@ function sync(...args) {
         basicShield: 0.01,
         basicAttack: 0.01,
       },
-      basicSpeed: 100 * 10**6,
+      basicSpeed: 10 ** 8,
       cargoCapacity: 0,
       fuelUsage: 1,
     }, { include });
@@ -445,9 +445,9 @@ function sync(...args) {
       fuelUsage: 250,
     }, { include });
 
-    /****************
-     *** Defenses ***
-     ****************/
+    /*
+     * Defenses
+     */
     const ROCKET_LAUNCHER = await DefenseTech.create({
       techId: Defense.ROCKET_LAUNCHER_ID,
       unit: {
@@ -503,7 +503,7 @@ function sync(...args) {
         basicAttack: 150,
       },
     }, { include });
-    const PLASMA_TURRET = await DefenseTech.create({
+    DefenseTech.create({
       techId: Defense.PLASMA_TURRET_ID,
       unit: {
         costs: {
@@ -540,11 +540,11 @@ function sync(...args) {
       },
     }, { include });
 
-    /*****************
-     *** RapidFire ***
-     *****************/
-    SMALL_CARGO.addRapidFire(Ship.ESPIONAGE_PROBE_ID);
-    SMALL_CARGO.addRapidFire(Ship.SOLAR_SATELLITE_ID);
+    /*
+     * RapidFire
+     */
+    SMALL_CARGO.addRapidFire(ESPIONAGE_PROBE.techId);
+    SMALL_CARGO.addRapidFire(SOLAR_SATELLITE.techId);
 
     LARGE_CARGO.addRapidFire(Ship.ESPIONAGE_PROBE_ID);
     LARGE_CARGO.addRapidFire(Ship.SOLAR_SATELLITE_ID);
@@ -595,10 +595,10 @@ function sync(...args) {
     DEATH_STAR.addRapidFire(Ship.BOMBER_ID, { value: 25 });
     DEATH_STAR.addRapidFire(Ship.DESTROYER_ID, { value: 5 });
     DEATH_STAR.addRapidFire(Defense.ROCKET_LAUNCHER_ID, { value: 200 });
-    DEATH_STAR.addRapidFire(Defense.LIGHT_LASER_ID, { value: 200 });
-    DEATH_STAR.addRapidFire(Defense.HEAVY_LASER_ID, { value: 100 });
-    DEATH_STAR.addRapidFire(Defense.GAUSS_CANNON_ID, { value: 50 });
-    DEATH_STAR.addRapidFire(Defense.ION_CANNON_ID, { value: 100 });
+    DEATH_STAR.addRapidFire(LIGHT_LASER.techId, { value: 200 });
+    DEATH_STAR.addRapidFire(HEAVY_LASER.techId, { value: 100 });
+    DEATH_STAR.addRapidFire(GAUSS_CANNON.techId, { value: 50 });
+    DEATH_STAR.addRapidFire(ION_CANNON.techId, { value: 100 });
     DEATH_STAR.addRapidFire(Ship.BATTLE_CRUISER_ID, { value: 15 });
 
     BATTLE_CRUISER.addRapidFire(Ship.ESPIONAGE_PROBE_ID);
@@ -609,9 +609,9 @@ function sync(...args) {
     BATTLE_CRUISER.addRapidFire(Ship.CRUISER_ID, { value: 4 });
     BATTLE_CRUISER.addRapidFire(Ship.BATTLESHIP_ID, { value: 7 });
 
-    /***********
-     * arkeros *
-     ***********/
+    /*
+     * arkeros
+     */
     const hyperion = await Planet.create({
       name: 'Hyperion',
       diameter: 12800,

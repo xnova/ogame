@@ -6,7 +6,7 @@ import {
 
 
 const mixin = {
-  maxQuantity: { type: new NonNull(IntType) }, 
+  maxQuantity: { type: new NonNull(IntType) },
   // TODO rapidFireAgainst
 };
 

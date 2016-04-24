@@ -17,19 +17,23 @@ const title = 'Log In';
 
 function Login(props, context) {
   context.setTitle(title);
+  const logoStyle = { backgroundImage: `url(${require('./logo.svg')})` };
+  const nameStyle = { backgroundImage: `url(${require('./name.svg')})` };
   return (
     <div className={s.root}>
-
       <div className={s.center}>
         <div className={s.inner}>
           <div className={s.brand}>
             <div className={s.brandCenter}>
-              <div className={s.logo} style={{ backgroundImage: 'url(' + require('./logo.svg') + ')' }}></div>
-              <div className={s.name} style={{ backgroundImage: 'url(' + require('./name.svg') + ')' }}></div>
+              <div className={s.logo} style={logoStyle}></div>
+              <div className={s.name} style={nameStyle}></div>
             </div>
           </div>
           <form className={s.form}>
-            <h1>One account. All universes. <p>Sign in with your <strong>Xnova</strong> Account</p></h1>
+            <h1>
+              One account. All universes.
+              <p>Sign in with your <strong>Xnova</strong> Account</p>
+            </h1>
             <div className={s.controlGroup}>
               <label htmlFor="email">email</label>
               <input id="email" autoComplete="off" spellCheck="false" type="email" />
