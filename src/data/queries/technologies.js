@@ -23,8 +23,8 @@ class TechnologyQuery {
   constructor({ type, techId, name, description, longDescription }) {
     return {
       type,
-      async resolve({ user }) {
-        const where = { UserId: 1, techId };
+      async resolve({ id: UserId }) {
+        const where = { UserId, techId };
         let technology = await Technology.findOne({ where });
         if (!technology) {
           technology = Technology.build(where);

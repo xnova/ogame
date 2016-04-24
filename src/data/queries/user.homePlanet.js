@@ -5,7 +5,7 @@ const homePlanet = {
   type: new NonNull(PlanetType),
   resolve({ user }) {
     return {
-      id: 123456987, // TODO
+      id: 1, // TODO
       player: user,
       name: 'Homeworld',
       diameter: 12800,

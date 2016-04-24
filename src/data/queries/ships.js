@@ -21,8 +21,8 @@ class ShipQuery {
   constructor({ type, techId, name, description, longDescription }) {
     return {
       type,
-      async resolve({ planet }) {
-        const where = { PlanetId: 1, techId };
+      async resolve({ id: PlanetId }) {
+        const where = { PlanetId, techId };
         let ship = await Ship.findOne({ where });
         if (!ship) {
           ship = Ship.build(where);

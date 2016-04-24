@@ -22,8 +22,8 @@ class BuildingQuery {
   constructor({ type, techId, name, description, longDescription }) {
     return {
       type,
-      async resolve({ planet }) {
-        const where = { PlanetId: 1, techId };
+      async resolve({ id: PlanetId }) {
+        const where = { PlanetId, techId };
         let building = await Building.findOne({ where });
         if (!building) {
           building = Building.build(where);
