@@ -806,78 +806,77 @@ function sync(...args) {
     /*
      * Requirements
      */
-
-    NANITE_FACTORY.addRequirement(ROBOTICS_FACTORY, { level: 10 });
+    NANITE_FACTORY.requires(ROBOTICS_FACTORY, { level: 10 });
 
 
     /*
      * RapidFire
      */
-    SMALL_CARGO.addRapidFire(ESPIONAGE_PROBE.techId);
-    SMALL_CARGO.addRapidFire(SOLAR_SATELLITE.techId);
+    SMALL_CARGO.rapidFires(ESPIONAGE_PROBE);
+    SMALL_CARGO.rapidFires(SOLAR_SATELLITE);
 
-    LARGE_CARGO.addRapidFire(Ship.ESPIONAGE_PROBE_ID);
-    LARGE_CARGO.addRapidFire(Ship.SOLAR_SATELLITE_ID);
+    LARGE_CARGO.rapidFires(ESPIONAGE_PROBE);
+    LARGE_CARGO.rapidFires(SOLAR_SATELLITE);
 
-    LIGHT_FIGHTER.addRapidFire(Ship.ESPIONAGE_PROBE_ID);
-    LIGHT_FIGHTER.addRapidFire(Ship.SOLAR_SATELLITE_ID);
+    LIGHT_FIGHTER.rapidFires(ESPIONAGE_PROBE);
+    LIGHT_FIGHTER.rapidFires(SOLAR_SATELLITE);
 
-    HEAVY_FIGHTER.addRapidFire(Ship.ESPIONAGE_PROBE_ID);
-    HEAVY_FIGHTER.addRapidFire(Ship.SOLAR_SATELLITE_ID);
-    HEAVY_FIGHTER.addRapidFire(Ship.SMALL_CARGO_ID, { value: 3 });
+    HEAVY_FIGHTER.rapidFires(ESPIONAGE_PROBE);
+    HEAVY_FIGHTER.rapidFires(SOLAR_SATELLITE);
+    HEAVY_FIGHTER.rapidFires(SMALL_CARGO, { value: 3 });
 
-    CRUISER.addRapidFire(Ship.ESPIONAGE_PROBE_ID);
-    CRUISER.addRapidFire(Ship.SOLAR_SATELLITE_ID);
-    CRUISER.addRapidFire(Ship.LIGHT_FIGHTER_ID, { value: 6 });
-    CRUISER.addRapidFire(Defense.ROCKET_LAUNCHER_ID, { value: 10 });
+    CRUISER.rapidFires(ESPIONAGE_PROBE);
+    CRUISER.rapidFires(SOLAR_SATELLITE);
+    CRUISER.rapidFires(LIGHT_FIGHTER, { value: 6 });
+    CRUISER.rapidFires(ROCKET_LAUNCHER, { value: 10 });
 
-    BATTLESHIP.addRapidFire(Ship.ESPIONAGE_PROBE_ID);
-    BATTLESHIP.addRapidFire(Ship.SOLAR_SATELLITE_ID);
+    BATTLESHIP.rapidFires(ESPIONAGE_PROBE);
+    BATTLESHIP.rapidFires(SOLAR_SATELLITE);
 
-    COLONY_SHIP.addRapidFire(Ship.ESPIONAGE_PROBE_ID);
-    COLONY_SHIP.addRapidFire(Ship.SOLAR_SATELLITE_ID);
+    COLONY_SHIP.rapidFires(ESPIONAGE_PROBE);
+    COLONY_SHIP.rapidFires(SOLAR_SATELLITE);
 
-    RECYCLER.addRapidFire(Ship.ESPIONAGE_PROBE_ID);
-    RECYCLER.addRapidFire(Ship.SOLAR_SATELLITE_ID);
+    RECYCLER.rapidFires(ESPIONAGE_PROBE);
+    RECYCLER.rapidFires(SOLAR_SATELLITE);
 
-    BOMBER.addRapidFire(Ship.ESPIONAGE_PROBE_ID);
-    BOMBER.addRapidFire(Ship.SOLAR_SATELLITE_ID);
-    BOMBER.addRapidFire(Defense.ROCKET_LAUNCHER_ID, { value: 20 });
-    BOMBER.addRapidFire(Defense.LIGHT_LASER_ID, { value: 20 });
-    BOMBER.addRapidFire(Defense.HEAVY_LASER_ID, { value: 10 });
-    BOMBER.addRapidFire(Defense.ION_CANNON_ID, { value: 10 });
+    BOMBER.rapidFires(ESPIONAGE_PROBE);
+    BOMBER.rapidFires(SOLAR_SATELLITE);
+    BOMBER.rapidFires(ROCKET_LAUNCHER, { value: 20 });
+    BOMBER.rapidFires(LIGHT_LASER, { value: 20 });
+    BOMBER.rapidFires(HEAVY_LASER, { value: 10 });
+    BOMBER.rapidFires(ION_CANNON, { value: 10 });
 
-    DESTROYER.addRapidFire(Ship.ESPIONAGE_PROBE_ID);
-    DESTROYER.addRapidFire(Ship.SOLAR_SATELLITE_ID);
-    DESTROYER.addRapidFire(Defense.LIGHT_LASER_ID, { value: 10 });
-    DESTROYER.addRapidFire(Ship.BATTLE_CRUISER_ID, { value: 2 });
+    DESTROYER.rapidFires(ESPIONAGE_PROBE);
+    DESTROYER.rapidFires(SOLAR_SATELLITE);
+    DESTROYER.rapidFires(LIGHT_LASER, { value: 10 });
+    DESTROYER.rapidFires(BATTLE_CRUISER, { value: 2 });
 
-    DEATH_STAR.addRapidFire(Ship.SMALL_CARGO_ID, { value: 250 });
-    DEATH_STAR.addRapidFire(Ship.LARGE_CARGO_ID, { value: 250 });
-    DEATH_STAR.addRapidFire(Ship.LIGHT_FIGHTER_ID, { value: 200 });
-    DEATH_STAR.addRapidFire(Ship.HEAVY_FIGHTER_ID, { value: 100 });
-    DEATH_STAR.addRapidFire(Ship.CRUISER_ID, { value: 33 });
-    DEATH_STAR.addRapidFire(Ship.BATTLESHIP_ID, { value: 30 });
-    DEATH_STAR.addRapidFire(Ship.COLONY_SHIP_ID, { value: 250 });
-    DEATH_STAR.addRapidFire(Ship.RECYCLER_ID, { value: 250 });
-    DEATH_STAR.addRapidFire(Ship.ESPIONAGE_PROBE_ID, { value: 1250 });
-    DEATH_STAR.addRapidFire(Ship.SOLAR_SATELLITE_ID, { value: 1250 });
-    DEATH_STAR.addRapidFire(Ship.BOMBER_ID, { value: 25 });
-    DEATH_STAR.addRapidFire(Ship.DESTROYER_ID, { value: 5 });
-    DEATH_STAR.addRapidFire(Defense.ROCKET_LAUNCHER_ID, { value: 200 });
-    DEATH_STAR.addRapidFire(LIGHT_LASER.techId, { value: 200 });
-    DEATH_STAR.addRapidFire(HEAVY_LASER.techId, { value: 100 });
-    DEATH_STAR.addRapidFire(GAUSS_CANNON.techId, { value: 50 });
-    DEATH_STAR.addRapidFire(ION_CANNON.techId, { value: 100 });
-    DEATH_STAR.addRapidFire(Ship.BATTLE_CRUISER_ID, { value: 15 });
+    DEATH_STAR.rapidFires(SMALL_CARGO, { value: 250 });
+    DEATH_STAR.rapidFires(LARGE_CARGO, { value: 250 });
+    DEATH_STAR.rapidFires(LIGHT_FIGHTER, { value: 200 });
+    DEATH_STAR.rapidFires(HEAVY_FIGHTER, { value: 100 });
+    DEATH_STAR.rapidFires(CRUISER, { value: 33 });
+    DEATH_STAR.rapidFires(BATTLESHIP, { value: 30 });
+    DEATH_STAR.rapidFires(COLONY_SHIP, { value: 250 });
+    DEATH_STAR.rapidFires(RECYCLER, { value: 250 });
+    DEATH_STAR.rapidFires(ESPIONAGE_PROBE, { value: 1250 });
+    DEATH_STAR.rapidFires(SOLAR_SATELLITE, { value: 1250 });
+    DEATH_STAR.rapidFires(BOMBER, { value: 25 });
+    DEATH_STAR.rapidFires(DESTROYER, { value: 5 });
+    DEATH_STAR.rapidFires(ROCKET_LAUNCHER, { value: 200 });
+    DEATH_STAR.rapidFires(LIGHT_LASER, { value: 200 });
+    DEATH_STAR.rapidFires(HEAVY_LASER, { value: 100 });
+    DEATH_STAR.rapidFires(GAUSS_CANNON, { value: 50 });
+    DEATH_STAR.rapidFires(ION_CANNON, { value: 100 });
+    DEATH_STAR.rapidFires(BATTLE_CRUISER, { value: 15 });
 
-    BATTLE_CRUISER.addRapidFire(Ship.ESPIONAGE_PROBE_ID);
-    BATTLE_CRUISER.addRapidFire(Ship.SOLAR_SATELLITE_ID);
-    BATTLE_CRUISER.addRapidFire(Ship.SMALL_CARGO_ID, { value: 3 });
-    BATTLE_CRUISER.addRapidFire(Ship.LARGE_CARGO_ID, { value: 3 });
-    BATTLE_CRUISER.addRapidFire(Ship.HEAVY_FIGHTER_ID, { value: 4 });
-    BATTLE_CRUISER.addRapidFire(Ship.CRUISER_ID, { value: 4 });
-    BATTLE_CRUISER.addRapidFire(Ship.BATTLESHIP_ID, { value: 7 });
+    BATTLE_CRUISER.rapidFires(ESPIONAGE_PROBE);
+    BATTLE_CRUISER.rapidFires(SOLAR_SATELLITE);
+    BATTLE_CRUISER.rapidFires(SMALL_CARGO, { value: 3 });
+    BATTLE_CRUISER.rapidFires(LARGE_CARGO, { value: 3 });
+    BATTLE_CRUISER.rapidFires(HEAVY_FIGHTER, { value: 4 });
+    BATTLE_CRUISER.rapidFires(CRUISER, { value: 4 });
+    BATTLE_CRUISER.rapidFires(BATTLESHIP, { value: 7 });
 
     /*
      * arkeros

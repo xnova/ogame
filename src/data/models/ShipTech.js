@@ -44,6 +44,14 @@ const ShipTech = Model.define('ShipTech', {
     allowNull: false,
   },
 
+}, {
+  instanceMethods: {
+
+    rapidFires(tech, args) {
+      this.addRapidFire(tech.techId, args);
+    },
+
+  },
 });
 
 export default ShipTech;

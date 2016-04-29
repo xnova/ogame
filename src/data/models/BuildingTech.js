@@ -29,8 +29,8 @@ const BuildingTech = Model.define('BuildingTech', {
       return levelTech.getCosts(level);
     },
 
-    addRequirement(tech, args) {
-      this.levelTech.baseTech.addRequirement(tech.techId, args);
+    requires(tech, { level }) {
+      this.levelTech.baseTech.addRequirement(tech.techId, { level });
     },
 
   },
