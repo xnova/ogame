@@ -45,3 +45,24 @@ export const auth = {
   },
 
 };
+
+export const universe = {
+
+  speed: {
+    production: process.env.UNIVERSE_PRODUCTION_SPEED || process.env.UNIVERSE_SPEED || 1,
+    // TODO think! maybe better name buildings instead of construction
+    construction: process.env.UNIVERSE_CONSTRUCTION_SPEED || process.env.UNIVERSE_SPEED || 1,
+    research: process.env.UNIVERSE_RESEARCH_SPEED || process.env.UNIVERSE_SPEED || 1,
+    shipyard: process.env.UNIVERSE_SHIPYARD_SPEED || process.env.UNIVERSE_SPEED || 1,
+    fleets: process.env.UNIVERSE_FLEETS_SPEED || process.env.UNIVERSE_SPEED || 1,
+  },
+
+  debris: {
+
+  },
+
+  galaxies: process.env.UNIVERSE_GALAXIES || 9,
+
+  bonusFields: process.env.UNIVERSE_BONUS_FIELDS || 0,
+
+};
