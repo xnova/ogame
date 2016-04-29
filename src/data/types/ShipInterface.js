@@ -14,12 +14,12 @@ const mixin = {
   // TODO rapidFireAgainst
 };
 
-const ShipType = new InterfaceType({
+const ShipInterface = new InterfaceType({
   name: 'Ship',
   fields: {
     ...mixin,
   },
 });
 
-export default ShipType;
+export default ShipInterface;
 export const ShipMixin = mixin;

@@ -4,13 +4,13 @@ import {
   GraphQLNonNull as NonNull,
 } from 'graphql';
 import UnitType, { UnitMixin } from './UnitType';
-import ShipType, { ShipMixin } from './ShipType';
+import ShipInterface, { ShipMixin } from './ShipInterface';
 
 class Ship extends ObjectType {
   constructor(name) {
     super({
       name,
-      interfaces: [UnitType, ShipType],
+      interfaces: [UnitType, ShipInterface],
       fields: {
         id: { type: new NonNull(ID) },
         ...UnitMixin,
@@ -20,6 +20,8 @@ class Ship extends ObjectType {
     });
   }
 }
+
+export const ShipType = new Ship('ShipType'); // TODO rename
 
 export const BattleCruiserType = new Ship('BattleCruiser');
 export const BattleshipType = new Ship('Battleship');

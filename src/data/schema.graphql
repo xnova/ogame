@@ -45,76 +45,8 @@ type Astrophysics implements Technology {
   maximumExpeditions: Int
 }
 
-type BattleCruiser implements Unit, Ship {
-  id: ID!
-  name: String!
-  description: String
-  longDescription: String
-  quantity: Int
-  duration: Int
-  requirements: [Requirement]
-  structuralIntegrity: Int
-  shieldStrength: Float
-  attackStrength: Float
-  drive: Drive
-  speed: Int
-  cargoCapacity: Int!
-  fuelUsage: Int!
-}
-
-type Battleship implements Unit, Ship {
-  id: ID!
-  name: String!
-  description: String
-  longDescription: String
-  quantity: Int
-  duration: Int
-  requirements: [Requirement]
-  structuralIntegrity: Int
-  shieldStrength: Float
-  attackStrength: Float
-  drive: Drive
-  speed: Int
-  cargoCapacity: Int!
-  fuelUsage: Int!
-}
-
-type Bomber implements Unit, Ship {
-  id: ID!
-  name: String!
-  description: String
-  longDescription: String
-  quantity: Int
-  duration: Int
-  requirements: [Requirement]
-  structuralIntegrity: Int
-  shieldStrength: Float
-  attackStrength: Float
-  drive: Drive
-  speed: Int
-  cargoCapacity: Int!
-  fuelUsage: Int!
-}
-
 interface Building {
   canDismantle: Boolean!
-}
-
-type ColonyShip implements Unit, Ship {
-  id: ID!
-  name: String!
-  description: String
-  longDescription: String
-  quantity: Int
-  duration: Int
-  requirements: [Requirement]
-  structuralIntegrity: Int
-  shieldStrength: Float
-  attackStrength: Float
-  drive: Drive
-  speed: Int
-  cargoCapacity: Int!
-  fuelUsage: Int!
 }
 
 type CombustionDrive implements Technology, Drive {
@@ -154,23 +86,6 @@ type Coordinates {
   position: Int
 }
 
-type Cruiser implements Unit, Ship {
-  id: ID!
-  name: String!
-  description: String
-  longDescription: String
-  quantity: Int
-  duration: Int
-  requirements: [Requirement]
-  structuralIntegrity: Int
-  shieldStrength: Float
-  attackStrength: Float
-  drive: Drive
-  speed: Int
-  cargoCapacity: Int!
-  fuelUsage: Int!
-}
-
 type CrystalMine implements Technology, Building {
   id: ID!
   name: String!
@@ -197,42 +112,8 @@ type CrystalStorage implements Technology, Building {
   capacity: Int
 }
 
-type DeathStar implements Unit, Ship {
-  id: ID!
-  name: String!
-  description: String
-  longDescription: String
-  quantity: Int
-  duration: Int
-  requirements: [Requirement]
-  structuralIntegrity: Int
-  shieldStrength: Float
-  attackStrength: Float
-  drive: Drive
-  speed: Int
-  cargoCapacity: Int!
-  fuelUsage: Int!
-}
-
 interface Defense {
   maxQuantity: Int!
-}
-
-type Destroyer implements Unit, Ship {
-  id: ID!
-  name: String!
-  description: String
-  longDescription: String
-  quantity: Int
-  duration: Int
-  requirements: [Requirement]
-  structuralIntegrity: Int
-  shieldStrength: Float
-  attackStrength: Float
-  drive: Drive
-  speed: Int
-  cargoCapacity: Int!
-  fuelUsage: Int!
 }
 
 type DeuteriumSynthesizer implements Technology, Building {
@@ -274,23 +155,6 @@ type EnergyTech implements Technology {
   duration: Int
   requirements: [Requirement]
   applications: [Application]
-}
-
-type EspionageProbe implements Unit, Ship {
-  id: ID!
-  name: String!
-  description: String
-  longDescription: String
-  quantity: Int
-  duration: Int
-  requirements: [Requirement]
-  structuralIntegrity: Int
-  shieldStrength: Float
-  attackStrength: Float
-  drive: Drive
-  speed: Int
-  cargoCapacity: Int!
-  fuelUsage: Int!
 }
 
 type EspionageTech implements Technology {
@@ -340,23 +204,6 @@ type GravitonTech implements Technology {
   duration: Int
   requirements: [Requirement]
   applications: [Application]
-}
-
-type HeavyFighter implements Unit, Ship {
-  id: ID!
-  name: String!
-  description: String
-  longDescription: String
-  quantity: Int
-  duration: Int
-  requirements: [Requirement]
-  structuralIntegrity: Int
-  shieldStrength: Float
-  attackStrength: Float
-  drive: Drive
-  speed: Int
-  cargoCapacity: Int!
-  fuelUsage: Int!
 }
 
 type HeavyLaser implements Unit, Defense {
@@ -444,23 +291,6 @@ type IonTech implements Technology {
   applications: [Application]
 }
 
-type LargeCargo implements Unit, Ship {
-  id: ID!
-  name: String!
-  description: String
-  longDescription: String
-  quantity: Int
-  duration: Int
-  requirements: [Requirement]
-  structuralIntegrity: Int
-  shieldStrength: Float
-  attackStrength: Float
-  drive: Drive
-  speed: Int
-  cargoCapacity: Int!
-  fuelUsage: Int!
-}
-
 type LargeShieldDome implements Unit, Defense {
   id: ID!
   name: String!
@@ -484,23 +314,6 @@ type LaserTech implements Technology {
   duration: Int
   requirements: [Requirement]
   applications: [Application]
-}
-
-type LightFighter implements Unit, Ship {
-  id: ID!
-  name: String!
-  description: String
-  longDescription: String
-  quantity: Int
-  duration: Int
-  requirements: [Requirement]
-  structuralIntegrity: Int
-  shieldStrength: Float
-  attackStrength: Float
-  drive: Drive
-  speed: Int
-  cargoCapacity: Int!
-  fuelUsage: Int!
 }
 
 type LightLaser implements Unit, Defense {
@@ -601,19 +414,8 @@ type Planet {
   shipyard: Shipyard
   solarPlant: SolarPlant
   terraformer: Terraformer
-  battleCruiser: BattleCruiser
-  battleship: Battleship
-  bomber: Bomber
-  colonyShip: ColonyShip
-  cruiser: Cruiser
-  deathStar: DeathStar
-  destroyer: Destroyer
-  espionageProbe: EspionageProbe
-  heavyFighter: HeavyFighter
-  largeCargo: LargeCargo
-  lightFighter: LightFighter
-  recycler: Recycler
-  smallCargo: SmallCargo
+  ships: [ShipType]
+  ship: ShipType
   solarSatellite: SolarSatellite
   gaussCannon: GaussCannon
   heavyLaser: HeavyLaser
@@ -681,23 +483,6 @@ type Query {
   news: [NewsItem]
 }
 
-type Recycler implements Unit, Ship {
-  id: ID!
-  name: String!
-  description: String
-  longDescription: String
-  quantity: Int
-  duration: Int
-  requirements: [Requirement]
-  structuralIntegrity: Int
-  shieldStrength: Float
-  attackStrength: Float
-  drive: Drive
-  speed: Int
-  cargoCapacity: Int!
-  fuelUsage: Int!
-}
-
 type Requirement {
   technology: Technology
   level: Int
@@ -763,20 +548,7 @@ interface Ship {
   fuelUsage: Int!
 }
 
-type Shipyard implements Technology, Building {
-  id: ID!
-  name: String!
-  description: String
-  longDescription: String
-  level: Int
-  duration: Int
-  requirements: [Requirement]
-  applications: [Application]
-  canDismantle: Boolean!
-  shipyardSpeedFactor: Float
-}
-
-type SmallCargo implements Unit, Ship {
+type ShipType implements Unit, Ship {
   id: ID!
   name: String!
   description: String
@@ -791,6 +563,19 @@ type SmallCargo implements Unit, Ship {
   speed: Int
   cargoCapacity: Int!
   fuelUsage: Int!
+}
+
+type Shipyard implements Technology, Building {
+  id: ID!
+  name: String!
+  description: String
+  longDescription: String
+  level: Int
+  duration: Int
+  requirements: [Requirement]
+  applications: [Application]
+  canDismantle: Boolean!
+  shipyardSpeedFactor: Float
 }
 
 type SmallShieldDome implements Unit, Defense {

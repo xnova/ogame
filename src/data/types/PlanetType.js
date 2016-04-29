@@ -8,7 +8,7 @@ import {
 } from 'graphql';
 import CoordinatesType from './CoordinatesType';
 import buildings from '../queries/buildings';
-import ships from '../queries/ships';
+import ships from '../queries/planet.ships';
 import defenses from '../queries/defenses';
 
 const PlanetType = new ObjectType({
