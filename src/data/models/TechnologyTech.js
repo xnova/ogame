@@ -1,6 +1,5 @@
 import DataType from 'sequelize';
 import Model from '../sequelize';
-import Resources from './Resources';
 
 const TechnologyTech = Model.define('TechnologyTech', {
 
@@ -9,25 +8,11 @@ const TechnologyTech = Model.define('TechnologyTech', {
     primaryKey: true,
   },
 
-  costFactor: {
-    type: DataType.FLOAT.UNSIGNED,
-    allowNull: false,
-    defaultValue: 2,
-  },
-
 }, {
   instanceMethods: {
     async getCosts(level) {
-      const basicCosts = await this.getBasicCosts();
-      const factor = this.costFactor ** level;
-      const costs = {
-        // TODO. code better. use object map
-        metal: basicCosts.metal * factor,
-        crystal: basicCosts.crystal * factor,
-        deuterium: basicCosts.deuterium * factor,
-        energy: basicCosts.energy * factor,
-      };
-      return Resources.build(costs);
+      const levelTech = await this.getLevelTech();
+      return levelTech.getCosts(level);
     },
   },
 });

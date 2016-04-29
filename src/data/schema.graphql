@@ -1,3 +1,7 @@
+schema {
+  query: Query
+}
+
 type AllianceDepot implements Technology, Building {
   id: ID!
   name: String!
@@ -46,12 +50,12 @@ type BattleCruiser implements Unit, Ship {
   name: String!
   description: String
   longDescription: String
-  amount: Int
+  quantity: Int
   duration: Int
   requirements: [Requirement]
   structuralIntegrity: Int
-  shieldStrength: Int
-  attackStrength: Int
+  shieldStrength: Float
+  attackStrength: Float
   drive: Drive
   speed: Int
   cargoCapacity: Int!
@@ -63,12 +67,12 @@ type Battleship implements Unit, Ship {
   name: String!
   description: String
   longDescription: String
-  amount: Int
+  quantity: Int
   duration: Int
   requirements: [Requirement]
   structuralIntegrity: Int
-  shieldStrength: Int
-  attackStrength: Int
+  shieldStrength: Float
+  attackStrength: Float
   drive: Drive
   speed: Int
   cargoCapacity: Int!
@@ -80,12 +84,12 @@ type Bomber implements Unit, Ship {
   name: String!
   description: String
   longDescription: String
-  amount: Int
+  quantity: Int
   duration: Int
   requirements: [Requirement]
   structuralIntegrity: Int
-  shieldStrength: Int
-  attackStrength: Int
+  shieldStrength: Float
+  attackStrength: Float
   drive: Drive
   speed: Int
   cargoCapacity: Int!
@@ -101,12 +105,12 @@ type ColonyShip implements Unit, Ship {
   name: String!
   description: String
   longDescription: String
-  amount: Int
+  quantity: Int
   duration: Int
   requirements: [Requirement]
   structuralIntegrity: Int
-  shieldStrength: Int
-  attackStrength: Int
+  shieldStrength: Float
+  attackStrength: Float
   drive: Drive
   speed: Int
   cargoCapacity: Int!
@@ -155,12 +159,12 @@ type Cruiser implements Unit, Ship {
   name: String!
   description: String
   longDescription: String
-  amount: Int
+  quantity: Int
   duration: Int
   requirements: [Requirement]
   structuralIntegrity: Int
-  shieldStrength: Int
-  attackStrength: Int
+  shieldStrength: Float
+  attackStrength: Float
   drive: Drive
   speed: Int
   cargoCapacity: Int!
@@ -198,12 +202,12 @@ type DeathStar implements Unit, Ship {
   name: String!
   description: String
   longDescription: String
-  amount: Int
+  quantity: Int
   duration: Int
   requirements: [Requirement]
   structuralIntegrity: Int
-  shieldStrength: Int
-  attackStrength: Int
+  shieldStrength: Float
+  attackStrength: Float
   drive: Drive
   speed: Int
   cargoCapacity: Int!
@@ -211,7 +215,7 @@ type DeathStar implements Unit, Ship {
 }
 
 interface Defense {
-  maxAmount: Int!
+  maxQuantity: Int!
 }
 
 type Destroyer implements Unit, Ship {
@@ -219,12 +223,12 @@ type Destroyer implements Unit, Ship {
   name: String!
   description: String
   longDescription: String
-  amount: Int
+  quantity: Int
   duration: Int
   requirements: [Requirement]
   structuralIntegrity: Int
-  shieldStrength: Int
-  attackStrength: Int
+  shieldStrength: Float
+  attackStrength: Float
   drive: Drive
   speed: Int
   cargoCapacity: Int!
@@ -277,12 +281,12 @@ type EspionageProbe implements Unit, Ship {
   name: String!
   description: String
   longDescription: String
-  amount: Int
+  quantity: Int
   duration: Int
   requirements: [Requirement]
   structuralIntegrity: Int
-  shieldStrength: Int
-  attackStrength: Int
+  shieldStrength: Float
+  attackStrength: Float
   drive: Drive
   speed: Int
   cargoCapacity: Int!
@@ -318,13 +322,13 @@ type GaussCannon implements Unit, Defense {
   name: String!
   description: String
   longDescription: String
-  amount: Int
+  quantity: Int
   duration: Int
   requirements: [Requirement]
   structuralIntegrity: Int
-  shieldStrength: Int
-  attackStrength: Int
-  maxAmount: Int!
+  shieldStrength: Float
+  attackStrength: Float
+  maxQuantity: Int!
 }
 
 type GravitonTech implements Technology {
@@ -343,12 +347,12 @@ type HeavyFighter implements Unit, Ship {
   name: String!
   description: String
   longDescription: String
-  amount: Int
+  quantity: Int
   duration: Int
   requirements: [Requirement]
   structuralIntegrity: Int
-  shieldStrength: Int
-  attackStrength: Int
+  shieldStrength: Float
+  attackStrength: Float
   drive: Drive
   speed: Int
   cargoCapacity: Int!
@@ -360,13 +364,13 @@ type HeavyLaser implements Unit, Defense {
   name: String!
   description: String
   longDescription: String
-  amount: Int
+  quantity: Int
   duration: Int
   requirements: [Requirement]
   structuralIntegrity: Int
-  shieldStrength: Int
-  attackStrength: Int
-  maxAmount: Int!
+  shieldStrength: Float
+  attackStrength: Float
+  maxQuantity: Int!
 }
 
 type HyperspaceDrive implements Technology, Drive {
@@ -420,13 +424,13 @@ type IonCannon implements Unit, Defense {
   name: String!
   description: String
   longDescription: String
-  amount: Int
+  quantity: Int
   duration: Int
   requirements: [Requirement]
   structuralIntegrity: Int
-  shieldStrength: Int
-  attackStrength: Int
-  maxAmount: Int!
+  shieldStrength: Float
+  attackStrength: Float
+  maxQuantity: Int!
 }
 
 type IonTech implements Technology {
@@ -445,12 +449,12 @@ type LargeCargo implements Unit, Ship {
   name: String!
   description: String
   longDescription: String
-  amount: Int
+  quantity: Int
   duration: Int
   requirements: [Requirement]
   structuralIntegrity: Int
-  shieldStrength: Int
-  attackStrength: Int
+  shieldStrength: Float
+  attackStrength: Float
   drive: Drive
   speed: Int
   cargoCapacity: Int!
@@ -462,13 +466,13 @@ type LargeShieldDome implements Unit, Defense {
   name: String!
   description: String
   longDescription: String
-  amount: Int
+  quantity: Int
   duration: Int
   requirements: [Requirement]
   structuralIntegrity: Int
-  shieldStrength: Int
-  attackStrength: Int
-  maxAmount: Int!
+  shieldStrength: Float
+  attackStrength: Float
+  maxQuantity: Int!
 }
 
 type LaserTech implements Technology {
@@ -487,12 +491,12 @@ type LightFighter implements Unit, Ship {
   name: String!
   description: String
   longDescription: String
-  amount: Int
+  quantity: Int
   duration: Int
   requirements: [Requirement]
   structuralIntegrity: Int
-  shieldStrength: Int
-  attackStrength: Int
+  shieldStrength: Float
+  attackStrength: Float
   drive: Drive
   speed: Int
   cargoCapacity: Int!
@@ -504,13 +508,13 @@ type LightLaser implements Unit, Defense {
   name: String!
   description: String
   longDescription: String
-  amount: Int
+  quantity: Int
   duration: Int
   requirements: [Requirement]
   structuralIntegrity: Int
-  shieldStrength: Int
-  attackStrength: Int
-  maxAmount: Int!
+  shieldStrength: Float
+  attackStrength: Float
+  maxQuantity: Int!
 }
 
 type MetalMine implements Technology, Building {
@@ -637,13 +641,13 @@ type PlasmaTurret implements Unit, Defense {
   name: String!
   description: String
   longDescription: String
-  amount: Int
+  quantity: Int
   duration: Int
   requirements: [Requirement]
   structuralIntegrity: Int
-  shieldStrength: Int
-  attackStrength: Int
-  maxAmount: Int!
+  shieldStrength: Float
+  attackStrength: Float
+  maxQuantity: Int!
 }
 
 type Player {
@@ -682,12 +686,12 @@ type Recycler implements Unit, Ship {
   name: String!
   description: String
   longDescription: String
-  amount: Int
+  quantity: Int
   duration: Int
   requirements: [Requirement]
   structuralIntegrity: Int
-  shieldStrength: Int
-  attackStrength: Int
+  shieldStrength: Float
+  attackStrength: Float
   drive: Drive
   speed: Int
   cargoCapacity: Int!
@@ -731,13 +735,13 @@ type RocketLauncher implements Unit, Defense {
   name: String!
   description: String
   longDescription: String
-  amount: Int
+  quantity: Int
   duration: Int
   requirements: [Requirement]
   structuralIntegrity: Int
-  shieldStrength: Int
-  attackStrength: Int
-  maxAmount: Int!
+  shieldStrength: Float
+  attackStrength: Float
+  maxQuantity: Int!
 }
 
 type ShieldingTech implements Technology {
@@ -777,12 +781,12 @@ type SmallCargo implements Unit, Ship {
   name: String!
   description: String
   longDescription: String
-  amount: Int
+  quantity: Int
   duration: Int
   requirements: [Requirement]
   structuralIntegrity: Int
-  shieldStrength: Int
-  attackStrength: Int
+  shieldStrength: Float
+  attackStrength: Float
   drive: Drive
   speed: Int
   cargoCapacity: Int!
@@ -794,13 +798,13 @@ type SmallShieldDome implements Unit, Defense {
   name: String!
   description: String
   longDescription: String
-  amount: Int
+  quantity: Int
   duration: Int
   requirements: [Requirement]
   structuralIntegrity: Int
-  shieldStrength: Int
-  attackStrength: Int
-  maxAmount: Int!
+  shieldStrength: Float
+  attackStrength: Float
+  maxQuantity: Int!
 }
 
 type SolarPlant implements Technology, Building {
@@ -821,12 +825,12 @@ type SolarSatellite implements Unit, Ship {
   name: String!
   description: String
   longDescription: String
-  amount: Int
+  quantity: Int
   duration: Int
   requirements: [Requirement]
   structuralIntegrity: Int
-  shieldStrength: Int
-  attackStrength: Int
+  shieldStrength: Float
+  attackStrength: Float
   drive: Drive
   speed: Int
   cargoCapacity: Int!
@@ -860,12 +864,12 @@ interface Unit {
   name: String!
   description: String
   longDescription: String
-  amount: Int
+  quantity: Int
   duration: Int
   requirements: [Requirement]
   structuralIntegrity: Int
-  shieldStrength: Int
-  attackStrength: Int
+  shieldStrength: Float
+  attackStrength: Float
 }
 
 type WeaponsTech implements Technology {
