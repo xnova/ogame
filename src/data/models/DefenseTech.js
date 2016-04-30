@@ -35,6 +35,14 @@ const DefenseTech = Model.define('DefenseTech', {
     defaultValue: 0,
   },
 
+}, {
+  instanceMethods: {
+
+    requires(tech, { level }) {
+      this.unit.baseTech.addRequirement(tech.techId, { level });
+    },
+
+  },
 });
 
 export default DefenseTech;

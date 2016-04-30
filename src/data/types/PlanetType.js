@@ -9,7 +9,7 @@ import {
 import CoordinatesType from './CoordinatesType';
 import buildings from '../queries/buildings';
 import ships from '../queries/planet.ships';
-import defenses from '../queries/defenses';
+import defenses from '../queries/planet.defenses';
 
 const PlanetType = new ObjectType({
   name: 'Planet',

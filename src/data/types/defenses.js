@@ -4,13 +4,13 @@ import {
   GraphQLNonNull as NonNull,
 } from 'graphql';
 import UnitType, { UnitMixin } from './UnitType';
-import DefenseType, { DefenseMixin } from './DefenseType';
+import DefenseInterface, { DefenseMixin } from './DefenseInterface';
 
 class Defense extends ObjectType {
   constructor(name) {
     super({
       name,
-      interfaces: [UnitType, DefenseType],
+      interfaces: [UnitType, DefenseInterface],
       fields: {
         id: { type: new NonNull(ID) },
         ...UnitMixin,
@@ -21,11 +21,4 @@ class Defense extends ObjectType {
   }
 }
 
-export const RocketLauncherType = new Defense('RocketLauncher');
-export const LightLaserType = new Defense('LightLaser');
-export const HeavyLaserType = new Defense('HeavyLaser');
-export const GaussCannonType = new Defense('GaussCannon');
-export const IonCannonType = new Defense('IonCannon');
-export const PlasmaTurretType = new Defense('PlasmaTurret');
-export const SmallShieldDomeType = new Defense('SmallShieldDome');
-export const LargeShieldDomeType = new Defense('LargeShieldDome');
+export const DefenseType = new Defense('DefenseType');

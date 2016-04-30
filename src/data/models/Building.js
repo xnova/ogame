@@ -52,6 +52,10 @@ Building.DEUTERIUM_TANK_ID = 24;
 Building.RESEARCH_LAB_ID = 31;
 Building.TERRAFORMER_ID = 33;
 Building.ALLIANCE_DEPOT_ID = 34;
+Building.SPACE_DOCK_ID = 36;
+Building.LUNAR_BASE_ID = 41;
+Building.SENSOR_PHALANX_ID = 42;
+Building.JUMP_GATE_ID = 43;
 Building.MISSILE_SILO_ID = 44;
 
 export default Building;

@@ -10,10 +10,16 @@ const TechnologyTech = Model.define('TechnologyTech', {
 
 }, {
   instanceMethods: {
+
     async getCosts(level) {
       const levelTech = await this.getLevelTech();
       return levelTech.getCosts(level);
     },
+
+    requires(tech, { level }) {
+      this.levelTech.baseTech.addRequirement(tech.techId, { level });
+    },
+
   },
 });
 

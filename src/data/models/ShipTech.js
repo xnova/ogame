@@ -51,6 +51,10 @@ const ShipTech = Model.define('ShipTech', {
       this.addRapidFire(tech.techId, args);
     },
 
+    requires(tech, { level }) {
+      this.unit.baseTech.addRequirement(tech.techId, { level });
+    },
+
   },
 });
 
