@@ -1,3 +1,4 @@
+import Defense from './Defense';
 import RocketLauncher from './RocketLauncher';
 import LightLaser from './LightLaser';
 import HeavyLaser from './HeavyLaser';
@@ -9,6 +10,7 @@ import LargeShieldDome from './LargeShieldDome';
 
 
 export default {
+  Defense,
   RocketLauncher,
   LightLaser,
   HeavyLaser,

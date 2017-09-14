@@ -1,0 +1,9 @@
+apps:
+  - script   : ./build/web.js
+    name     : 'web'
+#    instances: 4
+#    exec_mode: cluster
+    watch    : "build"
+    node_args: --nouse-idle-notification --expose-gc
+    env:
+      SPEED: 100

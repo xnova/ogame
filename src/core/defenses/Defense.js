@@ -12,13 +12,13 @@ Defense.prototype = {
 
   cost: {},
 
-  max: Infinity,
+  max: +Infinity,
 
   // http://ogame.wikia.com/wiki/Shield_Power
-  basicShield: 1,
+  baseShield: 1,
 
   // http://ogame.wikia.com/wiki/Weapons_Technology
-  basicAttack: 1,
+  baseAttack: 1,
 
   getDescription() {
     return "${this.description} \n\n After a battle, there is up to a ${100*REBUILD_CHANCE}% chance that failed defensive facilities can be returned to use.";
@@ -41,7 +41,7 @@ Defense.prototype = {
   /**
    * http://ogame.wikia.com/wiki/Structural_Integrity
    */
-  getBasicStructuralIntegrity() {
+  getBaseStructuralIntegrity() {
     const cost = this.cost;
     return cost.metal + cost.crystal;
   },
@@ -49,8 +49,8 @@ Defense.prototype = {
   /**
    * http://ogame.wikia.com/wiki/Hull_plating
    */
-  getBasicHull() {
-    return this.getBasicStructuralIntegrity() / 10;
+  getBaseHull() {
+    return this.getBaseStructuralIntegrity() / 10;
   },
 
   /**
@@ -58,7 +58,7 @@ Defense.prototype = {
    */
   getShield() {
     const shieldTech = this.player.technologies.shieldTech;
-    return this.basicShield * (1 + 0.1 * shieldTech.level);
+    return this.baseShield * (1 + 0.1 * shieldTech.level);
   },
 
   /**
@@ -66,7 +66,7 @@ Defense.prototype = {
    */
   getAttack() {
     const weaponsTech = this.player.technologies.weaponsTech;
-    return this.basicAttack * (1 + 0.1 * weaponsTech.level);
+    return this.baseAttack * (1 + 0.1 * weaponsTech.level);
   },
 
   /**
@@ -74,7 +74,7 @@ Defense.prototype = {
    */
   getHull() {
     const armourTech = this.player.technologies.armourTech;
-    return this.getBasicHull() * (1 + 0.1 * armourTech.level);
+    return this.getBaseHull() * (1 + 0.1 * armourTech.level);
   },
 
 }

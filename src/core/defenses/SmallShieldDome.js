@@ -19,6 +19,8 @@ SmallShieldDome.prototype = {
     crystal: 10000,
   },
 
+  max: 1,
+
   // http://ogame.wikia.com/wiki/Shield_Power
   basicShield: 2000,
 
