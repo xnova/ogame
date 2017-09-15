@@ -10,11 +10,12 @@ const description = 'Gigantic solar arrays are used to generate power for the mi
  * @param {*} level
  */
 function SolarPlant(level) {
-
+  Building.call(this, level);
 }
 
 SolarPlant.prototype = {
   ...Building.prototype,
+  id: 'solarPlant',
   name,
   shortDesc,
   description,

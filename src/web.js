@@ -37,6 +37,9 @@ async function fakeData() {
     const arkeros = await createPlayer('arkeros');
     const homePlanet = await arkeros.getHomePlanet();
     homePlanet.setName('Arrakis');
+    homePlanet.incrBuildingLevel('metalMine', 32);
+    homePlanet.incrBuildingLevel('crystalMine', 29);
+    homePlanet.incrBuildingLevel('solarPlant', 16);
 
     const trantor = await arkeros.createPlanet('1:1:2');
     trantor.setName('Trantor');
@@ -46,6 +49,9 @@ async function fakeData() {
 
     const rakdos = await arkeros.createPlanet('1:1:4');
     rakdos.setName('Rakdos');
+    rakdos.incrBuildingLevel('metalMine', 35);
+    rakdos.incrBuildingLevel('deuteriumSynthesizer', 33);
+    rakdos.incrBuildingLevel('solarPlant', 5);
 
     const colony = await arkeros.createPlanet('2:8:8');
   } catch(e) {

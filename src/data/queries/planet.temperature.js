@@ -19,18 +19,12 @@
  * @flow
  */
 
-import { GraphQLNonNull as NonNull } from 'graphql';
-
-import CoordinatesType from '../types/CoordinatesType';
+import { GraphQLInt as IntType } from 'graphql';
 
 
-const coordinates = {
-  type: new NonNull(CoordinatesType),
-  resolve(planet) {
-    const { coordinates } = planet;
-    const [galaxy, system, position] = coordinates;
-    return { galaxy, system, position };
-  },
+const diameter = {
+  type: IntType,
+  resolve: planet => planet.getTemperature(),
 };
 
-export default coordinates;
+export default diameter;

@@ -19,18 +19,15 @@
  * @flow
  */
 
-import { GraphQLNonNull as NonNull } from 'graphql';
+import { GraphQLList as List } from 'graphql';
+import BuildingType from '../types/BuildingType';
 
-import CoordinatesType from '../types/CoordinatesType';
 
-
-const coordinates = {
-  type: new NonNull(CoordinatesType),
+const buildings = {
+  type: new List(BuildingType),
   resolve(planet) {
-    const { coordinates } = planet;
-    const [galaxy, system, position] = coordinates;
-    return { galaxy, system, position };
+    return planet.getBuildings();
   },
 };
 
-export default coordinates;
+export default buildings;

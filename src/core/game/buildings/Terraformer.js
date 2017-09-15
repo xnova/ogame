@@ -13,11 +13,12 @@ Each terraformer level allows 5 fields to be cultivated. With each level, the te
  * @param {*} level
  */
 function Terraformer(level) {
-
+  Building.call(this, level);
 }
 
 Terraformer.prototype = {
   ...Building.prototype,
+  id: 'terraformer',
   name,
   shortDesc,
   description,

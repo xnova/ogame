@@ -27,7 +27,9 @@ import {
 
 import name from '../queries/planet.name';
 import diameter from '../queries/planet.diameter';
+import temperature from '../queries/planet.temperature';
 import fields from '../queries/planet.fields';
+import buildings from '../queries/planet.buildings';
 import coordinates from '../queries/planet.coordinates';
 
 
@@ -37,8 +39,10 @@ const PlanetType = new ObjectType({
     id: { type: new NonNull(ID) },
     name,
     diameter,
+    temperature,
     fields,
     coordinates,
+    buildings,
   },
 });
 

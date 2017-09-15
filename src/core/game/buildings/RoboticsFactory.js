@@ -10,11 +10,12 @@ const description = 'The Robotics Factory primary goal is the production of Stat
  * @param {*} level
  */
 function RoboticsFactory(level) {
-
+  Building.call(this, level);
 }
 
 RoboticsFactory.prototype = {
   ...Building.prototype,
+  id: 'roboticsFactory',
   name,
   shortDesc,
   description,

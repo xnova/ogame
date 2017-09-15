@@ -10,11 +10,12 @@ const description = 'Deuterium is also called heavy hydrogen. It is a stable iso
  * @param {*} level
  */
 function DeuteriumSynthesizer(level) {
-
+  Building.call(this, level);
 }
 
 DeuteriumSynthesizer.prototype = {
   ...Building.prototype,
+  id: 'deuteriumSynthesizer',
   name,
   shortDesc,
   description,

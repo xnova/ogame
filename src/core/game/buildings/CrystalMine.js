@@ -10,11 +10,12 @@ const description = 'Metal is the primary resource used in the foundation of you
  * @param {*} level
  */
 function CrystalMine(level) {
-
+  Building.call(this, level);
 }
 
 CrystalMine.prototype = {
   ...Building.prototype,
+  id: 'crystalMine',
   name,
   shortDesc,
   description,

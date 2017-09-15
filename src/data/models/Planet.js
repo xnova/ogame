@@ -23,6 +23,7 @@ import gaussian from 'gaussian';
 
 import redis from '../redis';
 import PlanetCore, { diameterToFields } from '../../core/game/Planet';
+import { factoryBuilding } from '../../core/game/buildings';
 import { randomInt } from '../../utils/random';
 import { HOMEPLANET_DIAMETER } from '../../config';
 
@@ -72,6 +73,10 @@ Planet.prototype = {
     return await redis.hgetAsync(this.key, DIAMETER_KEY);
   },
 
+  async getTemperature(): Promise<number> {
+    return await redis.hgetAsync(this.key, TEMPERATURE_KEY);
+  },
+
   async getFields(): Promise<number> {
     return await redis.hgetAsync(this.key, FIELDS_KEY);
   },
@@ -83,6 +88,25 @@ Planet.prototype = {
   async getBuildingLevel(buildingId: string): Promise<number> {
     const level = await redis.hget(this.buildingsKey, buildingId) | 0;
     return level;
+  },
+
+  async getBuildings(): Promise<Array<Building>> {
+    const buildingLevels = await redis.hgetallAsync(this.buildingsKey);
+    if (!buildingLevels) return [];
+    console.log(buildingLevels);
+    const buildings = [];
+    for (const [buildingId, level] of Object.entries(buildingLevels)) {
+      buildings.push(factoryBuilding(buildingId, parseInt(level, 10)));
+    }
+    return buildings;
+  },
+
+  incrBuildingLevel(buildingId: string, by=1): Promise {
+    return redis.hincrbyAsync(this.buildingsKey, buildingId, by);
+  },
+
+  decrBuildingLevel(buildingId: string, by=1): Promise {
+    return this.incrBuildingLevel(buildingId, -by);
   },
 
   async getShipAmount(shipId: string): Promise<number> {
@@ -115,12 +139,18 @@ export async function createPlanet(id: string, player): Promise<Planet> {
   const fields = diameterToFields(diameter);
   const usedFields = 0;
 
-  await redis.hmsetAsync(planet.key,
-    TEMPERATURE_KEY, temperature,
-    DIAMETER_KEY, diameter,
-    FIELDS_KEY, fields,
-    USED_FIELDS_KEY, usedFields,
-  );
+  await Promise.all([
+    redis.hmsetAsync(planet.key,
+      TEMPERATURE_KEY, temperature,
+      DIAMETER_KEY, diameter,
+      FIELDS_KEY, fields,
+      USED_FIELDS_KEY, usedFields,
+    ),
+    // clear old buildings, ships & defenses
+    redis.delAsync(planet.buildingsKey),
+    redis.delAsync(planet.shipsKey),
+    redis.delAsync(planet.defensesKey),
+  ]);
 
   return planet;
 }

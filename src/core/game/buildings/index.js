@@ -26,7 +26,7 @@ import DeuteriumSynthesizer from './DeuteriumSynthesizer';
 import SolarPlant from './SolarPlant';
 
 
-export function createBuilding(buildingId: string, level: number): Building {
+export function factoryBuilding(buildingId: string, level: number): Building {
   switch (buildingId) {
     case 'metalMine':
       return new MetalMine(level);

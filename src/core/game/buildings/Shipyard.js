@@ -14,11 +14,12 @@ requirements.set(RoboticsFactory, 2);
  * @param {*} level
  */
 function Shipyard(level) {
-
+  Building.call(this, level);
 }
 
 Shipyard.prototype = {
   ...Building.prototype,
+  id: 'shipyard',
   name,
   shortDesc,
   description,

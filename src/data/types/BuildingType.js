@@ -19,18 +19,28 @@
  * @flow
  */
 
-import { GraphQLNonNull as NonNull } from 'graphql';
+import {
+  GraphQLObjectType as ObjectType,
+  GraphQLID as ID,
+  GraphQLInt as IntType,
+  GraphQLString as StringType,
+  GraphQLNonNull as NonNull,
+} from 'graphql';
 
-import CoordinatesType from '../types/CoordinatesType';
+import name from '../queries/planet.name';
 
-
-const coordinates = {
-  type: new NonNull(CoordinatesType),
-  resolve(planet) {
-    const { coordinates } = planet;
-    const [galaxy, system, position] = coordinates;
-    return { galaxy, system, position };
+const PlanetType = new ObjectType({
+  name: 'Building',
+  fields: {
+    id: { type: new NonNull(ID) },
+    name: { type: new NonNull(StringType) },
+    shortDesc: { type: new NonNull(StringType) },
+    description: {
+      type: new NonNull(StringType),
+      resolve: building => building.getDescription(),
+    },
+    level: { type: new NonNull(IntType) },
   },
-};
+});
 
-export default coordinates;
+export default PlanetType;
