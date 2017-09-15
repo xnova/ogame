@@ -16,17 +16,43 @@
  * You should have received a copy of the GNU General Public License
  * along with Xnova OGame.  If not, see <http://www.gnu.org/licenses/>.
  *
+ * @flow
  */
 
 import express from 'express';
 import expressGraphQL from 'express-graphql';
 import path from 'path';
 
+import Player, { createPlayer } from './data/models/Player';
+import Planet, { createPlanet } from './data/models/Planet';
 import logger from './core/logger';
 import { forceGC } from './utils/gc';
 import schema from './data/schema';
 import { SECOND, HOUR } from './core/constants';
 import { PORT } from './config';
+
+
+async function fakeData() {
+  try {
+    const arkeros = await createPlayer('arkeros');
+    const homePlanet = await arkeros.getHomePlanet();
+    homePlanet.setName('Arrakis');
+
+    const trantor = await arkeros.createPlanet('1:1:2');
+    trantor.setName('Trantor');
+
+    const terminus = await arkeros.createPlanet('1:1:3');
+    terminus.setName('Terminus');
+
+    const rakdos = await arkeros.createPlanet('1:1:4');
+    rakdos.setName('Rakdos');
+
+    const colony = await arkeros.createPlanet('2:8:8');
+  } catch(e) {
+    logger.error(e);
+  }
+}
+fakeData();
 
 const app = express();
 

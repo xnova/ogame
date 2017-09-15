@@ -19,24 +19,15 @@
  * @flow
  */
 
-import {
-  GraphQLObjectType as ObjectType,
-  GraphQLID as ID,
-  GraphQLString as StringType,
-  GraphQLNonNull as NonNull,
-} from 'graphql';
-
-import planets from '../queries/player.planets';
+import { GraphQLList as List } from 'graphql';
+import PlanetType from '../types/PlanetType';
 
 
-const UserType = new ObjectType({
-  name: 'User',
-  fields: {
-    id: { type: new NonNull(ID) },
-    email: { type: StringType },
-    name: { type: StringType },
-    planets,
+const planets = {
+  type: new List(PlanetType),
+  resolve(player) {
+    return player.getPlanets();
   },
-});
+};
 
-export default UserType;
+export default planets;

@@ -11,6 +11,17 @@ Building.prototype = {
 
   dismantlable: true,
 
+  getDescription(): string {
+    let description = this.description;
+    if (!this.dismantlable) {
+      description = `${description}
+
+      Once built, the ${this.name} cannot be dismantled.`
+    }
+
+    return description;
+  },
+
   /**
    * http://ogame.wikia.com/wiki/Buildings#Buildings_construction_time
    * Returns the construction time of this building on the given planet in seconds.

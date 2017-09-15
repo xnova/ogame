@@ -21,29 +21,44 @@
 
 import redis from '../redis';
 import PlayerCore from '../../core/game/Player';
-import Planet from './Planet';
-import { createHomePlanet } from './Planet';
+import Planet, {
+  createHomePlanet,
+  createPlanet,
+} from './Planet';
 
-
+const HOMEPLANET_KEY = 'homePlanet';
 function Player(name: string) {
+  this.id = name;
   this.name = name;
   // keys
-  key = `player:${name}`;
+  const key = `player:${name}`;
   this.key = key;
-  this.homePlanetKey = `${key}:homePlanet`;
   this.planetsKey = `${key}:planets`;
-  this.technologiestKey = `${key}:technologies`;
+  this.technologiesKey = `${key}:technologies`;
 }
 Player.prototype = {
   ...PlayerCore.prototype,
+
+  async createPlanet(planetId: string): Promise<Planet> {
+    const planet = await createPlanet(planetId, this);
+    await redis.saddAsync(this.planetsKey, planet.id);
+    return planet;
+  },
 
   /**
    * http://ogame.wikia.com/wiki/Home_Planet
    */
   async getHomePlanet(): Promise<Planet> {
     // TODO remember this result, since doesnt change much
-    const planetId = await redis.getAsync(this.homePlanetKey);
+    const planetId = await redis.hgetAsync(this.key, HOMEPLANET_KEY);
     return new Planet(planetId, this);
+  },
+
+  async getPlanets(): Promise<Array<Planet>> {
+    // TODO remember this result, since doesnt change much
+    const planetsId = await redis.smembersAsync(this.planetsKey);
+    const planets = planetsId.map(planetId => new Planet(planetId, this))
+    return planets;
   },
 
   async getTechnology(key: string): Promise<Technology> {
@@ -52,13 +67,20 @@ Player.prototype = {
 
 };
 
-export async function createPlayer(name) {
+export async function createPlayer(name): Promise<Player> {
   const player = new Player(name);
   const exists = await redis.existsAsync(player.key);
-  if (exists) throw new Error(`${player.key} already exists`);
+  // TODO enable again
+  // if (exists) throw new Error(`${player.key} already exists`);
 
   const homePlanet = await createHomePlanet(player);
-  await redis.setAsync(player.homePlanetKey, planet.id);
+  await redis.hmsetAsync(player.key,
+    HOMEPLANET_KEY, homePlanet.id,
+  );
+
+  await redis.saddAsync(player.planetsKey, homePlanet.id);
+
+  return player;
 }
 
 export default Player;

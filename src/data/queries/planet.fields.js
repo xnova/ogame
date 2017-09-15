@@ -16,27 +16,14 @@
  * You should have received a copy of the GNU General Public License
  * along with Xnova OGame.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @flow
  */
 
-import {
-  GraphQLObjectType as ObjectType,
-  GraphQLID as ID,
-  GraphQLString as StringType,
-  GraphQLNonNull as NonNull,
-} from 'graphql';
-
-import planets from '../queries/player.planets';
+import { GraphQLInt as IntType } from 'graphql';
 
 
-const UserType = new ObjectType({
-  name: 'User',
-  fields: {
-    id: { type: new NonNull(ID) },
-    email: { type: StringType },
-    name: { type: StringType },
-    planets,
-  },
-});
+const fields = {
+  type: IntType,
+  resolve: planet => planet.getFields(),
+};
 
-export default UserType;
+export default fields;

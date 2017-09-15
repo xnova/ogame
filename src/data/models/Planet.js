@@ -23,8 +23,8 @@ import gaussian from 'gaussian';
 
 import redis from '../redis';
 import PlanetCore, { diameterToFields } from '../../core/game/Planet';
-import { randomInt } from '../utils/random';
-import { HOMEPLANET_DIAMETER } from '../config';
+import { randomInt } from '../../utils/random';
+import { HOMEPLANET_DIAMETER } from '../../config';
 
 
 const NAME_KEY = 'name';
@@ -38,7 +38,7 @@ function Planet(id: string, player: Player) {
   this.player = player;
   this.coordinates = id.split(':').map(str => parseInt(str, 10));
   // keys
-  key = `planet:${id}`;
+  const key = `planet:${id}`;
   this.key = key;
   this.buildingsKey = `${key}:buildings`;
   this.shipsKey = `${key}:ships`;
@@ -56,9 +56,9 @@ Planet.prototype = {
   },
 
   async getName(): Promise<string> {
-    const name = await redis.hgetAsync(planet.key, NAME_KEY);
-    if (!(name && name.length > 0)) return this.getDefaultName();
-    return name;
+    const name = await redis.hgetAsync(this.key, NAME_KEY);
+    if (name && name.length > 0) return name;
+    return this.getDefaultName();
   },
 
   setName(name: string): Promise {
@@ -86,21 +86,13 @@ Planet.prototype = {
   },
 
   async getShipAmount(shipId: string): Promise<number> {
-    const level = await redis.hget(this.shipsKey, shipId) | 0;
-    return level;
+    const amount = await redis.hget(this.shipsKey, shipId) | 0;
+    return amount;
   },
 
   async getDefenseAmount(defenseId: string): Promise<number> {
-    const level = await redis.hget(this.defensesKey, defenseId) | 0;
-    return level;
-  },
-
-  async getShip(shipId: string): Promise<Ship> {
-    // TODO
-  },
-
-  async getDefense(defenseId: string): Promise<Defense> {
-    // TODO
+    const amount = await redis.hget(this.defensesKey, defenseId) | 0;
+    return amount;
   },
 
 };
@@ -113,7 +105,7 @@ function generateTemperature(slot: number): number {
 }
 
 // TODO
-const diameterDistribution = gaussian(HOMEPLANET_DIAMETER, 5000);
+const diameterDistribution = gaussian(HOMEPLANET_DIAMETER, 5000**2);
 export async function createPlanet(id: string, player): Promise<Planet> {
   const planet = new Planet(id, player);
   const slot = planet.coordinates[2];

@@ -43,8 +43,8 @@ Planet.prototype = {
 
   async getName(): Promise<string> {
     const name = this.name;
-    if (name.length === 0) return this.getDefaultName();
-    return name;
+    if (name && name.length) return name;
+    return this.getDefaultName();
   },
 
   async getDiameter(): Promise<number> {

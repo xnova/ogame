@@ -21,22 +21,17 @@
 
 import {
   GraphQLObjectType as ObjectType,
-  GraphQLID as ID,
-  GraphQLString as StringType,
-  GraphQLNonNull as NonNull,
+  GraphQLInt as IntType,
 } from 'graphql';
 
-import planets from '../queries/player.planets';
 
-
-const UserType = new ObjectType({
-  name: 'User',
+const CoordinatesType = new ObjectType({
+  name: 'Coordinates',
   fields: {
-    id: { type: new NonNull(ID) },
-    email: { type: StringType },
-    name: { type: StringType },
-    planets,
+    galaxy: { type: IntType },
+    system: { type: IntType },
+    position: { type: IntType },
   },
 });
 
-export default UserType;
+export default CoordinatesType;
