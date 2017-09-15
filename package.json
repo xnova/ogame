@@ -1,8 +1,45 @@
 {
   "name": "ogame",
-  "version": "0.0.1",
+  "version": "0.0.0",
+  "license": "GPL-3.0",
+  "engines": {
+    "node": ">=6.5",
+    "npm": ">=3.10"
+  },
   "dependencies": {
+    "babel-polyfill": "^6.26.0",
+    "bluebird": "^3.5.0",
+    "express": "^4.15.4",
+    "express-graphql": "^0.6.11",
+    "gaussian": "^1.1.0",
+    "graphql": "^0.11.3",
+    "passport": "^0.4.0",
+    "redis": "^2.8.0",
+    "redlock": "^3.0.0",
+    "winston": "^2.3.1"
   },
   "devDependencies": {
+    "assets-webpack-plugin": "^3.5.1",
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-plugin-transform-flow-strip-types": "^6.22.0",
+    "babel-preset-env": "^1.6.0",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-2": "^6.24.1",
+    "eslint": "^4.6.1",
+    "flow-bin": "^0.54.1",
+    "webpack": "^3.5.6",
+    "webpack-bundle-analyzer": "^2.9.0"
+  },
+  "scripts": {
+    "lint-js": "eslint --ignore-path .gitignore --ignore-pattern \"!**/.*\" .",
+    "lint": "yarn run lint-js && yarn run lint-css",
+    "fix-js": "yarn run lint-js -- --fix",
+    "fix-css": "yarn run lint-css -- --fix",
+    "fix": "yarn run fix-js && yarn run fix-css",
+    "bundle": "babel-node tools/run bundle",
+    "build": "babel-node tools/run build",
+    "build-stats": "yarn run build -- --release --analyse"
   }
 }

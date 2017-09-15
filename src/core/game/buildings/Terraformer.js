@@ -31,7 +31,7 @@ Terraformer.prototype = {
   },
   dismantlable: false,
 
-  getExtraFields() {
+  getExtraFields(): number {
     return Math.floor(5.5 * this.level);
   },
 }

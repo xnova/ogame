@@ -1,0 +1,11 @@
+{
+  "terminal.integrated.shellArgs.osx": ["-l"],
+  "editor.fontSize": 14,
+  "editor.fontFamily": "Source Code Pro",
+  "terminal.integrated.fontFamily": "Source Code Pro",
+  "terminal.integrated.fontSize": 14,
+  "licenser.author": "Rafael Arquero (@arkeros)",
+  "licenser.license": "GPLv3",
+  "licenser.useSingleLineStyle": false,
+  "licenser.projectName": "Xnova OGame"
+}

@@ -18,21 +18,3 @@
  *
  */
 
-if (process.env.BROWSER) {
-  throw new Error('Do not import `config.js` from inside the client-side code.');
-}
-
-export const PORT = process.env.PORT || 3000;
-
-export const REDIS_URL = process.env.REDIS_URL || 'redis://localhost:6379';
-
-// topology
-// TODO circular topology
-export const MIN_GALAXY = process.env.MIN_GALAXY || 1;
-export const MAX_GALAXY = process.env.MAX_GALAXY || 9;
-export const MIN_SYSTEM = process.env.MIN_SYSTEM || 1;
-export const MAX_SYSTEM = process.env.MAX_SYSTEM || 499;
-export const MIN_PLANET = process.env.MIN_PLANET || 1;
-export const MAX_PLANET = process.env.MAX_PLANET || 15;
-
-export const HOMEPLANET_DIAMETER = process.env.HOMEPLANET_DIAMETER || 12800;

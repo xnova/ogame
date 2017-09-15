@@ -16,23 +16,39 @@
  * You should have received a copy of the GNU General Public License
  * along with Xnova OGame.  If not, see <http://www.gnu.org/licenses/>.
  *
+ * @flow
  */
 
-if (process.env.BROWSER) {
-  throw new Error('Do not import `config.js` from inside the client-side code.');
+import type { Coordinates } from '../core/game/types';
+
+
+/**
+ * http://ogame.wikia.com/wiki/Distance
+ * @param {*} p
+ * @param {*} q
+ */
+function distance(p: Coordinates, q: Coordinates) {
+  const galaxyDiff = p[0] - q[0];
+  if (galaxyDiff) {
+    return 20000 * Math.abs(galaxyDiff);
+  }
+
+  const systemDiff = p[1] - q[1];
+  if (systemDiff) {
+    return 2700 + 95 * Math.abs(systemDiff);
+  }
+
+  const planetDiff = p[2] - q[2];
+  if (planetDiff) {
+    return 1000 + 5 * Math.abs(planetDiff);
+  }
+
+  // TODO ?
+  if (p.type !== q.type) {
+    return 5;
+  }
+
+  return 0;
 }
 
-export const PORT = process.env.PORT || 3000;
-
-export const REDIS_URL = process.env.REDIS_URL || 'redis://localhost:6379';
-
-// topology
-// TODO circular topology
-export const MIN_GALAXY = process.env.MIN_GALAXY || 1;
-export const MAX_GALAXY = process.env.MAX_GALAXY || 9;
-export const MIN_SYSTEM = process.env.MIN_SYSTEM || 1;
-export const MAX_SYSTEM = process.env.MAX_SYSTEM || 499;
-export const MIN_PLANET = process.env.MIN_PLANET || 1;
-export const MAX_PLANET = process.env.MAX_PLANET || 15;
-
-export const HOMEPLANET_DIAMETER = process.env.HOMEPLANET_DIAMETER || 12800;
+export default distance;
