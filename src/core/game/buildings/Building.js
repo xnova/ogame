@@ -19,6 +19,8 @@
  * @flow
  */
 
+import moment from 'moment';
+
 import Technology from '../technologies/Technology';
 
 
@@ -45,15 +47,13 @@ Building.prototype = {
 
   /**
    * http://ogame.wikia.com/wiki/Buildings#Buildings_construction_time
-   * Returns the construction time of this building on the given planet in seconds.
+   * Returns the construction time of this building on the given planet.
    */
-  getDuration(planet) {
+  getDuration(buildingSpeed) {
     const cost = this.getCost();
-    const baseDuration = (cost.metal + cost.crystal) * 3600 / 2500;
-
-    const roboticsFactor = 1 + planet.buildings.roboticsFactory.level;
-    const naniteFactor = 2 ** planet.buildings.naniteFactory.level;
-    return baseDuration / (roboticsFactor * naniteFactor);
+    const baseHours = (cost.metal + cost.crystal) / 2500;
+    const hours = baseHours / buildingSpeed;
+    return moment.duration(hours, 'hours');
   }
 
 }

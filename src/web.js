@@ -57,6 +57,7 @@ async function fakeData() {
     rakdos.incrBuildingLevel('solarPlant', 5);
 
     const colony = await arkeros.createPlanet('2:8:8');
+    terminus.improveBuilding('metalMine');
   } catch(e) {
     logger.error(e);
   }
@@ -88,7 +89,7 @@ app.use(
 app.use('/', (req, res) => res.redirect('/graphql'));
 
 app.listen(PORT, () => console.log(
-  `Server is now running in ${process.env.NODE_ENV || 'development'} mode on http://localhost:${PORT}`
+  `WebServer is now running in ${process.env.NODE_ENV || 'development'} mode on http://localhost:${PORT}`
 ));
 
 // Call Garbage Collector every 30 seconds

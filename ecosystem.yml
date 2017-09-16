@@ -6,4 +6,12 @@ apps:
     watch    : "build"
     node_args: --nouse-idle-notification --expose-gc
     env:
-      SPEED: 100
+      SPEED: 24
+      NODE_DEBUG: bull
+  - script : ./build/worker.js
+    name   : 'worker'
+    watch  : "build"
+    node_args: --nouse-idle-notification --expose-gc
+    env:
+      SPEED: 24
+      NODE_DEBUG: bull

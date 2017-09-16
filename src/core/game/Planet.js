@@ -19,7 +19,11 @@
  * @flow
  */
 
-import { factoryBuilding } from './buildings';
+import {
+  factoryBuilding,
+  RoboticsFactory,
+  NaniteFactory,
+} from './buildings';
 
  /**
  * http://ogame.wikia.com/wiki/Diameter
@@ -82,6 +86,18 @@ Planet.prototype = {
 
   async getDefense(defenseId: string) {
 
+  },
+
+  async getBuildingSpeed(): Promise<number> {
+    const [roboticsLevel, naniteLevel] = await Promise.all([
+      this.getBuildingLeveL(RoboticsFactory.prototype.id),
+      this.getBuildingLeveL(NaniteFactory.prototype.id),
+    ]);
+    const roboticsSpeed = 1 + roboticsLevel;
+    const naniteSpeed = 2 ** naniteLevel;
+    const buildingSpeed = roboticsSpeed * naniteSpeed;
+    // TODO multiply by universe speed
+    return buildingSpeed;
   },
 
   getBuildingDuration(building: Building): Promise<number> {

@@ -24,6 +24,8 @@ import MetalMine from './MetalMine';
 import CrystalMine from './CrystalMine';
 import DeuteriumSynthesizer from './DeuteriumSynthesizer';
 import SolarPlant from './SolarPlant';
+import RoboticsFactory from './RoboticsFactory';
+import NaniteFactory from './NaniteFactory';
 
 
 export function factoryBuilding(buildingId: string, level: number): Building {
@@ -36,9 +38,13 @@ export function factoryBuilding(buildingId: string, level: number): Building {
       return new DeuteriumSynthesizer(level);
     case SolarPlant.prototype.id:
       return new SolarPlant(level);
+    case RoboticsFactory.prototype.id:
+      return new RoboticsFactory(level);
+    case NaniteFactory.prototype.id:
+      return new NaniteFactory(level);
     default:
       throw new Error(`Building ${buildingId} doesn't exists!`);
   }
 }
 
-export { Building, MetalMine, CrystalMine, DeuteriumSynthesizer, SolarPlant,  };
+export { Building, MetalMine, CrystalMine, DeuteriumSynthesizer, SolarPlant, RoboticsFactory, NaniteFactory };

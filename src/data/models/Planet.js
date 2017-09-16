@@ -22,10 +22,16 @@
 import gaussian from 'gaussian';
 
 import redis from '../redis';
+import {
+  constructionQueue,
+} from '../queues';
 import PlanetCore, { diameterToFields } from '../../core/game/Planet';
 import { factoryBuilding } from '../../core/game/buildings';
 import { randomInt } from '../../utils/random';
-import { HOMEPLANET_DIAMETER } from '../../config';
+import {
+  HOMEPLANET_DIAMETER,
+  CONSTRUCTION_SPEED,
+} from '../../config';
 
 
 const NAME_KEY = 'name';
@@ -87,7 +93,7 @@ Planet.prototype = {
 
   async getBuildingLevel(buildingId: string): Promise<number> {
     const level = await redis.hget(this.buildingsKey, buildingId) | 0;
-    return level;
+    return parseInt(level, 10);
   },
 
   async getBuildings(): Promise<Array<Building>> {
@@ -116,6 +122,33 @@ Planet.prototype = {
   async getDefenseAmount(defenseId: string): Promise<number> {
     const amount = await redis.hget(this.defensesKey, defenseId) | 0;
     return amount;
+  },
+
+  async improveBuilding(buildingId: string, delta=1) {
+    const currentLevel = await this.getBuildingLevel(buildingId);
+    const nextLevel = currentLevel + delta;
+    if (nextLevel < 0) throw new Error('Buildings at level 0 cannot be demolished!');
+    const building = factoryBuilding(buildingId, nextLevel);
+    const buildingSpeed = await this.getBuildingSpeed();
+    const duration = building.getDuration(CONSTRUCTION_SPEED * buildingSpeed);
+    console.log('duration in ms', duration.asMilliseconds());
+    // TODO transaction
+    const job = await constructionQueue.add(
+      {
+        buildingId,
+        isDemolition: false,
+      },
+      {
+        jobId: this.key,
+        delay: duration.asMilliseconds(),
+        removeOnComplete: true,
+      },
+    );
+    // TODO remove cost resources
+  },
+
+  async demolishBuildin(buildingId: string) {
+    return this.improveBuilding(buildingId, -1);
   },
 
 };

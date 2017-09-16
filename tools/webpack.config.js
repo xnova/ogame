@@ -281,4 +281,20 @@ const webConfig = {
 
 };
 
-export default [clientConfig, webConfig];
+const workerConfig = {
+  ...webConfig,
+
+  name: 'worker',
+
+  entry: {
+    websockets: ['babel-polyfill', './src/worker.js'],
+  },
+
+  output: {
+    ...webConfig.output,
+    filename: '../../worker.js',
+  },
+};
+
+
+export default [clientConfig, webConfig, workerConfig];

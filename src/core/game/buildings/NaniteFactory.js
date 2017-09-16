@@ -22,29 +22,29 @@
 import Building from './Building';
 
 
-const name = 'Robotics Factory';
-const shortDesc = 'Robotic factories provide construction robots to aid in the construction of buildings. Each level increases the speed of the upgrade of buildings.';
-const description = 'The Robotics Factory primary goal is the production of State of the Art construction robots. Each upgrade to the robotics factory results in the production of faster robots, which is used to reduce the time needed to construct buildings.';
+const name = 'Nanite Factory';
+const shortDesc = 'This is the ultimate in robotics technology. Each level cuts the construction time for buildings, ships, and defences.';
+const description = 'A nanomachine, also called a nanite, is a mechanical or electromechanical device whose dimensions are measured in nanometers (millionths of a millimeter, or units of 10^-9 meter). The microscopic size of nanomachines translates into higher operational speed. This factory produces nanomachines that are the ultimate evolution in robotics technology. Once constructed, each upgrade significantly decreases production time for buildings, ships, and defensive structures.';
 
 /**
  * http://ogame.wikia.com/wiki/Robotics_Factory
  * @param {*} level
  */
-function RoboticsFactory(level) {
+function NaniteFactory(level) {
   Building.call(this, level);
 }
 
-RoboticsFactory.prototype = {
+NaniteFactory.prototype = {
   ...Building.prototype,
-  id: 'roboticsFactory',
+  id: 'naniteFactory',
   name,
   shortDesc,
   description,
   baseCost: {
-    metal: 400,
-    crystal: 120,
-    deuterium: 200,
+    metal: 1000000,
+    crystal: 500000,
+    deuterium: 100000,
   },
 }
 
-export default RoboticsFactory;
+export default NaniteFactory;

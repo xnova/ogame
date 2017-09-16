@@ -18,43 +18,40 @@ Technology.prototype = {
 
   requirements: new Map(),
 
-  getDescription() {
+  getDescription(): string {
     return this.description;
   },
 
   /**
    * http://ogame.wikia.com/wiki/Building#Facilities_cost
    */
-  getCost() {
-    const baseCost = this.baseCost;
-    const k = this.costFactor;
-    const level = this.level;
+  getCost(): Resources {
+    const { baseCost, level, costFactor: k } = this;
     return Object.keys(baseCost)
       .reduce((cost, resource) => {
         const b = baseCost[resource];
         cost[resource] = b * (k ** (level - 1));
         return cost;
-    }, {});
+      }, {});
   },
 
   /**
    * https://www.wolframalpha.com/input/?i=sum+b+*+k+%5E+l+from+l%3D1+to+n
    */
-  getAccumulatedCost() {
-    const baseCost = this.baseCost;
-    const k = this.costFactor;
-    const level = this.level;
+  getAccumulatedCost(): Resources {
+    const { baseCost, level, costFactor: k } = this;
     return Object.keys(baseCost)
       .reduce((cost, resource) => {
         const b = baseCost[resource];
         cost[resource] = (b * k * (k ** level - 1)) / (k - 1);
         return cost;
-    }, {});
+      }, {});
   },
 
-  getScore() {
+  getScore(): number {
     const totalCost = this.getAccumulatedCost();
-    const score = (totalCost.metal + totalCost.crystal + totalCost.deuterium) / 1000;
+    const sum = totalCost.metal + totalCost.crystal + totalCost.deuterium;
+    const score = sum / 1000;
   },
 
 }
