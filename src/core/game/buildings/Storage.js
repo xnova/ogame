@@ -19,33 +19,21 @@
  * @flow
  */
 
-import {
-  GraphQLObjectType as ObjectType,
-  GraphQLID as ID,
-  GraphQLNonNull as NonNull,
-} from 'graphql';
+function Storage(level) {
+  this.level = level;
+}
+Storage.prototype = {
 
-import name from '../queries/planet.name';
-import diameter from '../queries/planet.diameter';
-import temperature from '../queries/planet.temperature';
-import fields from '../queries/planet.fields';
-import buildings from '../queries/planet.buildings';
-import resources from '../queries/planet.resources';
-import coordinates from '../queries/planet.coordinates';
+  name: 'Unnamed Building',
 
-
-const PlanetType = new ObjectType({
-  name: 'Planet',
-  fields: {
-    id: { type: new NonNull(ID) },
-    name,
-    diameter,
-    temperature,
-    fields,
-    coordinates,
-    resources,
-    buildings,
+  /**
+   * http://ogame.wikia.com/wiki/Metal_Storage
+   */
+  getCapacity(): number {
+    const { level } = this;
+    const factor = 2.5 * Math.exp(20 * level / 33);
+    const capacity = 5000 * Math.floor(factor);
+    return capacity;
   },
-});
 
-export default PlanetType;
+}

@@ -21,31 +21,18 @@
 
 import {
   GraphQLObjectType as ObjectType,
-  GraphQLID as ID,
+  GraphQLInt as IntType,
   GraphQLNonNull as NonNull,
 } from 'graphql';
 
-import name from '../queries/planet.name';
-import diameter from '../queries/planet.diameter';
-import temperature from '../queries/planet.temperature';
-import fields from '../queries/planet.fields';
-import buildings from '../queries/planet.buildings';
-import resources from '../queries/planet.resources';
-import coordinates from '../queries/planet.coordinates';
 
-
-const PlanetType = new ObjectType({
-  name: 'Planet',
+const ResourcesType = new ObjectType({
+  name: 'Resources',
   fields: {
-    id: { type: new NonNull(ID) },
-    name,
-    diameter,
-    temperature,
-    fields,
-    coordinates,
-    resources,
-    buildings,
+    metal: { type: new NonNull(IntType) },
+    crystal: { type: new NonNull(IntType) },
+    deuterium: { type: new NonNull(IntType) },
   },
 });
 
-export default PlanetType;
+export default ResourcesType;

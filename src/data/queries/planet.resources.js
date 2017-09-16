@@ -19,33 +19,22 @@
  * @flow
  */
 
-import {
-  GraphQLObjectType as ObjectType,
-  GraphQLID as ID,
-  GraphQLNonNull as NonNull,
-} from 'graphql';
+import { GraphQLNonNull as NonNull } from 'graphql';
 
-import name from '../queries/planet.name';
-import diameter from '../queries/planet.diameter';
-import temperature from '../queries/planet.temperature';
-import fields from '../queries/planet.fields';
-import buildings from '../queries/planet.buildings';
-import resources from '../queries/planet.resources';
-import coordinates from '../queries/planet.coordinates';
+import ResourcesType from '../types/ResourcesType';
 
 
-const PlanetType = new ObjectType({
-  name: 'Planet',
-  fields: {
-    id: { type: new NonNull(ID) },
-    name,
-    diameter,
-    temperature,
-    fields,
-    coordinates,
-    resources,
-    buildings,
+const resources = {
+  type: new NonNull(ResourcesType),
+  async resolve(planet) {
+    // https://stackoverflow.com/questions/14810506/map-function-for-objects-instead-of-arrays
+    const myObject = await planet.getResources();
+    return Object.keys(myObject)
+      .reduce((resources, key) => {
+        resources[key] = Math.floor(myObject[key]);
+        return resources;
+    }, {})
   },
-});
+};
 
-export default PlanetType;
+export default resources;

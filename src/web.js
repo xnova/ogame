@@ -57,6 +57,7 @@ async function fakeData() {
     rakdos.incrBuildingLevel('solarPlant', 5);
 
     const colony = await arkeros.createPlanet('2:8:8');
+    terminus.improveBuilding('crystalMine');
     terminus.improveBuilding('metalMine');
   } catch(e) {
     logger.error(e);

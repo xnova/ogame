@@ -20,31 +20,32 @@
  */
 
 import Building from './Building';
+import Storage from './Storage';
 
 
-const name = 'Metal Mine';
-const shortDesc = 'Used in the extraction of metal ore, metal mines are of primary importance to all emerging and established empires.';
-const description = 'Metal is the primary resource used in the foundation of your Empire. At greater depths, the mines can produce more output of viable metal for use in the construction of buildings, ships, defence systems, and research. As the mines drill deeper, more energy is required for maximum production. As metal is the most abundant of all resources available, its value is considered to be the lowest of all resources for trading.';
+const name = 'Deuterium Tank';
+const shortDesc = 'Giant tanks for storing newly-extracted deuterium.';
+const description = 'The Deuterium tank is for storing newly-synthesized deuterium. Once it is processed by the synthesizer, it is piped into this tank for later use. With each upgrade of the tank, the total storage capacity is increased. Once the capacity is reached, no further Deuterium will be synthesized.';
 
 /**
- * http://ogame.wikia.com/wiki/Metal_Mine
+ * http://ogame.wikia.com/wiki/Metal_Storage
  * @param {*} level
  */
-function MetalMine(level) {
+function DeuteriumTank(level) {
   Building.call(this, level);
 }
 
-MetalMine.prototype = {
+DeuteriumTank.prototype = {
   ...Building.prototype,
-  id: 'metalMine',
+  ...Storage.prototype,
+  id: 'deuteriumTank',
   name,
   shortDesc,
   description,
   baseCost: {
-    metal: 60,
-    crystal: 15,
+    metal: 1000,
+    crystal: 1000,
   },
-  costFactor: 1.5,
 }
 
-export default MetalMine;
+export default DeuteriumTank;

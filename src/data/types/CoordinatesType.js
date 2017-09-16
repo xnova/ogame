@@ -22,15 +22,16 @@
 import {
   GraphQLObjectType as ObjectType,
   GraphQLInt as IntType,
+  GraphQLNonNull as NonNull,
 } from 'graphql';
 
 
 const CoordinatesType = new ObjectType({
   name: 'Coordinates',
   fields: {
-    galaxy: { type: IntType },
-    system: { type: IntType },
-    position: { type: IntType },
+    galaxy: { type: new NonNull(IntType) },
+    system: { type: new NonNull(IntType) },
+    position: { type: new NonNull(IntType) },
   },
 });
 

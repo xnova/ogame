@@ -19,33 +19,32 @@
  * @flow
  */
 
-import {
-  GraphQLObjectType as ObjectType,
-  GraphQLID as ID,
-  GraphQLNonNull as NonNull,
-} from 'graphql';
-
-import name from '../queries/planet.name';
-import diameter from '../queries/planet.diameter';
-import temperature from '../queries/planet.temperature';
-import fields from '../queries/planet.fields';
-import buildings from '../queries/planet.buildings';
-import resources from '../queries/planet.resources';
-import coordinates from '../queries/planet.coordinates';
+import Building from './Building';
+import Storage from './Storage';
 
 
-const PlanetType = new ObjectType({
-  name: 'Planet',
-  fields: {
-    id: { type: new NonNull(ID) },
-    name,
-    diameter,
-    temperature,
-    fields,
-    coordinates,
-    resources,
-    buildings,
+const name = 'Metal Storage';
+const shortDesc = 'Provides storage for excess metal.';
+const description = 'This giant storage facility is used to store metal ore. Each level of upgrading increases the amount of metal ore that can be stored. If the stores are full, no further metal will be mined.';
+
+/**
+ * http://ogame.wikia.com/wiki/Metal_Storage
+ * @param {*} level
+ */
+function MetalStorage(level) {
+  Building.call(this, level);
+}
+
+MetalStorage.prototype = {
+  ...Building.prototype,
+  ...Storage.prototype,
+  id: 'metalStorage',
+  name,
+  shortDesc,
+  description,
+  baseCost: {
+    metal: 1000,
   },
-});
+}
 
-export default PlanetType;
+export default MetalStorage;

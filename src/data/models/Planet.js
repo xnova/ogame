@@ -26,6 +26,7 @@ import {
   constructionQueue,
 } from '../queues';
 import PlanetCore, { diameterToFields } from '../../core/game/Planet';
+import Producer from './Producer';
 import { factoryBuilding } from '../../core/game/buildings';
 import { randomInt } from '../../utils/random';
 import {
@@ -53,6 +54,7 @@ function Planet(id: string, player: Player) {
 }
 Planet.prototype = {
   ...PlanetCore.prototype,
+  ...Producer.prototype,
 
   /**
    * http://ogame.wikia.com/wiki/Home_Planet
@@ -124,8 +126,9 @@ Planet.prototype = {
     return amount;
   },
 
-  async improveBuilding(buildingId: string, delta=1) {
+  async improveBuilding(buildingId: string, isDemolition=false) {
     const currentLevel = await this.getBuildingLevel(buildingId);
+    const delta = isDemolition ? -1 : 1;
     const nextLevel = currentLevel + delta;
     if (nextLevel < 0) throw new Error('Buildings at level 0 cannot be demolished!');
     const building = factoryBuilding(buildingId, nextLevel);
@@ -136,7 +139,7 @@ Planet.prototype = {
     const job = await constructionQueue.add(
       {
         buildingId,
-        isDemolition: false,
+        isDemolition,
       },
       {
         jobId: this.key,
@@ -148,7 +151,7 @@ Planet.prototype = {
   },
 
   async demolishBuildin(buildingId: string) {
-    return this.improveBuilding(buildingId, -1);
+    return this.improveBuilding(buildingId, true);
   },
 
 };
@@ -177,6 +180,13 @@ export async function createPlanet(id: string, player): Promise<Planet> {
       DIAMETER_KEY, diameter,
       FIELDS_KEY, fields,
       USED_FIELDS_KEY, usedFields,
+    ),
+    // TODO defaults on config!
+    redis.hmsetAsync(`${planet.key}:resources`,
+      'metal', 500,
+      'crystal', 500,
+      'deuterium', 0,
+      'lastUpdate', Date.now(),
     ),
     // clear old buildings, ships & defenses
     redis.delAsync(planet.buildingsKey),
