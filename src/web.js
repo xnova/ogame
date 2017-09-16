@@ -35,6 +35,9 @@ import { PORT } from './config';
 async function fakeData() {
   try {
     const arkeros = await createPlayer('arkeros');
+    arkeros.incrTechnologyLevel('gravitonTech');
+    arkeros.incrTechnologyLevel('energyTech', 13);
+    arkeros.incrTechnologyLevel('weaponsTech', 18);
     const homePlanet = await arkeros.getHomePlanet();
     homePlanet.setName('Arrakis');
     homePlanet.incrBuildingLevel('metalMine', 32);

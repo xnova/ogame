@@ -28,13 +28,13 @@ import SolarPlant from './SolarPlant';
 
 export function factoryBuilding(buildingId: string, level: number): Building {
   switch (buildingId) {
-    case 'metalMine':
+    case MetalMine.prototype.id:
       return new MetalMine(level);
-    case 'crystalMine':
+    case CrystalMine.prototype.id:
       return new CrystalMine(level);
-    case 'deuteriumSynthesizer':
+    case DeuteriumSynthesizer.prototype.id:
       return new DeuteriumSynthesizer(level);
-    case 'solarPlant':
+    case SolarPlant.prototype.id:
       return new SolarPlant(level);
     default:
       throw new Error(`Building ${buildingId} doesn't exists!`);

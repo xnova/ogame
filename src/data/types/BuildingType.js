@@ -27,9 +27,8 @@ import {
   GraphQLNonNull as NonNull,
 } from 'graphql';
 
-import name from '../queries/planet.name';
 
-const PlanetType = new ObjectType({
+const BuildingType = new ObjectType({
   name: 'Building',
   fields: {
     id: { type: new NonNull(ID) },
@@ -43,4 +42,4 @@ const PlanetType = new ObjectType({
   },
 });
 
-export default PlanetType;
+export default BuildingType;

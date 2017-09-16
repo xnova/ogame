@@ -18,6 +18,10 @@ Technology.prototype = {
 
   requirements: new Map(),
 
+  getDescription() {
+    return this.description;
+  },
+
   /**
    * http://ogame.wikia.com/wiki/Building#Facilities_cost
    */

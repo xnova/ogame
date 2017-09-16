@@ -19,6 +19,8 @@
  * @flow
  */
 
+import { factoryBuilding } from './buildings';
+
  /**
  * http://ogame.wikia.com/wiki/Diameter
  * @param {*} diameter
@@ -67,7 +69,7 @@ Planet.prototype = {
 
   async getBuilding(buildingId: string): Promise<Building> {
     const level = await this.getBuildingLeveL();
-    return createBuilding(buildingId, level);
+    return factoryBuilding(buildingId, level);
   },
 
   getTechnology(techId: string): Promise<Technology> {

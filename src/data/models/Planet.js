@@ -93,7 +93,6 @@ Planet.prototype = {
   async getBuildings(): Promise<Array<Building>> {
     const buildingLevels = await redis.hgetallAsync(this.buildingsKey);
     if (!buildingLevels) return [];
-    console.log(buildingLevels);
     const buildings = [];
     for (const [buildingId, level] of Object.entries(buildingLevels)) {
       buildings.push(factoryBuilding(buildingId, parseInt(level, 10)));

@@ -21,10 +21,12 @@
 
 import redis from '../redis';
 import PlayerCore from '../../core/game/Player';
+import { factoryTechnology } from '../../core/game/technologies';
 import Planet, {
   createHomePlanet,
   createPlanet,
 } from './Planet';
+
 
 const HOMEPLANET_KEY = 'homePlanet';
 function Player(name: string) {
@@ -61,8 +63,25 @@ Player.prototype = {
     return planets;
   },
 
-  async getTechnology(key: string): Promise<Technology> {
+  // Technology
 
+  async getTechnologies(): Promise<Array<Technology>> {
+    const techLevels = await redis.hgetallAsync(this.technologiesKey);
+    if (!techLevels) return [];
+    const technologies = [];
+    for (const [techId, level] of Object.entries(techLevels)) {
+      technologies.push(factoryTechnology(techId, parseInt(level, 10)));
+    }
+    return technologies;
+  },
+
+  incrTechnologyLevel(techId: string, by=1): Promise {
+    return redis.hincrbyAsync(this.technologiesKey, techId, by);
+  },
+
+  async getTechnologyLeveL(techId: string): Promise<number> {
+    const level = await redis.hget(this.technologiesKey, techId) | 0;
+    return level;
   },
 
 };
@@ -74,11 +93,20 @@ export async function createPlayer(name): Promise<Player> {
   // if (exists) throw new Error(`${player.key} already exists`);
 
   const homePlanet = await createHomePlanet(player);
-  await redis.hmsetAsync(player.key,
-    HOMEPLANET_KEY, homePlanet.id,
-  );
 
-  await redis.saddAsync(player.planetsKey, homePlanet.id);
+  // clear olds planets
+  await redis.delAsync(player.planetsKey);
+
+  await Promise.all([
+    // save as a homeplanet
+    redis.hmsetAsync(player.key,
+      HOMEPLANET_KEY, homePlanet.id,
+    ),
+    // add homeplanet to player planets
+    redis.saddAsync(player.planetsKey, homePlanet.id),
+    // clear old technologies
+    redis.delAsync(player.technologiesKey),
+  ]);
 
   return player;
 }

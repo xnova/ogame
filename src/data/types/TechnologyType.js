@@ -22,23 +22,24 @@
 import {
   GraphQLObjectType as ObjectType,
   GraphQLID as ID,
+  GraphQLInt as IntType,
   GraphQLString as StringType,
   GraphQLNonNull as NonNull,
 } from 'graphql';
 
-import planets from '../queries/player.planets';
-import technologies from '../queries/player.technologies';
 
-
-const UserType = new ObjectType({
-  name: 'User',
+const TechnologyType = new ObjectType({
+  name: 'Technology',
   fields: {
     id: { type: new NonNull(ID) },
-    email: { type: StringType },
-    name: { type: StringType },
-    planets,
-    technologies,
+    name: { type: new NonNull(StringType) },
+    shortDesc: { type: new NonNull(StringType) },
+    description: {
+      type: new NonNull(StringType),
+      resolve: technology => technology.getDescription(),
+    },
+    level: { type: new NonNull(IntType) },
   },
 });
 
-export default UserType;
+export default TechnologyType;
