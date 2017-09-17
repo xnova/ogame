@@ -1,10 +1,13 @@
 <div align="center">
   <a href="https://github.com/xnova/ogame">
-    <img src="https://gf3.geo.gfsrv.net/cdne4/364c953a4587f4546cba4c752017f7.png">
+    <img height="200px" src="https://gf3.geo.gfsrv.net/cdne4/364c953a4587f4546cba4c752017f7.png">
   </a>
   <br>
   <br>
 
+[![npm][npm]][npm-url]
+
+[![node][node]][node-url]
 [![deps][deps]][deps-url]
 [![tests][tests]][tests-url]
 [![builds][builds]][builds-url]
@@ -22,6 +25,11 @@
 
 bla bla bla
 
+[npm]: https://img.shields.io/npm/v/ogame.svg
+[npm-url]: https://npmjs.com/package/ogame
+
+[node]: https://img.shields.io/node/v/ogame.svg
+[node-url]: https://nodejs.org
 
 [deps]: https://img.shields.io/david/xnova/ogame.svg
 [deps-url]: https://david-dm.org/xnova/ogame
