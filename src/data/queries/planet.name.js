@@ -27,7 +27,7 @@ import {
 
 const name = {
   type: new NonNull(StringType),
-  resolve: planet => planet.getName(),
+  resolve: planet => planet.getDisplayName(),
 };
 
 export default name;

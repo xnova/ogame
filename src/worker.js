@@ -22,7 +22,7 @@
 import {
   constructionQueue,
 } from './data/queues';
-import redis from './data/redis';
+import { Buildings } from './data/models';
 import { forceGC } from './utils/gc';
 import logger from './core/logger';
 import { SECOND } from './core/constants';
@@ -37,10 +37,9 @@ constructionQueue.process(async (job) => {
 
   // TODO delete construction job?
 
-  // TODO DRY: more abstraction with buildingsKey
-  const buildingsKey = `${key}:buildings`;
+  const buildings = new Buildings(key);
   const delta = isDemolotion ? -1 : +1;
-  const result = await redis.hincrbyAsync(buildingsKey, buildingId, delta);
+  const result = await buildings.incrLevel(buildingId, delta);
   return true;
 });
 

@@ -19,13 +19,15 @@
  * @flow
  */
 
-import { GraphQLList as List } from 'graphql';
-import PlanetType from '../types/PlanetType';
+import { HashMap } from '../redis';
+import Defenses from './Defenses';
 
-
-const planets = {
-  type: new List(PlanetType),
-  resolve: player => player.getPlanets(),
+// TODO abstractions should go to core
+function Ships(parentKey: string) {
+  this.map = new HashMap(`${parentKey}:ships`);
+}
+Ships.prototype = {
+  ...Defenses.prototype,
 };
 
-export default planets;
+export default Ships;

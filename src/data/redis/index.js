@@ -19,13 +19,18 @@
  * @flow
  */
 
-import { GraphQLList as List } from 'graphql';
-import PlanetType from '../types/PlanetType';
+import redis from './redis';
+import HashMap from './HashMap';
+import Set from './Set';
 
 
-const planets = {
-  type: new List(PlanetType),
-  resolve: player => player.getPlanets(),
-};
+export function exists(key: string): Promise<boolean> {
+  return redis.existsAsync(key);
+}
 
-export default planets;
+export function del(key: string): Promise {
+  return redis.delAsync(key);
+}
+
+export default redis;
+export { HashMap, Set };

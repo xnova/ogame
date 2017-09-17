@@ -49,7 +49,8 @@ Building.prototype = {
    * http://ogame.wikia.com/wiki/Buildings#Buildings_construction_time
    * Returns the construction time of this building on the given planet.
    */
-  getDuration(buildingSpeed) {
+  // TODO return type: moment duration
+  getDuration(buildingSpeed): Duration {
     console.log(this.level);
     const cost = this.getCost();
     console.log(cost);

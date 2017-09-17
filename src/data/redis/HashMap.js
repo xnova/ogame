@@ -19,13 +19,36 @@
  * @flow
  */
 
-import { GraphQLList as List } from 'graphql';
-import PlanetType from '../types/PlanetType';
+import redis from './redis';
 
 
-const planets = {
-  type: new List(PlanetType),
-  resolve: player => player.getPlanets(),
-};
+class HashMap<T> {
+  constructor(key: string) {
+    this.key = key;
+  }
 
-export default planets;
+  get(id: string): Promise<T> {
+    return redis.hgetAsync(this.key, id);
+  }
+
+  // TODO check return type
+  set(id: string, value: T): Promise<T> {
+    return redis.hsetAsync(this.key, id, value);
+  }
+
+  // TODO check return type
+  incr(id:string, delta: number): Promise<T> {
+    return redis.hincrbyAsync(this.key, id, delta);
+  }
+
+  // TODO check return type
+  incrByFloat(id:string, delta: number): Promise<T> {
+    return redis.hincrbyfloatAsync(this.key, id, delta);
+  }
+
+  getAll(): Promise<Dict<string, T>> {
+    return redis.hgetallAsync(this.key);
+  }
+}
+
+export default HashMap;

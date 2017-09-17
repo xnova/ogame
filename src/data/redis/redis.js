@@ -16,13 +16,14 @@
  * You should have received a copy of the GNU General Public License
  * along with Xnova OGame.  If not, see <http://www.gnu.org/licenses/>.
  *
+ * @flow
  */
 
 import bluebird from 'bluebird';
 import redis from 'redis';
 import Redlock from 'redlock';
 
-import { REDIS_URL } from '../config';
+import { REDIS_URL } from '../../config';
 
 
 bluebird.promisifyAll(redis.RedisClient.prototype);

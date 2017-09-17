@@ -26,7 +26,7 @@ import TechnologyType from '../types/TechnologyType';
 const technologies = {
   type: new List(TechnologyType),
   resolve(player) {
-    return player.getTechnologies();
+    return player.technologies.getList();
   },
 };
 

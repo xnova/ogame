@@ -19,13 +19,25 @@
  * @flow
  */
 
-import { GraphQLList as List } from 'graphql';
-import PlanetType from '../types/PlanetType';
+import redis from './redis';
 
 
-const planets = {
-  type: new List(PlanetType),
-  resolve: player => player.getPlanets(),
-};
+class Set<T> {
+  constructor(key: string) {
+    this.key = key;
+  }
 
-export default planets;
+  add(item: T): Promise {
+    return redis.saddAsync(this.key, item);
+  }
+
+  values(): Promise<List<T>> {
+    return redis.smembersAsync(this.key);
+  }
+
+  has(item: T): Promise<boolean> {
+    return redis.sismemberAsync(this.key, item);
+  }
+}
+
+export default Set;

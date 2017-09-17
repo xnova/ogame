@@ -19,13 +19,24 @@
  * @flow
  */
 
-import { GraphQLList as List } from 'graphql';
-import PlanetType from '../types/PlanetType';
+import { HashMap } from '../redis';
+import Technologies from './Technologies';
+import { factoryBuilding } from '../../core/game/buildings';
 
+// TODO abstractions should go to core
+function Buildings(parentKey: string) {
+  this.map = new HashMap(`${parentKey}:buildings`);
+}
+Buildings.prototype = {
+  ...Technologies.prototype,
 
-const planets = {
-  type: new List(PlanetType),
-  resolve: player => player.getPlanets(),
+  factory: factoryBuilding,
+
+  decrLevel(buildingId: string, delta: number) {
+    this.incrLevel(buildingId, -delta);
+  },
+
 };
 
-export default planets;
+
+export default Buildings;

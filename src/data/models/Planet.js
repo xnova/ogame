@@ -21,13 +21,16 @@
 
 import gaussian from 'gaussian';
 
-import redis from '../redis';
+import redis, { HashMap, del } from '../redis';
 import {
   constructionQueue,
 } from '../queues';
 import PlanetCore, { diameterToFields } from '../../core/game/Planet';
-import Producer from './Producer';
 import { factoryBuilding } from '../../core/game/buildings';
+import Producer from './Producer';
+import Buildings from './Buildings';
+import Ships from './Ships';
+import Defenses from './Defenses';
 import { randomInt } from '../../utils/random';
 import {
   HOMEPLANET_DIAMETER,
@@ -48,82 +51,46 @@ function Planet(id: string, player: Player) {
   // keys
   const key = `planet:${id}`;
   this.key = key;
-  this.buildingsKey = `${key}:buildings`;
-  this.shipsKey = `${key}:ships`;
-  this.defensesKey = `${key}:defenses`;
+  this.map = new HashMap(key);
+  this.buildings = new Buildings(key);
+  this.ships = new Ships(key);
+  this.defenses = new Defenses(key);
+  Producer.call(this, key);
 }
 Planet.prototype = {
   ...PlanetCore.prototype,
   ...Producer.prototype,
 
-  /**
-   * http://ogame.wikia.com/wiki/Home_Planet
-   */
-  async isHomePlanet(): Promise<Planet> {
-    const homePlanet = await this.player.getHomePlanet();
-    return this.id === homePlanet.id;
+  equals(other: Planet): boolean {
+    return this.id === other.id;
   },
 
-  async getName(): Promise<string> {
-    const name = await redis.hgetAsync(this.key, NAME_KEY);
-    if (name && name.length > 0) return name;
-    return this.getDefaultName();
+  getName(): Promise<string> {
+    return this.map.get(NAME_KEY);
   },
 
   setName(name: string): Promise {
-    return redis.hsetAsync(this.key, NAME_KEY, name);
+    return this.map.set(NAME_KEY, name);
   },
 
   /**
    * http://ogame.wikia.com/wiki/Diameter
    */
-  async getDiameter(): Promise<number> {
-    return await redis.hgetAsync(this.key, DIAMETER_KEY);
+  getDiameter(): Promise<number> {
+    return this.map.get(DIAMETER_KEY);
   },
 
-  async getTemperature(): Promise<number> {
-    return await redis.hgetAsync(this.key, TEMPERATURE_KEY);
+  getTemperature(): Promise<number> {
+    return this.map.get(TEMPERATURE_KEY);
   },
 
-  async getFields(): Promise<number> {
-    return await redis.hgetAsync(this.key, FIELDS_KEY);
+  // TODO would be better dynamic?
+  getFields(): Promise<number> {
+    return this.map.get(FIELDS_KEY);
   },
 
-  async getUsedFields(): Promise<number> {
-    return await redis.hgetAsync(this.key, USED_FIELDS_KEY);
-  },
-
-  async getBuildingLevel(buildingId: string): Promise<number> {
-    const level = await redis.hgetAsync(this.buildingsKey, buildingId) | 0;
-    return level;
-  },
-
-  async getBuildings(): Promise<Array<Building>> {
-    const buildingLevels = await redis.hgetallAsync(this.buildingsKey);
-    if (!buildingLevels) return [];
-    const buildings = [];
-    for (const [buildingId, level] of Object.entries(buildingLevels)) {
-      buildings.push(factoryBuilding(buildingId, parseInt(level, 10)));
-    }
-    return buildings;
-  },
-
-  incrBuildingLevel(buildingId: string, by=1): Promise {
-    return redis.hincrbyAsync(this.buildingsKey, buildingId, by);
-  },
-
-  decrBuildingLevel(buildingId: string, by=1): Promise {
-    return this.incrBuildingLevel(buildingId, -by);
-  },
-
-  async getShipAmount(shipId: string): Promise<number> {
-    const amount = await redis.hget(this.shipsKey, shipId) | 0;
-    return amount;
-  },
-
-  async getDefenseAmount(defenseId: string): Promise<number> {
-    const amount = await redis.hget(this.defensesKey, defenseId) | 0;
-    return amount;
+  getUsedFields(): Promise<number> {
+    return this.map.get(USED_FIELDS_KEY);
   },
 
   async improveBuilding(buildingId: string, isDemolition=false) {
@@ -170,8 +137,8 @@ const diameterDistribution = gaussian(HOMEPLANET_DIAMETER, 5000**2);
 export async function createPlanet(id: string, player): Promise<Planet> {
   const planet = new Planet(id, player);
   const slot = planet.coordinates[2];
-  // TODO
   const temperature = generateTemperature(slot);
+  // TODO generate diameters like wikia! different for each slot
   const diameter = diameterDistribution.ppf(Math.random()) | 0;
   const fields = diameterToFields(diameter);
   const usedFields = 0;
@@ -184,16 +151,16 @@ export async function createPlanet(id: string, player): Promise<Planet> {
       USED_FIELDS_KEY, usedFields,
     ),
     // TODO defaults on config!
-    redis.hmsetAsync(`${planet.key}:resources`,
+    redis.hmsetAsync(planet.resources.key,
       'metal', 500,
       'crystal', 500,
       'deuterium', 0,
       'lastUpdate', Date.now(),
     ),
     // clear old buildings, ships & defenses
-    redis.delAsync(planet.buildingsKey),
-    redis.delAsync(planet.shipsKey),
-    redis.delAsync(planet.defensesKey),
+    del(planet.buildings.key),
+    del(planet.ships.key),
+    del(planet.defenses.key),
   ]);
 
   return planet;

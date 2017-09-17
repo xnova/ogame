@@ -22,18 +22,14 @@
 import { GraphQLNonNull as NonNull } from 'graphql';
 
 import ResourcesType from '../types/ResourcesType';
-
+import { RESOURCES } from '../../core/game/resources';
 
 const resources = {
   type: new NonNull(ResourcesType),
-  async resolve(planet) {
-    // https://stackoverflow.com/questions/14810506/map-function-for-objects-instead-of-arrays
-    const myObject = await planet.getResources();
-    return Object.keys(myObject)
-      .reduce((resources, key) => {
-        resources[key] = Math.floor(myObject[key]);
-        return resources;
-    }, {})
+  async resolve(planet: Planet) {
+    const resources = await planet.getResources();
+    RESOURCES.forEach((resource) => resources[resource] = Math.floor(resources[resource] | 0));
+    return resources;
   },
 };
 

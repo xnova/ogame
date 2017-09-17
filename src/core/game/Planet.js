@@ -21,9 +21,17 @@
 
 import {
   factoryBuilding,
+  MetalMine,
+  CrystalMine,
+  DeuteriumSynthesizer,
+  SolarPlant,
+  MetalStorage,
+  CrystalStorage,
+  DeuteriumTank,
   RoboticsFactory,
   NaniteFactory,
 } from './buildings';
+import distance from './utils/distance';
 
  /**
  * http://ogame.wikia.com/wiki/Diameter
@@ -33,7 +41,8 @@ export function diameterToFields(diameter: number): number {
   return Math.floor((diameter / 1000) ** 2) | 0;
 }
 
-function Planet() {
+function Planet(player: Player) {
+  this.player = player;
   this.buildings = new Map();
   this.ships = new Map();
   this.defenses = new Map();
@@ -42,13 +51,38 @@ Planet.prototype = {
 
   name: '',
 
-  async isHomePlanet() {
-    // TODO
-    return false;
+  availableBuildings: new Set([
+    MetalMine,
+    CrystalMine,
+    DeuteriumSynthesizer,
+    SolarPlant,
+    MetalStorage,
+    CrystalStorage,
+    DeuteriumTank,
+    RoboticsFactory,
+    NaniteFactory,
+  ]),
+
+  equals(other: Planet): boolean {
+    // TOODO this wont work for moons!
+    return distance(this.coordinates, other.coordiantes) === 0;
+  },
+
+  /**
+   * http://ogame.wikia.com/wiki/Home_Planet
+   */
+  async isHomePlanet(): Promise<boolean> {
+    const homePlanet = await this.player.getHomePlanet();
+    return this.equals(other);
   },
 
   async getName(): Promise<string> {
-    const name = this.name;
+    // TODO ??
+    return this.name;
+  },
+
+  async getDisplayName(): Promise<string> {
+    const name = await this.getName();
     if (name && name.length) return name;
     return this.getDefaultName();
   },
@@ -72,7 +106,7 @@ Planet.prototype = {
   },
 
   async getBuilding(buildingId: string): Promise<Building> {
-    const level = await this.getBuildingLeveL();
+    const level = await this.getBuildingLeveL(buildingId);
     return factoryBuilding(buildingId, level);
   },
 
@@ -100,14 +134,20 @@ Planet.prototype = {
     return buildingSpeed;
   },
 
-  getBuildingDuration(building: Building): Promise<number> {
+  // TODO return type: moment duration
+  getBuildingDuration(building: Building): Duration {
     return building.getDuration(this);
   },
 
-  // Override on implementations
-  async getBuildingLevel(buildingId: string): Promise<number> {},
-  async getShipAmount(shipId: string): Promise<number> {},
-  async getDefenseAmount(defenseId: string): Promise<number> {},
+  getBuildingLevel(buildingId: string): Promise<number> {
+    return this.buildings.getLevel(buildingId);
+  },
+  getShipAmount(shipId: string): Promise<number> {
+    return this.ships.getAmount(shipId);
+  },
+  getDefenseAmount(defenseId: string): Promise<number> {
+    return this.defenses.getAmount(defenseId);
+  },
 }
 
 export default Planet;

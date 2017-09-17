@@ -19,47 +19,48 @@
  * @flow
  */
 
-import redis from '../redis';
+import redis, { HashMap } from '../redis';
 import { SECOND, MINUTE, HOUR } from '../../core/constants';
 
 // TODO make it different for each planet§
 const production = [1800, 360, 60];
 
-function Producer() {
+function Producer(key: string) {
+  this.resources = new HashMap(`${key}:resources`);
 }
 Producer.prototype = {
 
   async updateResources(force=false) {
     await this.fetchResources(force);
 
-    const { lastUpdate, metal, crystal, deuterium } = this.resources;
+    const { lastUpdate, metal, crystal, deuterium } = this.resourcesCache;
     const now = Date.now();
     const elapsed = now - lastUpdate;
     const produced = production.map(x => x * elapsed / HOUR);
-    this.resources = {
+    this.resourcesCache = {
       metal: metal + produced[0],
       crystal: crystal + produced[1],
       deuterium: deuterium + produced[2],
       lastUpdate: now,
     };
     // console.log('resources', this.resources);
+    // only save if db record is old enough
     if (force || elapsed > MINUTE) {
-      const key = `${this.key}:resources`;
       // use increment is better because they are 'atomic'
       await Promise.all([
-        redis.hincrbyfloatAsync(key, 'metal', produced[0]),
-        redis.hincrbyfloatAsync(key, 'crystal', produced[1]),
-        redis.hincrbyfloatAsync(key, 'deuterium', produced[2]),
-        redis.hincrbyAsync(key, 'lastUpdate', elapsed),
+        this.resources.incrByFloat('metal', produced[0]),
+        this.resources.incrByFloat('crystal', produced[1]),
+        this.resources.incrByFloat('deuterium', produced[2]),
+        this.resources.incr('lastUpdate', elapsed),
       ]);
     }
   },
 
   async fetchResources(force=false) {
     const now = Date.now();
-    if (!force && this.resources) return;
-    const { metal, crystal, deuterium, lastUpdate } = await redis.hgetallAsync(`${this.key}:resources`);
-    this.resources = {
+    if (!force && this.resourcesCache) return;
+    const { metal, crystal, deuterium, lastUpdate } = await this.resources.getAll();
+    this.resourcesCache = {
       metal: parseFloat(metal, 10),
       crystal: parseFloat(crystal, 10),
       deuterium: parseFloat(deuterium, 10),
@@ -70,7 +71,7 @@ Producer.prototype = {
 
   async getResources() {
     await this.updateResources();
-    return this.resources;
+    return this.resourcesCache;
   },
 
 };

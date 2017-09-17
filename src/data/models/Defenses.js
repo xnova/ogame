@@ -19,13 +19,30 @@
  * @flow
  */
 
-import { GraphQLList as List } from 'graphql';
-import PlanetType from '../types/PlanetType';
+import { HashMap } from '../redis';
 
+// TODO abstractions should go to core
+class Defenses {
+  constructor(parentKey: string) {
+    this.map = new HashMap(`${parentKey}:defenses`);
+  }
 
-const planets = {
-  type: new List(PlanetType),
-  resolve: player => player.getPlanets(),
-};
+  getDict(): Promise<Dict<string, number>> {
+    return this.map.getAll();
+  }
 
-export default planets;
+  getAmount(defenseId: string): Promise<number> {
+    return this.map.get(defenseId);
+  }
+
+  // TODO this shouldnt be needed on production, only on fake data introduction!!!
+  setAmount(defenseId: string, level: number) {
+    return this.map.set(defenseId, level);
+  }
+
+  incrAmount(defenseId: string, delta: number) {
+    return this.map.incr(defenseId, delta);
+  }
+}
+
+export default Defenses;

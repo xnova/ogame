@@ -26,7 +26,7 @@ import BuildingType from '../types/BuildingType';
 const buildings = {
   type: new List(BuildingType),
   resolve(planet) {
-    return planet.getBuildings();
+    return planet.buildings.getList();
   },
 };
 

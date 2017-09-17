@@ -19,13 +19,20 @@
  * @flow
  */
 
-import { GraphQLList as List } from 'graphql';
-import PlanetType from '../types/PlanetType';
+import Buildings from './Buildings';
+import Defenses from './Defenses';
+import Planet from './Planet';
+import Player from './Player';
+import Producer from './Producer';
+import Ships from './Ships';
+import Technologies from './Technologies';
 
-
-const planets = {
-  type: new List(PlanetType),
-  resolve: player => player.getPlanets(),
-};
-
-export default planets;
+export {
+  Buildings,
+  Defenses,
+  Planet,
+  Player,
+  Producer,
+  Ships,
+  Technologies,
+}
