@@ -53,7 +53,7 @@ Technology.prototype = {
     const cost = {};
     RESOURCES.forEach((resource) => {
       const b = baseCost[resource] | 0;
-      cost[resource] = b * (k ** (level - 1));
+      cost[resource] = Math.floor(b * (k ** (level - 1)));
     });
     return cost;
   },

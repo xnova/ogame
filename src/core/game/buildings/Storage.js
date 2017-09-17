@@ -24,7 +24,7 @@ function Storage(level) {
 }
 Storage.prototype = {
 
-  name: 'Unnamed Building',
+  name: 'Unnamed Storage',
 
   /**
    * http://ogame.wikia.com/wiki/Metal_Storage
@@ -37,3 +37,5 @@ Storage.prototype = {
   },
 
 }
+
+export default Storage;
