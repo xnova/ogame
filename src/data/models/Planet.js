@@ -94,8 +94,8 @@ Planet.prototype = {
   },
 
   async getBuildingLevel(buildingId: string): Promise<number> {
-    const level = await redis.hget(this.buildingsKey, buildingId) | 0;
-    return parseInt(level, 10);
+    const level = await redis.hgetAsync(this.buildingsKey, buildingId) | 0;
+    return level;
   },
 
   async getBuildings(): Promise<Array<Building>> {
@@ -130,7 +130,9 @@ Planet.prototype = {
     const currentLevel = await this.getBuildingLevel(buildingId);
     const delta = isDemolition ? -1 : 1;
     const nextLevel = currentLevel + delta;
+    console.log(currentLevel, nextLevel);
     if (nextLevel < 0) throw new Error('Buildings at level 0 cannot be demolished!');
+    // TODO check requirements
     const building = factoryBuilding(buildingId, nextLevel);
     const buildingSpeed = await this.getBuildingSpeed();
     const duration = building.getDuration(CONSTRUCTION_SPEED * buildingSpeed);

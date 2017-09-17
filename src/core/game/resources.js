@@ -16,35 +16,6 @@
  * You should have received a copy of the GNU General Public License
  * along with Xnova OGame.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @flow
  */
 
-import {
-  GraphQLSchema as Schema,
-  GraphQLObjectType as ObjectType,
-  mutation,
-} from 'graphql';
-
-import viewer from './queries/viewer';
-import improveBuilding from './mutations/improveBuilding';
-
-
-const schema = new Schema({
-
-  query: new ObjectType({
-    name: 'Query',
-    fields: {
-      viewer,
-    },
-  }),
-
-  mutation: new ObjectType({
-    name: 'Mutation',
-    fields: {
-      improveBuilding,
-    },
-  }),
-
-});
-
-export default schema;
+export const RESOURCES = ['metal', 'crystal', 'deuterium', 'energy'];

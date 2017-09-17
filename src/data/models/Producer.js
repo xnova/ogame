@@ -23,7 +23,7 @@ import redis from '../redis';
 import { SECOND, MINUTE, HOUR } from '../../core/constants';
 
 // TODO make it different for each planet§
-const production = [1800, 360, 0];
+const production = [1800, 360, 60];
 
 function Producer() {
 }

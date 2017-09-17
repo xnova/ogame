@@ -79,10 +79,11 @@ if (__DEV__) {
 // -----------------------------------------------------------------------------
 app.use(
   '/graphql',
-  expressGraphQL(request => ({
+  expressGraphQL(req => ({
     schema,
     graphiql: __DEV__,
-    rootValue: { request },
+    // TODO
+    rootValue: { req, user: new Player('arkeros') },
     pretty: __DEV__,
   })),
 );

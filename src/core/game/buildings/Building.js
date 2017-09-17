@@ -50,7 +50,9 @@ Building.prototype = {
    * Returns the construction time of this building on the given planet.
    */
   getDuration(buildingSpeed) {
+    console.log(this.level);
     const cost = this.getCost();
+    console.log(cost);
     const baseHours = (cost.metal + cost.crystal) / 2500;
     const hours = baseHours / buildingSpeed;
     return moment.duration(hours, 'hours');

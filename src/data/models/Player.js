@@ -90,7 +90,7 @@ export async function createPlayer(name): Promise<Player> {
   const player = new Player(name);
   const exists = await redis.existsAsync(player.key);
   // TODO enable again
-  // if (exists) throw new Error(`${player.key} already exists`);
+  if (exists) throw new Error(`${player.key} already exists`);
 
   const homePlanet = await createHomePlanet(player);
 
