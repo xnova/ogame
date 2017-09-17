@@ -31,8 +31,10 @@ class Defenses {
     return this.map.getAll();
   }
 
-  getAmount(defenseId: string): Promise<number> {
-    return this.map.get(defenseId);
+  async getAmount(defenseId: string): Promise<number> {
+    const amount = await this.map.get(defenseId);
+    if (amount) return parseInt(level, 10);
+    return 0;
   }
 
   // TODO this shouldnt be needed on production, only on fake data introduction!!!

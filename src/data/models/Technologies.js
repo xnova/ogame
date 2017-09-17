@@ -46,8 +46,10 @@ Technologies.prototype = {
     return list;
   },
 
-  getLevel(technologyId: string): Promise<number> {
-    return this.map.get(technologyId);
+  async getLevel(technologyId: string): Promise<number> {
+    const level = await this.map.get(technologyId);
+    if (level) return parseInt(level, 10);
+    return 0;
   },
 
   // TODO this shouldnt be needed on production, only on fake data introduction!!!
