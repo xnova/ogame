@@ -36,19 +36,20 @@ class HashMap<T> {
     return redis.hsetAsync(this.key, id, value);
   }
 
-  // TODO check return type
-  incr(id:string, delta: number): Promise<T> {
-    return redis.hincrbyAsync(this.key, id, delta);
-  }
-
-  // TODO check return type
-  incrByFloat(id:string, delta: number): Promise<T> {
-    return redis.hincrbyfloatAsync(this.key, id, delta);
-  }
-
   getAll(): Promise<Dict<string, T>> {
     return redis.hgetallAsync(this.key);
   }
+
+  /**
+   * Like python
+   * @param {*} dict
+   */
+  update(dict: Dict) {
+    return redis.hmsetAsync(this.key,
+      ...Array.concat(...Object.entries(dict)),
+    );
+  }
+
 }
 
 export default HashMap;

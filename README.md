@@ -23,7 +23,7 @@
 </div>
 
 
-bla bla bla
+Login page must be like https://ogame.gameforge.com/es_ES/home
 
 [npm]: https://img.shields.io/npm/v/ogame.svg
 [npm-url]: https://npmjs.com/package/ogame

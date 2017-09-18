@@ -21,7 +21,7 @@
 
 import gaussian from 'gaussian';
 
-import redis, { HashMap, del } from '../redis';
+import { HashMap, del } from '../redis';
 import {
   constructionQueue,
 } from '../queues';
@@ -167,20 +167,22 @@ export async function createPlanet(id: string, player): Promise<Planet> {
   const fields = diameterToFields(diameter);
   const usedFields = 0;
 
+  const now = Date.now();
+
   await Promise.all([
-    redis.hmsetAsync(planet.key,
-      TEMPERATURE_KEY, temperature,
-      DIAMETER_KEY, diameter,
-      FIELDS_KEY, fields,
-      USED_FIELDS_KEY, usedFields,
-    ),
+    planet.map.update({
+      [TEMPERATURE_KEY]: temperature,
+      [DIAMETER_KEY]: diameter,
+      [FIELDS_KEY]: fields,
+      [USED_FIELDS_KEY]: usedFields,
+    }),
     // TODO defaults on config!
-    redis.hmsetAsync(planet.resources.key,
-      'metal', 500,
-      'crystal', 500,
-      'deuterium', 0,
-      'lastUpdate', Date.now(),
-    ),
+    planet.resources.update({
+      metal: 500,
+      crystal: 500,
+      deuterium: 0,
+      lastUpdate: now,
+    }),
     // clear old buildings, ships & defenses
     del(planet.buildings.key),
     del(planet.ships.key),
@@ -197,16 +199,16 @@ export async function createPlanet(id: string, player): Promise<Planet> {
 export async function createHomePlanet(player): Promise<Planet> {
   // TODO get next available id!
   const planetId = '1:1:1';
-  const planet = await createPlanet(planetId, player);
+  const planet: Planet = await createPlanet(planetId, player);
 
   const diameter = HOMEPLANET_DIAMETER;
   const fields = diameterToFields(diameter);
 
   // overwrite daiemter & fields
-  await redis.hmsetAsync(planet.key,
-    DIAMETER_KEY, diameter,
-    FIELDS_KEY, fields,
-  );
+  await planet.map.update({
+    [DIAMETER_KEY]: diameter,
+    [FIELDS_KEY]: fields,
+  });
 
   return planet;
 }

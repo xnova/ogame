@@ -7,7 +7,5 @@
   "licenser.author": "Rafael Arquero (@arkeros)",
   "licenser.license": "GPLv3",
   "licenser.useSingleLineStyle": false,
-  "licenser.projectName": "Xnova OGame",
-  "javascript.validate.enable": false,
-  "flow.useNPMPackagedFlow": true
+  "licenser.projectName": "Xnova OGame"
 }

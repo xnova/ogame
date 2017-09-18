@@ -19,7 +19,7 @@
  * @flow
  */
 
-import redis, { HashMap, Set, del, exists } from '../redis';
+import { HashMap, Set, del, exists } from '../redis';
 import Technologies from './Technologies';
 import PlayerCore from '../../core/game/Player';
 import { factoryTechnology } from '../../core/game/technologies';
@@ -87,9 +87,9 @@ export async function createPlayer(name): Promise<Player> {
 
   await Promise.all([
     // save as a homeplanet
-    redis.hmsetAsync(player.key,
-      HOMEPLANET_KEY, homePlanet.id,
-    ),
+    player.map.update({
+      [HOMEPLANET_KEY]: homePlanet.id,
+    }),
     player.addPlanet(homePlanet),
     // clear old technologies
     del(player.technologies.key),

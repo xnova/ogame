@@ -38,7 +38,8 @@ export const MAX_PLANET = process.env.MAX_PLANET || 15;
 export const HOMEPLANET_DIAMETER = process.env.HOMEPLANET_DIAMETER || 12800;
 
 // SPEED
-export const PRODUCTION_SPEED = process.env.PRODUCTION_SPEED || process.env.SPEED || 1;
-export const CONSTRUCTION_SPEED = process.env.CONSTRUCTION_SPEED || process.env.SPEED || 1;
-export const RESEARCH_SPEED = process.env.RESEARCH_SPEED || process.env.SPEED || 1;
-export const SHIPYARD_SPEED = process.env.SHIPYARD_SPEED || process.env.SPEED || 1;
+export const SPEED = process.env.SPEED || 1;
+export const PRODUCTION_SPEED = process.env.PRODUCTION_SPEED || SPEED;
+export const CONSTRUCTION_SPEED = process.env.CONSTRUCTION_SPEED || SPEED;
+export const RESEARCH_SPEED = process.env.RESEARCH_SPEED || SPEED;
+export const SHIPYARD_SPEED = process.env.SHIPYARD_SPEED || SPEED;

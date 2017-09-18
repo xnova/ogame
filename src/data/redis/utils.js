@@ -20,11 +20,13 @@
  */
 
 import redis from './redis';
-import Counter from './Counter';
-import HashMap from './HashMap';
-import Set from './Set';
-import { del, exists } from './utils';
 
 
-export default redis;
-export { Counter, HashMap, Set, del, exists };
+export function exists(key: string): Promise<boolean> {
+  return redis.existsAsync(key);
+}
+
+export function del(key: string): Promise {
+  return redis.delAsync(key);
+}
+

@@ -19,14 +19,14 @@
  * @flow
  */
 
-import redis, { HashMap } from '../redis';
+import { Counter } from '../redis';
 import { SECOND, MINUTE, HOUR } from '../../core/constants';
 
 // TODO make it different for each planet§
 const production = [1800, 360, 60];
 
 function Producer(key: string) {
-  this.resources = new HashMap(`${key}:resources`);
+  this.resources = new Counter(`${key}:resources`);
 }
 Producer.prototype = {
 
@@ -48,9 +48,11 @@ Producer.prototype = {
     if (force || elapsed > MINUTE) {
       // use increment is better because they are 'atomic'
       await Promise.all([
-        this.resources.incrByFloat('metal', produced[0]),
-        this.resources.incrByFloat('crystal', produced[1]),
-        this.resources.incrByFloat('deuterium', produced[2]),
+        this.resources.addByFloat({
+          metal: produced[0],
+          crystal: produced[1],
+          deuterium: produced[2],
+        }),
         this.resources.incr('lastUpdate', elapsed),
       ]);
     }

@@ -287,7 +287,7 @@ const workerConfig = {
   name: 'worker',
 
   entry: {
-    websockets: ['babel-polyfill', './src/worker.js'],
+    worker: ['babel-polyfill', './src/worker.js'],
   },
 
   output: {
