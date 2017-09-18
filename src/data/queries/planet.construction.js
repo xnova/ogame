@@ -19,34 +19,13 @@
  * @flow
  */
 
-import {
-  GraphQLSchema as Schema,
-  GraphQLObjectType as ObjectType,
-  mutation,
-} from 'graphql';
-
-import viewer from './queries/viewer';
-import improveBuilding from './mutations/improveBuilding';
-import cancelConstruction from './mutations/cancelConstruction';
+import ConstructionType from '../types/ConstructionType';
+import { RESOURCES } from '../../core/game/resources';
 
 
-const schema = new Schema({
+const construction = {
+  type: ConstructionType,
+  resolve: planet => planet.getConstruction(),
+};
 
-  query: new ObjectType({
-    name: 'Query',
-    fields: {
-      viewer,
-    },
-  }),
-
-  mutation: new ObjectType({
-    name: 'Mutation',
-    fields: {
-      improveBuilding,
-      cancelConstruction,
-    },
-  }),
-
-});
-
-export default schema;
+export default construction;

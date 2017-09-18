@@ -123,6 +123,30 @@ Planet.prototype = {
     return this.improveBuilding(buildingId, true);
   },
 
+  async getConstruction(): Promise<Construction> {
+    const job = await constructionQueue.getJob(this.key);
+    if (job) {
+      console.log(job);
+      return {
+        ...job.data,
+        // dividing by 1000 to get seconds
+        // timestamp is when it was started
+        timestamp: Math.ceil(job.timestamp / 1000),
+        duration: Math.ceil(job.delay / 1000),
+      };
+    } else {
+      return null;
+    }
+  },
+
+  async cancelConstruction() {
+    const job = await constructionQueue.getJob(this.key);
+    if (job) {
+      // TODO restore resources
+      await job.remove();
+    }
+  }
+
 };
 
 const minTemp = [200, 150, 100, 50, 40, 30, 20, 10, 0, -10, -20, -30, -70, -110, -150];

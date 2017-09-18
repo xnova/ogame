@@ -21,33 +21,21 @@
 
 import {
   GraphQLObjectType as ObjectType,
-  GraphQLID as ID,
+  GraphQLInt as IntType,
+  GraphQLString as StringType,
+  GraphQLBoolean as BooleanType,
   GraphQLNonNull as NonNull,
 } from 'graphql';
 
-import name from '../queries/planet.name';
-import coordinates from '../queries/planet.coordinates';
-import diameter from '../queries/planet.diameter';
-import temperature from '../queries/planet.temperature';
-import fields from '../queries/planet.fields';
-import resources from '../queries/planet.resources';
-import buildings from '../queries/planet.buildings';
-import construction from '../queries/planet.construction';
 
-
-const PlanetType = new ObjectType({
-  name: 'Planet',
+const ConstructionType = new ObjectType({
+  name: 'Construction',
   fields: {
-    id: { type: new NonNull(ID) },
-    name,
-    coordinates,
-    diameter,
-    temperature,
-    fields,
-    resources,
-    buildings,
-    construction,
+    buildingId: { type: new NonNull(StringType) },
+    isDemolition: { type: new NonNull(BooleanType) },
+    timestamp: { type: new NonNull(IntType) },
+    duration: { type: new NonNull(IntType) },
   },
 });
 
-export default PlanetType;
+export default ConstructionType;

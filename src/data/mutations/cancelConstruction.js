@@ -21,7 +21,6 @@
 
 import {
   GraphQLObjectType as ObjectType,
-  GraphQLID as ID,
   GraphQLString as StringType,
   GraphQLNonNull as NonNull,
   // https://medium.com/@tarkus/validation-and-user-errors-in-graphql-mutations-39ca79cd00bf
@@ -33,15 +32,12 @@ import Planet from '../models/Planet';
 import PlanetType from '../types/PlanetType';
 
 
-const improveBuilding = mutationWithClientMutationId({
-  name: 'ImproveBuilding',
+const cancelConstruction = mutationWithClientMutationId({
+  name: 'CancelConstruction',
   inputFields: {
     planetId: {
       type: new NonNull(StringType),
     },
-    buildingId: {
-      type: new NonNull(StringType),
-    }
   },
   outputFields: {
     planet: {
@@ -51,16 +47,16 @@ const improveBuilding = mutationWithClientMutationId({
       resolve: ({ planet }) => planet,
     },
   },
-  async mutateAndGetPayload({ planetId, buildingId }, context, { rootValue }) {
+  async mutateAndGetPayload({ planetId }, context, { rootValue }) {
     // TODO fetch from req.user
     // const player = req.user;
     const { req, player } = rootValue;
     const planet = new Planet(planetId, player);
     if (!await player.hasPlanet(planet))
       throw new GraphQLError('This is not your planet!');
-    await planet.improveBuilding(buildingId);
+    await planet.cancelConstruction();
     return { planet };
   },
 });
 
-export default improveBuilding;
+export default cancelConstruction;

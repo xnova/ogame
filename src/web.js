@@ -83,7 +83,7 @@ app.use(
     schema,
     graphiql: __DEV__,
     // TODO
-    rootValue: { req, user: new Player('arkeros') },
+    rootValue: { req, player: new Player('arkeros') },
     pretty: __DEV__,
   })),
 );
