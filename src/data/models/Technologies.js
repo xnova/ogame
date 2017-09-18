@@ -19,12 +19,12 @@
  * @flow
  */
 
-import { HashMap } from '../redis';
+import { Counter } from '../redis';
 import { factoryTechnology } from '../../core/game/technologies';
 
 // TODO abstractions should go to core
 function Technologies(parentKey: string) {
-  this.map = new HashMap(`${parentKey}:technologies`);
+  this.counter = new Counter(`${parentKey}:technologies`);
 }
 Technologies.prototype = {
 
@@ -36,7 +36,7 @@ Technologies.prototype = {
   },
 
   async getList(): Promise<List<Technology>> {
-    const levels = await this.map.getAll();
+    const levels = await this.counter.getAll();
     const list = [];
     if (!levels) return list;
     for (const [id, level] of Object.entries(levels)) {
@@ -47,18 +47,18 @@ Technologies.prototype = {
   },
 
   async getLevel(technologyId: string): Promise<number> {
-    const level = await this.map.get(technologyId);
+    const level = await this.counter.get(technologyId);
     if (level) return parseInt(level, 10);
     return 0;
   },
 
   // TODO this shouldnt be needed on production, only on fake data introduction!!!
   setLevel(technologyId: string, level: number) {
-    return this.map.set(technologyId, level);
+    return this.counter.set(technologyId, level);
   },
 
   incrLevel(technologyId: string, delta: number) {
-    return this.map.incr(technologyId, delta);
+    return this.counter.incr(technologyId, delta);
   },
 };
 

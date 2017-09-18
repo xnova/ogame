@@ -19,6 +19,7 @@
  */
 
 import test from 'ava';
+
 import { factoryBuilding } from '../src/core/game/buildings';
 
 

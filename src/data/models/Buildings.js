@@ -19,13 +19,13 @@
  * @flow
  */
 
-import { HashMap } from '../redis';
+import { Counter } from '../redis';
 import Technologies from './Technologies';
 import { factoryBuilding } from '../../core/game/buildings';
 
 // TODO abstractions should go to core
 function Buildings(parentKey: string) {
-  this.map = new HashMap(`${parentKey}:buildings`);
+  this.counter = new Counter(`${parentKey}:buildings`);
 }
 Buildings.prototype = {
   ...Technologies.prototype,

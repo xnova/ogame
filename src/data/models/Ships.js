@@ -19,12 +19,12 @@
  * @flow
  */
 
-import { HashMap } from '../redis';
+import { Counter } from '../redis';
 import Defenses from './Defenses';
 
 // TODO abstractions should go to core
 function Ships(parentKey: string) {
-  this.map = new HashMap(`${parentKey}:ships`);
+  this.counter = new Counter(`${parentKey}:ships`);
 }
 Ships.prototype = {
   ...Defenses.prototype,

@@ -19,32 +19,33 @@
  * @flow
  */
 
-import { HashMap } from '../redis';
+import { Counter } from '../redis';
 
 // TODO abstractions should go to core
-class Defenses {
-  constructor(parentKey: string) {
-    this.map = new HashMap(`${parentKey}:defenses`);
-  }
+function Defenses(parentKey: string) {
+  this.counter = new Counter(`${parentKey}:defenses`);
+}
+Defenses.prototype = {
 
   getDict(): Promise<Dict<string, number>> {
-    return this.map.getAll();
-  }
+    return this.counter.getAll();
+  },
 
   async getAmount(defenseId: string): Promise<number> {
-    const amount = await this.map.get(defenseId);
-    if (amount) return parseInt(level, 10);
+    const amount = await this.counter.get(defenseId);
+    if (amount) return parseInt(amount, 10);
     return 0;
-  }
+  },
 
   // TODO this shouldnt be needed on production, only on fake data introduction!!!
-  setAmount(defenseId: string, level: number) {
-    return this.map.set(defenseId, level);
-  }
+  setAmount(defenseId: string, amount: number) {
+    return this.counter.set(defenseId, amount);
+  },
 
   incrAmount(defenseId: string, delta: number) {
-    return this.map.incr(defenseId, delta);
-  }
+    return this.counter.incr(defenseId, delta);
+  },
+
 }
 
 export default Defenses;

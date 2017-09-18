@@ -19,6 +19,7 @@
  */
 
 import test from 'ava';
+
 import { MetalStorage, CrystalStorage, DeuteriumTank } from '../src/core/game/buildings';
 
 // in thousands

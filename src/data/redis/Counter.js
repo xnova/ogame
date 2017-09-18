@@ -19,6 +19,7 @@
  * @flow
  */
 
+import redis from './redis';
 import HashMap from './HashMap';
 
 
