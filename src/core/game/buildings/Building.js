@@ -39,7 +39,7 @@ Building.prototype = {
     if (!this.dismantlable) {
       description = `${description}
 
-      Once built, the ${this.name} cannot be dismantled.`
+      Once built, the ${this.name} cannot be dismantled.`;
     }
 
     return description;
@@ -57,8 +57,8 @@ Building.prototype = {
     const baseHours = (cost.metal + cost.crystal) / 2500;
     const hours = baseHours / buildingSpeed;
     return moment.duration(hours, 'hours');
-  }
+  },
 
-}
+};
 
 export default Building;

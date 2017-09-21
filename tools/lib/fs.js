@@ -80,7 +80,7 @@ export const moveDir = async (source, target) => {
     dot: true,
   });
   await Promise.all(
-    dirs.map(async dir => {
+    dirs.map(async (dir) => {
       const from = path.resolve(source, dir);
       const to = path.resolve(target, dir);
       await makeDir(path.dirname(to));
@@ -96,7 +96,7 @@ export const copyDir = async (source, target) => {
     dot: true,
   });
   await Promise.all(
-    dirs.map(async dir => {
+    dirs.map(async (dir) => {
       const from = path.resolve(source, dir);
       const to = path.resolve(target, dir);
       await makeDir(path.dirname(to));

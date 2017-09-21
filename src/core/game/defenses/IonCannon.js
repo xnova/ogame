@@ -24,6 +24,6 @@ IonCannon.prototype = {
 
   // http://ogame.wikia.com/wiki/Weapons_Technology
   basicAttack: 150,
-}
+};
 
 export default IonCannon;

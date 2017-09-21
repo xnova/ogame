@@ -45,6 +45,6 @@ ResearchLab.prototype = {
     crystal: 200,
     deuterium: 100,
   },
-}
+};
 
 export default ResearchLab;

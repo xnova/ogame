@@ -21,6 +21,6 @@ Astrophysics.prototype = {
     deuterium: 4000,
   },
   costFactor: 1.75,
-}
+};
 
 export default Astrophysics;

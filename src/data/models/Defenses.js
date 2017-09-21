@@ -46,6 +46,6 @@ Defenses.prototype = {
     return this.counter.incr(defenseId, delta);
   },
 
-}
+};
 
 export default Defenses;

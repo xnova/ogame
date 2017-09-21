@@ -24,6 +24,6 @@ SolarPlant.prototype = {
     crystal: 30,
   },
   costFactor: 1.5,
-}
+};
 
 export default SolarPlant;

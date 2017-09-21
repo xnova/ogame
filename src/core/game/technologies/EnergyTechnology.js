@@ -23,6 +23,6 @@ EnergyTechnology.prototype = {
     crystal: 800,
     deuterium: 400,
   },
-}
+};
 
 export default EnergyTechnology;

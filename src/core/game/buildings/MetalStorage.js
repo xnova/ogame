@@ -45,6 +45,6 @@ MetalStorage.prototype = {
   baseCost: {
     metal: 1000,
   },
-}
+};
 
 export default MetalStorage;

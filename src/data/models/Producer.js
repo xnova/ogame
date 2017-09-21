@@ -20,7 +20,7 @@
  */
 
 import { Counter } from '../redis';
-import { SECOND, MINUTE, HOUR } from '../../core/constants';
+import { MINUTE, HOUR } from '../../core/constants';
 
 // TODO make it different for each planet§
 const production = [1800, 360, 60];
@@ -30,13 +30,13 @@ function Producer(key: string) {
 }
 Producer.prototype = {
 
-  async updateResources(force=false) {
+  async updateResources(force = false) {
     await this.fetchResources(force);
 
     const { lastUpdate, metal, crystal, deuterium } = this.resourcesCache;
     const now = Date.now();
     const elapsed = now - lastUpdate;
-    const produced = production.map(x => x * elapsed / HOUR);
+    const produced = production.map(x => x * (elapsed / HOUR));
     this.resourcesCache = {
       metal: metal + produced[0],
       crystal: crystal + produced[1],
@@ -58,10 +58,14 @@ Producer.prototype = {
     }
   },
 
-  async fetchResources(force=false) {
-    const now = Date.now();
+  async fetchResources(force = false) {
     if (!force && this.resourcesCache) return;
-    const { metal, crystal, deuterium, lastUpdate } = await this.resources.getAll();
+    const {
+      metal,
+      crystal,
+      deuterium,
+      lastUpdate,
+    } = await this.resources.getAll();
     this.resourcesCache = {
       metal: parseFloat(metal, 10),
       crystal: parseFloat(crystal, 10),

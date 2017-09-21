@@ -22,7 +22,6 @@
 import {
   GraphQLSchema as Schema,
   GraphQLObjectType as ObjectType,
-  mutation,
 } from 'graphql';
 
 import viewer from './queries/viewer';

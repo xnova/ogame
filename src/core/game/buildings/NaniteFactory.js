@@ -45,6 +45,6 @@ NaniteFactory.prototype = {
     crystal: 500000,
     deuterium: 100000,
   },
-}
+};
 
 export default NaniteFactory;

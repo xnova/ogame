@@ -19,6 +19,6 @@ HyperspaceTechnology.prototype = {
     metal: 4000,
     crystal: 2000,
   },
-}
+};
 
 export default HyperspaceTechnology;

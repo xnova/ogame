@@ -49,7 +49,6 @@ class HashMap<T> {
       ...Array.concat(...Object.entries(dict)),
     );
   }
-
 }
 
 export default HashMap;

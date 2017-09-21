@@ -19,6 +19,6 @@ CombustionDrive.prototype = {
     metal: 400,
     crystal: 600,
   },
-}
+};
 
 export default CombustionDrive;

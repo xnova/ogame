@@ -24,6 +24,6 @@ LightLaser.prototype = {
 
   // http://ogame.wikia.com/wiki/Weapons_Technology
   basicAttack: 100,
-}
+};
 
 export default LightLaser;

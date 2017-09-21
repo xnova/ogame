@@ -19,6 +19,6 @@ ComputerTechnology.prototype = {
     crystal: 400,
     deuterium: 600,
   },
-}
+};
 
 export default ComputerTechnology;

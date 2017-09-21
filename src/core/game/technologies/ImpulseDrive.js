@@ -20,6 +20,6 @@ ImpulseDrive.prototype = {
     crystal: 4000,
     deuterium: 600,
   },
-}
+};
 
 export default ImpulseDrive;

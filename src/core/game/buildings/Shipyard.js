@@ -29,6 +29,6 @@ Shipyard.prototype = {
     deuterium: 100,
   },
   requirements,
-}
+};
 
 export default Shipyard;

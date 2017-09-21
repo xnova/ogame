@@ -61,12 +61,12 @@ Player.prototype = {
   async getPlanets(): Promise<Array<Planet>> {
     // TODO remember this result, since doesnt change much
     const planetsId = await this.planets.values();
-    const planets = planetsId.map(planetId => new Planet(planetId, this))
+    const planets = planetsId.map(planetId => new Planet(planetId, this));
     return planets;
   },
 
   addPlanet(planet: Planet): Promise {
-    this.planets.add(planet.id)
+    this.planets.add(planet.id);
   },
 
   hasPlanet(planet: Planet): Promise<boolean> {

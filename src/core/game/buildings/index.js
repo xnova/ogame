@@ -19,7 +19,7 @@
  * @flow
  */
 
-import Building from  './Building';
+import Building from './Building';
 import MetalMine from './MetalMine';
 import CrystalMine from './CrystalMine';
 import DeuteriumSynthesizer from './DeuteriumSynthesizer';

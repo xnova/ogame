@@ -49,7 +49,7 @@ Defense.prototype = {
    */
   getDuration(planet) {
     const cost = this.getCost();
-    const baseDuration = (cost.metal + cost.crystal) * 3600 / 2500;
+    const baseDuration = (cost.metal + cost.crystal) * (3600 / 2500);
 
     const shipyardFactor = 1 + planet.buildings.shipyard.level;
     const naniteFactor = 2 ** planet.buildings.naniteFactory.level;
@@ -76,7 +76,7 @@ Defense.prototype = {
    */
   getShield() {
     const shieldTech = this.player.technologies.shieldTech;
-    return this.baseShield * (1 + 0.1 * shieldTech.level);
+    return this.baseShield * (1 + (0.1 * shieldTech.level));
   },
 
   /**
@@ -84,7 +84,7 @@ Defense.prototype = {
    */
   getAttack() {
     const weaponsTech = this.player.technologies.weaponsTech;
-    return this.baseAttack * (1 + 0.1 * weaponsTech.level);
+    return this.baseAttack * (1 + (0.1 * weaponsTech.level));
   },
 
   /**
@@ -92,7 +92,7 @@ Defense.prototype = {
    */
   getHull() {
     const armourTech = this.player.technologies.armourTech;
-    return this.getBaseHull() * (1 + 0.1 * armourTech.level);
+    return this.getBaseHull() * (1 + (0.1 * armourTech.level));
   },
 
-}
+};

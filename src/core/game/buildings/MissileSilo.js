@@ -28,6 +28,6 @@ MissileSilo.prototype = {
   getStorageCapacity() {
     return 10 * this.level;
   },
-}
+};
 
 export default MissileSilo;

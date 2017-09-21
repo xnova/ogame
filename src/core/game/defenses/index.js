@@ -19,4 +19,4 @@ export default {
   PlasmaTurret,
   SmallShieldDome,
   LargeShieldDome,
-}
+};

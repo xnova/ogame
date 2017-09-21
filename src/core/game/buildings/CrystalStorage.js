@@ -46,6 +46,6 @@ CrystalStorage.prototype = {
     metal: 1000,
     crystal: 500,
   },
-}
+};
 
 export default CrystalStorage;

@@ -25,6 +25,6 @@ PlasmaTurret.prototype = {
 
   // http://ogame.wikia.com/wiki/Weapons_Technology
   basicAttack: 3000,
-}
+};
 
 export default PlasmaTurret;

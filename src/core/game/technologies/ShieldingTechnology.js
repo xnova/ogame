@@ -19,6 +19,6 @@ ShieldingTechnology.prototype = {
     metal: 200,
     crystal: 600,
   },
-}
+};
 
 export default ShieldingTechnology;

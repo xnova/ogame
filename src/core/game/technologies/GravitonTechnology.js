@@ -19,6 +19,6 @@ GravitonTechnology.prototype = {
     energy: 300000,
   },
   costFactor: 3,
-}
+};
 
 export default GravitonTechnology;

@@ -22,43 +22,44 @@ import test from 'ava';
 
 import { Buildings, Technologies, Ships, Defenses } from '../src/data/models';
 
-test('can increase building level', async t => {
+const key = 'test:canIncreseLevelOrAmount';
+
+test('can increase building level', async (t) => {
   const buildingId = 'metalMine';
 
-  const buildings = new Buildings('test:can increase building level');
+  const buildings = new Buildings(key);
   await buildings.setLevel(buildingId, 23);
   await buildings.incrLevel(buildingId, 1);
   const afterLevel = await buildings.getLevel(buildingId);
   t.is(afterLevel, 24);
 });
 
-test('can increase tech level', async t => {
+test('can increase tech level', async (t) => {
   const techId = 'gravitonTech';
 
-  const technologies = new Technologies('test:can increase tech level');
+  const technologies = new Technologies(key);
   await technologies.setLevel(techId, 16);
   await technologies.incrLevel(techId, 1);
   const afterLevel = await technologies.getLevel(techId);
   t.is(afterLevel, 17);
 });
 
-test('can increase ship amount', async t => {
+test('can increase ship amount', async (t) => {
   const shipId = 'deathStar';
 
-  const ships = new Ships('test:can increase ship amount');
+  const ships = new Ships(key);
   await ships.setAmount(shipId, 100);
   await ships.incrAmount(shipId, 69);
   const afterLevel = await ships.getAmount(shipId);
   t.is(afterLevel, 169);
 });
 
-test('can increase defense amount', async t => {
+test('can increase defense amount', async (t) => {
   const defenseId = 'rocketLauncher';
 
-  const defenses = new Defenses('test:can increase defense level');
+  const defenses = new Defenses(key);
   await defenses.setAmount(defenseId, 2000);
   await defenses.incrAmount(defenseId, 17);
   const afterLevel = await defenses.getAmount(defenseId);
   t.is(afterLevel, 2017);
 });
-

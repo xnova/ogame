@@ -31,11 +31,11 @@ Storage.prototype = {
    */
   getCapacity(): number {
     const { level } = this;
-    const factor = 2.5 * Math.exp(20 * level / 33);
+    const factor = 2.5 * Math.exp((20 * level) / 33);
     const capacity = 5000 * Math.floor(factor);
     return capacity;
   },
 
-}
+};
 
 export default Storage;

@@ -20,13 +20,17 @@
 
 import test from 'ava';
 
-import { MetalStorage, CrystalStorage, DeuteriumTank } from '../src/core/game/buildings';
+import {
+  MetalStorage,
+  CrystalStorage,
+  DeuteriumTank,
+} from '../src/core/game/buildings';
 
 // in thousands
 const capacities = [10, 20, 40, 75, 140, 255, 470, 865, 1590, 2920, 5355];
 
 
-test('storage capacity of metalStorage', t => {
+test('storage capacity of metalStorage', (t) => {
   t.plan(capacities.length);
   capacities.forEach((capacity, level) => {
     const metalStorage = new MetalStorage(level);
@@ -34,7 +38,7 @@ test('storage capacity of metalStorage', t => {
   });
 });
 
-test('storage capacity of crystalStorage', t => {
+test('storage capacity of crystalStorage', (t) => {
   t.plan(capacities.length);
   capacities.forEach((capacity, level) => {
     const crystalStorage = new CrystalStorage(level);
@@ -42,7 +46,7 @@ test('storage capacity of crystalStorage', t => {
   });
 });
 
-test('storage capacity of metalStorage', t => {
+test('storage capacity of metalStorage', (t) => {
   t.plan(capacities.length);
   capacities.forEach((capacity, level) => {
     const deuteriumTank = new DeuteriumTank(level);

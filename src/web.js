@@ -24,7 +24,6 @@ import expressGraphQL from 'express-graphql';
 import path from 'path';
 
 import Player, { createPlayer } from './data/models/Player';
-import Planet, { createPlanet } from './data/models/Planet';
 import logger from './core/logger';
 import { forceGC } from './utils/gc';
 import schema from './data/schema';
@@ -57,9 +56,9 @@ async function fakeData() {
     rakdos.buildings.setLevel('solarPlant', 5);
 
     const colony = await arkeros.createPlanet('2:8:8');
-    terminus.improveBuilding('crystalMine');
+    colony.improveBuilding('crystalMine');
     terminus.improveBuilding('metalMine');
-  } catch(e) {
+  } catch (e) {
     logger.error(e);
   }
 }
@@ -91,7 +90,7 @@ app.use(
 app.use('/', (req, res) => res.redirect('/graphql'));
 
 app.listen(PORT, () => console.log(
-  `WebServer is now running in ${process.env.NODE_ENV || 'development'} mode on http://localhost:${PORT}`
+  `WebServer is now running in ${process.env.NODE_ENV || 'development'} mode on http://localhost:${PORT}`,
 ));
 
 // Call Garbage Collector every 30 seconds

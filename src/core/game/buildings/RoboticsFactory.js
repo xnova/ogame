@@ -45,6 +45,6 @@ RoboticsFactory.prototype = {
     crystal: 120,
     deuterium: 200,
   },
-}
+};
 
 export default RoboticsFactory;

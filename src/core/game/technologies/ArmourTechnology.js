@@ -18,6 +18,6 @@ ArmourTechnology.prototype = {
   baseCost: {
     metal: 1000,
   },
-}
+};
 
 export default ArmourTechnology;

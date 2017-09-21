@@ -24,6 +24,6 @@ CrystalMine.prototype = {
     crystal: 24,
   },
   costFactor: 1.6,
-}
+};
 
 export default CrystalMine;

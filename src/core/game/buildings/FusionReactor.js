@@ -26,6 +26,6 @@ FusionReactor.prototype = {
     deuterium: 180,
   },
   costFactor: 1.8,
-}
+};
 
 export default FusionReactor;

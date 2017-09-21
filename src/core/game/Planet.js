@@ -73,7 +73,7 @@ Planet.prototype = {
    */
   async isHomePlanet(): Promise<boolean> {
     const homePlanet = await this.player.getHomePlanet();
-    return this.equals(other);
+    return this.equals(homePlanet);
   },
 
   async getName(): Promise<string> {
@@ -148,6 +148,6 @@ Planet.prototype = {
   getDefenseAmount(defenseId: string): Promise<number> {
     return this.defenses.getAmount(defenseId);
   },
-}
+};
 
 export default Planet;

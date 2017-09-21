@@ -45,6 +45,6 @@ MetalMine.prototype = {
     crystal: 15,
   },
   costFactor: 1.5,
-}
+};
 
 export default MetalMine;

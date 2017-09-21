@@ -27,6 +27,6 @@ RocketLauncher.prototype = {
 
   // http://ogame.wikia.com/wiki/Weapons_Technology
   basicAttack: 80,
-}
+};
 
 export default RocketLauncher;

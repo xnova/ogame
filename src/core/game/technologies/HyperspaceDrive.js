@@ -20,6 +20,6 @@ HyperspaceDrive.prototype = {
     crystal: 20000,
     deuterium: 6000,
   },
-}
+};
 
 export default HyperspaceDrive;

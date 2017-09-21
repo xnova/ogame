@@ -46,6 +46,6 @@ DeuteriumTank.prototype = {
     metal: 1000,
     crystal: 1000,
   },
-}
+};
 
 export default DeuteriumTank;

@@ -24,23 +24,22 @@ import HashMap from './HashMap';
 
 
 class Counter extends HashMap<number> {
-
   // TODO check return type
   incr(id: string, delta: number): Promise<T> {
     return redis.hincrbyAsync(this.key, id, delta);
   }
 
-  decr(id:string, delta: number): Promise<T> {
+  decr(id: string, delta: number): Promise<T> {
     return this.incr(id, -delta);
   }
 
   // TODO check return type
-  incrByFloat(id:string, delta: number): Promise<T> {
+  incrByFloat(id: string, delta: number): Promise<T> {
     return redis.hincrbyfloatAsync(this.key, id, delta);
   }
 
   // TODO check return type
-  decrByFloat(id:string, delta: number): Promise<T> {
+  decrByFloat(id: string, delta: number): Promise<T> {
     return this.incrByFloat(id, -delta);
   }
 
@@ -59,7 +58,6 @@ class Counter extends HashMap<number> {
   subtractByFloat(dict: Dict): Promise {
     return Promise.all(Object.entries(dict).map(this.decrByFloat));
   }
-
 }
 
 export default Counter;

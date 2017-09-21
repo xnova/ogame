@@ -20,6 +20,6 @@ EspionageTechnology.prototype = {
     crystal: 1000,
     deuterium: 200,
   },
-}
+};
 
 export default EspionageTechnology;

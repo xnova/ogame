@@ -20,6 +20,6 @@ IonTechnology.prototype = {
     crystal: 300,
     deuterium: 100,
   },
-}
+};
 
 export default IonTechnology;

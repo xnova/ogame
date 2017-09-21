@@ -24,13 +24,15 @@ import { GraphQLNonNull as NonNull } from 'graphql';
 import ResourcesType from '../types/ResourcesType';
 import { RESOURCES } from '../../core/game/resources';
 
-const resources = {
+const endpoint = {
   type: new NonNull(ResourcesType),
   async resolve(planet: Planet) {
     const resources = await planet.getResources();
-    RESOURCES.forEach((resource) => resources[resource] = Math.floor(resources[resource] | 0));
+    RESOURCES.forEach((resource) => {
+      resources[resource] = Math.floor(resources[resource] || 0);
+    });
     return resources;
   },
 };
 
-export default resources;
+export default endpoint;

@@ -24,6 +24,6 @@ DeuteriumSynthesizer.prototype = {
     crystal: 75,
   },
   costFactor: 1.5,
-}
+};
 
 export default DeuteriumSynthesizer;

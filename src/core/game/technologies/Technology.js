@@ -66,7 +66,7 @@ Technology.prototype = {
     const cost = {};
     RESOURCES.forEach((resource) => {
       const b = baseCost[resource];
-      cost[resource] = (b * k * (k ** level - 1)) / (k - 1);
+      cost[resource] = (b * k * ((k ** level) - 1)) / (k - 1);
     });
     return cost;
   },
@@ -75,6 +75,7 @@ Technology.prototype = {
     const totalCost = this.getAccumulatedCost();
     const sum = totalCost.metal + totalCost.crystal + totalCost.deuterium;
     const score = sum / 1000;
+    return score;
   },
 
 }

@@ -20,6 +20,6 @@ IntergalacticResearchNetwork.prototype = {
     crystal: 400000,
     deuterium: 160000,
   },
-}
+};
 
 export default IntergalacticResearchNetwork;

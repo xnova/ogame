@@ -40,13 +40,13 @@ constructionQueue.process(async (job) => {
   const buildings = new Buildings(key);
   const delta = isDemolotion ? -1 : +1;
   const result = await buildings.incrLevel(buildingId, delta);
-  return true;
+  return result;
 });
 
 // Call Garbage Collector every 30 seconds
 setInterval(forceGC, 30 * SECOND);
 
 console.log(
-  `Worker is now running in ${process.env.NODE_ENV || 'development'} mode`
-)
+  `Worker is now running in ${process.env.NODE_ENV || 'development'} mode`,
+);
 

@@ -24,6 +24,6 @@ SmallShieldDome.prototype = {
   // http://ogame.wikia.com/wiki/Shield_Power
   basicShield: 2000,
 
-}
+};
 
 export default SmallShieldDome;

@@ -20,6 +20,6 @@ PlasmaTechnology.prototype = {
     crystal: 4000,
     deuterium: 1000,
   },
-}
+};
 
 export default PlasmaTechnology;

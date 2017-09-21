@@ -19,6 +19,6 @@ LaserTechnology.prototype = {
     metal: 200,
     crystal: 100,
   },
-}
+};
 
 export default LaserTechnology;

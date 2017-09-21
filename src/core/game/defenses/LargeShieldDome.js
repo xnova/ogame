@@ -24,6 +24,6 @@ LargeShieldDome.prototype = {
   // http://ogame.wikia.com/wiki/Shield_Power
   basicShield: 10000,
 
-}
+};
 
 export default LargeShieldDome;

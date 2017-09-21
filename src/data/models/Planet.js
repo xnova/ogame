@@ -93,7 +93,7 @@ Planet.prototype = {
     return this.map.get(USED_FIELDS_KEY);
   },
 
-  async improveBuilding(buildingId: string, isDemolition=false) {
+  async improveBuilding(buildingId: string, isDemolition = false) {
     const currentLevel = await this.getBuildingLevel(buildingId);
     const delta = isDemolition ? -1 : 1;
     const nextLevel = currentLevel + delta;
@@ -134,9 +134,9 @@ Planet.prototype = {
         timestamp: Math.ceil(job.timestamp / 1000),
         duration: Math.ceil(job.delay / 1000),
       };
-    } else {
-      return null;
     }
+
+    return null;
   },
 
   async cancelConstruction() {
@@ -145,7 +145,7 @@ Planet.prototype = {
       // TODO restore resources
       await job.remove();
     }
-  }
+  },
 
 };
 
@@ -157,7 +157,7 @@ function generateTemperature(slot: number): number {
 }
 
 // TODO
-const diameterDistribution = gaussian(HOMEPLANET_DIAMETER, 5000**2);
+const diameterDistribution = gaussian(HOMEPLANET_DIAMETER, 5000 ** 2);
 export async function createPlanet(id: string, player): Promise<Planet> {
   const planet = new Planet(id, player);
   const slot = planet.coordinates[2];

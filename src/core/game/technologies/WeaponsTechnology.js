@@ -19,6 +19,6 @@ WeaponsTechnology.prototype = {
     metal: 800,
     crystal: 200,
   },
-}
+};
 
 export default WeaponsTechnology;

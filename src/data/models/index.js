@@ -35,4 +35,4 @@ export {
   Producer,
   Ships,
   Technologies,
-}
+};

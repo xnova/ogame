@@ -20,8 +20,6 @@
  */
 
 import {
-  GraphQLObjectType as ObjectType,
-  GraphQLID as ID,
   GraphQLString as StringType,
   GraphQLNonNull as NonNull,
   // https://medium.com/@tarkus/validation-and-user-errors-in-graphql-mutations-39ca79cd00bf
@@ -41,7 +39,7 @@ const improveBuilding = mutationWithClientMutationId({
     },
     buildingId: {
       type: new NonNull(StringType),
-    }
+    },
   },
   outputFields: {
     planet: {
@@ -56,8 +54,9 @@ const improveBuilding = mutationWithClientMutationId({
     // const player = req.user;
     const { req, player } = rootValue;
     const planet = new Planet(planetId, player);
-    if (!await player.hasPlanet(planet))
+    if (!await player.hasPlanet(planet)) {
       throw new GraphQLError('This is not your planet!');
+    }
     await planet.improveBuilding(buildingId);
     return { planet };
   },
