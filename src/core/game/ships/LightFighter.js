@@ -22,7 +22,6 @@ import Ship from './Ship';
 import EspionageProbe from './EspionageProbe';
 import SolarSatellite from './SolarSatellite';
 
-
 const name = 'Light Fighter';
 
 const rapidFire = new Map();
@@ -34,7 +33,7 @@ rapidFire.set(SolarSatellite, 5);
  * @param {*} player
  */
 function LightFighter(player) {
-
+  this.player = player;
 }
 
 LightFighter.prototype = {
@@ -59,6 +58,6 @@ LightFighter.prototype = {
 
   // http://ogame.wikia.com/wiki/Fuel_Consumption
   fuelUsage: 10,
-}
+};
 
 export default LightFighter;

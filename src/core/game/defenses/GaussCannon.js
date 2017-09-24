@@ -1,6 +1,5 @@
 import Defense from './Defense';
 
-
 const name = 'Gauss Cannon';
 
 /**
@@ -8,7 +7,7 @@ const name = 'Gauss Cannon';
  * @param {*} player
  */
 function GaussCannon(player) {
-
+  this.player = player;
 }
 
 GaussCannon.prototype = {

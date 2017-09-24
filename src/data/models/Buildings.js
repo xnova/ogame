@@ -35,8 +35,6 @@ Buildings.prototype = {
   decrLevel(buildingId: string, delta: number) {
     this.incrLevel(buildingId, -delta);
   },
-
 };
-
 
 export default Buildings;

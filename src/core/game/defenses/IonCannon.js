@@ -1,6 +1,5 @@
 import Defense from './Defense';
 
-
 const name = 'Ion Cannon';
 
 /**
@@ -8,7 +7,7 @@ const name = 'Ion Cannon';
  * @param {*} player
  */
 function IonCannon(player) {
-
+  this.player = player;
 }
 
 IonCannon.prototype = {

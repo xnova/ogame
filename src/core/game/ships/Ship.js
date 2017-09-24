@@ -20,9 +20,8 @@
 
 import { Defense } from '../defenses';
 
-
 function Ship(player) {
-
+  this.player = player;
 }
 Ship.prototype = {
   ...Defense.prototype,
@@ -40,7 +39,6 @@ Ship.prototype = {
 
   // http://ogame.wikia.com/wiki/Rapid_Fire
   rapidFire: new Map(),
-
-}
+};
 
 export default Ship;

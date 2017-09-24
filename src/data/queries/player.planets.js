@@ -22,7 +22,6 @@
 import { GraphQLList as List } from 'graphql';
 import PlanetType from '../types/PlanetType';
 
-
 const planets = {
   type: new List(PlanetType),
   resolve: player => player.getPlanets(),

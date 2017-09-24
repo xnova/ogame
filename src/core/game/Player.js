@@ -16,21 +16,19 @@
  * You should have received a copy of the GNU General Public License
  * along with Xnova OGame.  If not, see <http://www.gnu.org/licenses/>.
  *
+ * @flow
  */
 
 import { factoryTechnology } from './technologies';
-
 
 function Player(name) {
   this.name = name;
 }
 Player.prototype = {
-
   async getTechnology(techId: string): Promise<Building> {
     const level = await this.getTechnologyLeveL();
     return createTechnology(techId, level);
   },
-
 };
 
 export default Player;

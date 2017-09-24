@@ -23,8 +23,7 @@ import { GraphQLNonNull as NonNull } from 'graphql';
 
 import CoordinatesType from '../types/CoordinatesType';
 
-
-const coordinates = {
+const endpoint = {
   type: new NonNull(CoordinatesType),
   resolve(planet) {
     const { coordinates } = planet;
@@ -33,4 +32,4 @@ const coordinates = {
   },
 };
 
-export default coordinates;
+export default endpoint;

@@ -24,7 +24,7 @@ import { Buildings, Technologies, Ships, Defenses } from '../src/data/models';
 
 const key = 'test:canIncreseLevelOrAmount';
 
-test('can increase building level', async (t) => {
+test('can increase building level', async t => {
   const buildingId = 'metalMine';
 
   const buildings = new Buildings(key);
@@ -34,7 +34,7 @@ test('can increase building level', async (t) => {
   t.is(afterLevel, 24);
 });
 
-test('can increase tech level', async (t) => {
+test('can increase tech level', async t => {
   const techId = 'gravitonTech';
 
   const technologies = new Technologies(key);
@@ -44,7 +44,7 @@ test('can increase tech level', async (t) => {
   t.is(afterLevel, 17);
 });
 
-test('can increase ship amount', async (t) => {
+test('can increase ship amount', async t => {
   const shipId = 'deathStar';
 
   const ships = new Ships(key);
@@ -54,7 +54,7 @@ test('can increase ship amount', async (t) => {
   t.is(afterLevel, 169);
 });
 
-test('can increase defense amount', async (t) => {
+test('can increase defense amount', async t => {
   const defenseId = 'rocketLauncher';
 
   const defenses = new Defenses(key);

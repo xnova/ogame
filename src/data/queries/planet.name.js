@@ -24,7 +24,6 @@ import {
   GraphQLNonNull as NonNull,
 } from 'graphql';
 
-
 const name = {
   type: new NonNull(StringType),
   resolve: planet => planet.getDisplayName(),

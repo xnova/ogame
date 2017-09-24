@@ -1,6 +1,5 @@
 import Technology from './Technology';
 
-
 const name = 'Computer Technology';
 
 /**

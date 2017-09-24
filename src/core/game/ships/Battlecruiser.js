@@ -20,7 +20,6 @@
 
 import Ship from './Ship';
 
-
 const name = 'Battlecruiser';
 
 /**
@@ -28,7 +27,7 @@ const name = 'Battlecruiser';
  * @param {*} player
  */
 function Battlecruiser(player) {
-
+  this.player = player;
 }
 
 Battlecruiser.prototype = {
@@ -37,7 +36,7 @@ Battlecruiser.prototype = {
   cost: {
     metal: 30000,
     crystal: 40000,
-    crystal: 15000,
+    deuterium: 15000,
   },
 
   // http://ogame.wikia.com/wiki/Shield_Power
@@ -54,6 +53,6 @@ Battlecruiser.prototype = {
 
   // http://ogame.wikia.com/wiki/Fuel_Consumption
   fuelUsage: 125,
-}
+};
 
 export default Battlecruiser;

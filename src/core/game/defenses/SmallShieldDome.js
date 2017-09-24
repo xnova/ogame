@@ -1,6 +1,5 @@
 import Defense from './Defense';
 
-
 const name = 'Small Shield Dome';
 
 /**
@@ -8,7 +7,7 @@ const name = 'Small Shield Dome';
  * @param {*} player
  */
 function SmallShieldDome(player) {
-
+  this.player = player;
 }
 
 SmallShieldDome.prototype = {
@@ -23,7 +22,6 @@ SmallShieldDome.prototype = {
 
   // http://ogame.wikia.com/wiki/Shield_Power
   basicShield: 2000,
-
 };
 
 export default SmallShieldDome;

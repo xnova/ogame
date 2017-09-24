@@ -20,7 +20,6 @@
 
 import Ship from './Ship';
 
-
 const name = 'Bomber';
 
 /**
@@ -28,7 +27,7 @@ const name = 'Bomber';
  * @param {*} player
  */
 function Bomber(player) {
-
+  this.player = player;
 }
 
 Bomber.prototype = {
@@ -54,6 +53,6 @@ Bomber.prototype = {
 
   // http://ogame.wikia.com/wiki/Fuel_Consumption
   fuelUsage: 500,
-}
+};
 
 export default Bomber;

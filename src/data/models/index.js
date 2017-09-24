@@ -27,12 +27,4 @@ import Producer from './Producer';
 import Ships from './Ships';
 import Technologies from './Technologies';
 
-export {
-  Buildings,
-  Defenses,
-  Planet,
-  Player,
-  Producer,
-  Ships,
-  Technologies,
-};
+export { Buildings, Defenses, Planet, Player, Producer, Ships, Technologies };

@@ -22,7 +22,6 @@
 import { GraphQLList as List } from 'graphql';
 import TechnologyType from '../types/TechnologyType';
 
-
 const technologies = {
   type: new List(TechnologyType),
   resolve(player) {

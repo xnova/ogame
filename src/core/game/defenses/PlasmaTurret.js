@@ -1,6 +1,5 @@
 import Defense from './Defense';
 
-
 const name = 'Plasma Turret';
 
 /**
@@ -8,7 +7,7 @@ const name = 'Plasma Turret';
  * @param {*} player
  */
 function PlasmaTurret(player) {
-
+  this.player = player;
 }
 
 PlasmaTurret.prototype = {

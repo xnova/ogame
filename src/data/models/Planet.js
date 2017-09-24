@@ -22,9 +22,7 @@
 import gaussian from 'gaussian';
 
 import { HashMap, del } from '../redis';
-import {
-  constructionQueue,
-} from '../queues';
+import { constructionQueue } from '../queues';
 import PlanetCore, { diameterToFields } from '../../core/game/Planet';
 import { factoryBuilding } from '../../core/game/buildings';
 import Producer from './Producer';
@@ -32,11 +30,7 @@ import Buildings from './Buildings';
 import Ships from './Ships';
 import Defenses from './Defenses';
 import { randomInt } from '../../utils/random';
-import {
-  HOMEPLANET_DIAMETER,
-  CONSTRUCTION_SPEED,
-} from '../../config';
-
+import { HOMEPLANET_DIAMETER, CONSTRUCTION_SPEED } from '../../config';
 
 const NAME_KEY = 'name';
 const DIAMETER_KEY = 'diameter';
@@ -97,13 +91,14 @@ Planet.prototype = {
     const currentLevel = await this.getBuildingLevel(buildingId);
     const delta = isDemolition ? -1 : 1;
     const nextLevel = currentLevel + delta;
-    console.log(currentLevel, nextLevel);
-    if (nextLevel < 0) throw new Error('Buildings at level 0 cannot be demolished!');
+    // console.log(currentLevel, nextLevel);
+    if (nextLevel < 0)
+      throw new Error('Buildings at level 0 cannot be demolished!');
     // TODO check requirements
     const building = factoryBuilding(buildingId, nextLevel);
     const buildingSpeed = await this.getBuildingSpeed();
     const duration = building.getDuration(CONSTRUCTION_SPEED * buildingSpeed);
-    console.log('duration in ms', duration.asMilliseconds());
+    // console.log('duration in ms', duration.asMilliseconds());
     // TODO transaction
     const job = await constructionQueue.add(
       {
@@ -126,7 +121,7 @@ Planet.prototype = {
   async getConstruction(): Promise<Construction> {
     const job = await constructionQueue.getJob(this.key);
     if (job) {
-      console.log(job);
+      // console.log(job);
       return {
         ...job.data,
         // dividing by 1000 to get seconds
@@ -146,10 +141,25 @@ Planet.prototype = {
       await job.remove();
     }
   },
-
 };
 
-const minTemp = [200, 150, 100, 50, 40, 30, 20, 10, 0, -10, -20, -30, -70, -110, -150];
+const minTemp = [
+  200,
+  150,
+  100,
+  50,
+  40,
+  30,
+  20,
+  10,
+  0,
+  -10,
+  -20,
+  -30,
+  -70,
+  -110,
+  -150,
+];
 function generateTemperature(slot: number): number {
   const min = minTemp[slot - 1];
   const max = min + 40;

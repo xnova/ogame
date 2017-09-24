@@ -21,12 +21,10 @@
 
 import { RESOURCES } from '../resources';
 
-
 function Technology(level) {
   this.level = level;
 }
 Technology.prototype = {
-
   name: 'Unnamed Technology',
 
   shortDesc: 'No short description!',
@@ -51,9 +49,9 @@ Technology.prototype = {
   getCost(): Resources {
     const { baseCost, level, costFactor: k } = this;
     const cost = {};
-    RESOURCES.forEach((resource) => {
-      const b = baseCost[resource] | 0;
-      cost[resource] = Math.floor(b * (k ** (level - 1)));
+    RESOURCES.forEach(resource => {
+      const b = baseCost[resource] || 0;
+      cost[resource] = Math.floor(b * k ** (level - 1));
     });
     return cost;
   },
@@ -64,9 +62,9 @@ Technology.prototype = {
   getAccumulatedCost(): Resources {
     const { baseCost, level, costFactor: k } = this;
     const cost = {};
-    RESOURCES.forEach((resource) => {
+    RESOURCES.forEach(resource => {
       const b = baseCost[resource];
-      cost[resource] = (b * k * ((k ** level) - 1)) / (k - 1);
+      cost[resource] = b * k * (k ** level - 1) / (k - 1);
     });
     return cost;
   },
@@ -77,7 +75,6 @@ Technology.prototype = {
     const score = sum / 1000;
     return score;
   },
-
-}
+};
 
 export default Technology;

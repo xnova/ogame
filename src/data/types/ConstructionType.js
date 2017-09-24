@@ -27,7 +27,6 @@ import {
   GraphQLNonNull as NonNull,
 } from 'graphql';
 
-
 const ConstructionType = new ObjectType({
   name: 'Construction',
   fields: {

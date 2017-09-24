@@ -22,7 +22,6 @@
 import redis from './redis';
 import HashMap from './HashMap';
 
-
 class Counter extends HashMap<number> {
   // TODO check return type
   incr(id: string, delta: number): Promise<T> {

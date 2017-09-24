@@ -21,7 +21,6 @@
 
 import redis from './redis';
 
-
 class HashMap<T> {
   constructor(key: string) {
     this.key = key;

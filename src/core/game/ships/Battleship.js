@@ -20,7 +20,6 @@
 
 import Ship from './Ship';
 
-
 const name = 'Battleship';
 
 /**
@@ -28,7 +27,7 @@ const name = 'Battleship';
  * @param {*} player
  */
 function Battleship(player) {
-
+  this.player = player;
 }
 
 Battleship.prototype = {
@@ -53,6 +52,6 @@ Battleship.prototype = {
 
   // http://ogame.wikia.com/wiki/Fuel_Consumption
   fuelUsage: 250,
-}
+};
 
 export default Battleship;

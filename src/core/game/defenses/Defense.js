@@ -20,12 +20,10 @@
 
 const REBUILD_CHANCE = 0.7;
 
-
 function Defense(player) {
   this.player = player;
 }
 Defense.prototype = {
-
   name: 'Unnamed Defense',
 
   cost: {},
@@ -39,7 +37,7 @@ Defense.prototype = {
   baseAttack: 1,
 
   getDescription() {
-    return "${this.description} \n\n After a battle, there is up to a ${100*REBUILD_CHANCE}% chance that failed defensive facilities can be returned to use.";
+    return `${this.description} \n\n After a battle, there is up to a ${100*REBUILD_CHANCE}% chance that failed defensive facilities can be returned to use.`;
   },
 
   /**
@@ -76,7 +74,7 @@ Defense.prototype = {
    */
   getShield() {
     const shieldTech = this.player.technologies.shieldTech;
-    return this.baseShield * (1 + (0.1 * shieldTech.level));
+    return this.baseShield * (1 + 0.1 * shieldTech.level);
   },
 
   /**
@@ -84,7 +82,7 @@ Defense.prototype = {
    */
   getAttack() {
     const weaponsTech = this.player.technologies.weaponsTech;
-    return this.baseAttack * (1 + (0.1 * weaponsTech.level));
+    return this.baseAttack * (1 + 0.1 * weaponsTech.level);
   },
 
   /**
@@ -92,7 +90,6 @@ Defense.prototype = {
    */
   getHull() {
     const armourTech = this.player.technologies.armourTech;
-    return this.getBaseHull() * (1 + (0.1 * armourTech.level));
+    return this.getBaseHull() * (1 + 0.1 * armourTech.level);
   },
-
 };

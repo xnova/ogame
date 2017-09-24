@@ -1,6 +1,5 @@
 import Defense from './Defense';
 
-
 const name = 'Light Laser';
 
 /**
@@ -8,7 +7,7 @@ const name = 'Light Laser';
  * @param {*} player
  */
 function LightLaser(player) {
-
+  this.player = player;
 }
 
 LightLaser.prototype = {

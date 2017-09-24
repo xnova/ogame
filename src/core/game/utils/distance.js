@@ -19,8 +19,7 @@
  * @flow
  */
 
-import type { Coordinates } from '../core/game/types';
-
+import type { Coordinates } from '../types';
 
 /**
  * http://ogame.wikia.com/wiki/Distance
@@ -35,12 +34,12 @@ function distance(p: Coordinates, q: Coordinates) {
 
   const systemDiff = p[1] - q[1];
   if (systemDiff) {
-    return 2700 + (95 * Math.abs(systemDiff));
+    return 2700 + 95 * Math.abs(systemDiff);
   }
 
   const planetDiff = p[2] - q[2];
   if (planetDiff) {
-    return 1000 + (5 * Math.abs(planetDiff));
+    return 1000 + 5 * Math.abs(planetDiff);
   }
 
   // TODO ?

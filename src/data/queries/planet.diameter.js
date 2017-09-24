@@ -21,7 +21,6 @@
 
 import { GraphQLInt as IntType } from 'graphql';
 
-
 const diameter = {
   type: IntType,
   resolve: planet => planet.getDiameter(),

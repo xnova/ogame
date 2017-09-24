@@ -21,7 +21,6 @@
 
 import redis from './redis';
 
-
 export function exists(key: string): Promise<boolean> {
   return redis.existsAsync(key);
 }
@@ -29,4 +28,3 @@ export function exists(key: string): Promise<boolean> {
 export function del(key: string): Promise {
   return redis.delAsync(key);
 }
-

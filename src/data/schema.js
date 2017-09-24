@@ -28,9 +28,7 @@ import viewer from './queries/viewer';
 import improveBuilding from './mutations/improveBuilding';
 import cancelConstruction from './mutations/cancelConstruction';
 
-
 const schema = new Schema({
-
   query: new ObjectType({
     name: 'Query',
     fields: {
@@ -45,7 +43,6 @@ const schema = new Schema({
       cancelConstruction,
     },
   }),
-
 });
 
 export default schema;

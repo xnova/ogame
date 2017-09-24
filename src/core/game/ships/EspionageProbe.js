@@ -1,6 +1,5 @@
 import Ship from './Ship';
 
-
 const name = 'Espionage Probe';
 
 /**
@@ -8,7 +7,7 @@ const name = 'Espionage Probe';
  * @param {*} player
  */
 function EspionageProbe(player) {
-
+  this.player = player;
 }
 
 EspionageProbe.prototype = {
@@ -32,6 +31,6 @@ EspionageProbe.prototype = {
 
   // http://ogame.wikia.com/wiki/Fuel_Consumption
   fuelUsage: 0.5,
-}
+};
 
 export default EspionageProbe;

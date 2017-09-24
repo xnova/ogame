@@ -22,8 +22,7 @@ import test from 'ava';
 
 import { factoryBuilding } from '../src/core/game/buildings';
 
-
-test('cost metalMine@7', (t) => {
+test('cost metalMine@7', t => {
   const metalMine = factoryBuilding('metalMine', 7);
   const cost = metalMine.getCost();
   t.is(cost.metal, 683);
@@ -32,7 +31,7 @@ test('cost metalMine@7', (t) => {
   t.is(cost.energy, 0);
 });
 
-test('cost crystalMine@5', (t) => {
+test('cost crystalMine@5', t => {
   const crystalMine = factoryBuilding('crystalMine', 5);
   const cost = crystalMine.getCost();
   t.is(cost.metal, 314);
@@ -41,7 +40,7 @@ test('cost crystalMine@5', (t) => {
   t.is(cost.energy, 0);
 });
 
-test('cost deuteriumSynthesizer@4', (t) => {
+test('cost deuteriumSynthesizer@4', t => {
   const deuteriumSynthesizer = factoryBuilding('deuteriumSynthesizer', 4);
   const cost = deuteriumSynthesizer.getCost();
   t.is(cost.metal, 759);
@@ -50,7 +49,7 @@ test('cost deuteriumSynthesizer@4', (t) => {
   t.is(cost.energy, 0);
 });
 
-test('cost solarPlant@8', (t) => {
+test('cost solarPlant@8', t => {
   const deuteriumSynthesizer = factoryBuilding('solarPlant', 8);
   const cost = deuteriumSynthesizer.getCost();
   t.is(cost.metal, 1281);
@@ -59,7 +58,7 @@ test('cost solarPlant@8', (t) => {
   t.is(cost.energy, 0);
 });
 
-test('cost roboticsFactory@2', (t) => {
+test('cost roboticsFactory@2', t => {
   const roboticsFactory = factoryBuilding('roboticsFactory', 2);
   const cost = roboticsFactory.getCost();
   t.is(cost.metal, 800);

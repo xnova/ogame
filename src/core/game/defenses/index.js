@@ -8,7 +8,6 @@ import PlasmaTurret from './PlasmaTurret';
 import SmallShieldDome from './SmallShieldDome';
 import LargeShieldDome from './LargeShieldDome';
 
-
 export default {
   Defense,
   RocketLauncher,

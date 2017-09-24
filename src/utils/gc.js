@@ -21,7 +21,6 @@
 
 import logger from '../core/logger';
 
-
 /**
  * https://blog.jayway.com/2015/04/13/600k-concurrent-websocket-connections-on-aws-using-node-js/
  */
@@ -30,8 +29,10 @@ export function forceGC() {
     global.gc();
     logger.info('GC');
   } else {
-    logger.warn('Garbage collection unavailable. ' +
-      'Pass --expose-gc when launching node to enable forced garbage ' +
-      'collection.');
+    logger.warn(
+      'Garbage collection unavailable. ' +
+        'Pass --expose-gc when launching node to enable forced garbage ' +
+        'collection.',
+    );
   }
 }

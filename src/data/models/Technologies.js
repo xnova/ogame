@@ -27,7 +27,6 @@ function Technologies(parentKey: string) {
   this.counter = new Counter(`${parentKey}:technologies`);
 }
 Technologies.prototype = {
-
   factory: factoryTechnology,
 
   async get(technologyId: string): Promise<Technology> {
@@ -39,10 +38,10 @@ Technologies.prototype = {
     const levels = await this.counter.getAll();
     const list = [];
     if (!levels) return list;
-    for (const [id, level] of Object.entries(levels)) {
+    Object.entries(levels).forEach(([id, level]) => {
       // TODO check if parseInt is needed
       list.push(this.factory(id, parseInt(level, 10)));
-    }
+    });
     return list;
   },
 

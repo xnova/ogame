@@ -34,7 +34,6 @@ import ResearchLab from './ResearchLab';
 import NaniteFactory from './NaniteFactory';
 import Terraformer from './Terraformer';
 
-
 export function factoryBuilding(buildingId: string, level: number): Building {
   switch (buildingId) {
     case MetalMine.prototype.id:
@@ -68,8 +67,19 @@ export function factoryBuilding(buildingId: string, level: number): Building {
   }
 }
 
-export { Building,
-  MetalMine, CrystalMine, DeuteriumSynthesizer, SolarPlant, FusionReactor,
-  MetalStorage, CrystalStorage, DeuteriumTank,
-  RoboticsFactory, Shipyard, ResearchLab, NaniteFactory, Terraformer,
+export {
+  Building,
+  MetalMine,
+  CrystalMine,
+  DeuteriumSynthesizer,
+  SolarPlant,
+  FusionReactor,
+  MetalStorage,
+  CrystalStorage,
+  DeuteriumTank,
+  RoboticsFactory,
+  Shipyard,
+  ResearchLab,
+  NaniteFactory,
+  Terraformer,
 };

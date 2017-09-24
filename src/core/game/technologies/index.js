@@ -19,7 +19,7 @@
  * @flow
  */
 
-import Technology from  './Technology';
+import Technology from './Technology';
 import EnergyTechnology from './EnergyTechnology';
 import LaserTechnology from './LaserTechnology';
 import IonTechnology from './IonTechnology';
@@ -37,8 +37,10 @@ import ShieldingTechnology from './ShieldingTechnology';
 import ArmourTechnology from './ArmourTechnology';
 import GravitonTechnology from './GravitonTechnology';
 
-
-export function factoryTechnology(technologyId: string, level: number): Technology {
+export function factoryTechnology(
+  technologyId: string,
+  level: number,
+): Technology {
   switch (technologyId) {
     case EnergyTechnology.prototype.id:
       return new EnergyTechnology(level);

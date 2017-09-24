@@ -20,7 +20,6 @@
 
 import { GraphQLInt as IntType } from 'graphql';
 
-
 const fields = {
   type: IntType,
   resolve: planet => planet.getFields(),

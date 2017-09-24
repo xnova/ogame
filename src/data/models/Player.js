@@ -23,11 +23,7 @@ import { HashMap, Set, del, exists } from '../redis';
 import Technologies from './Technologies';
 import PlayerCore from '../../core/game/Player';
 import { factoryTechnology } from '../../core/game/technologies';
-import Planet, {
-  createHomePlanet,
-  createPlanet,
-} from './Planet';
-
+import Planet, { createHomePlanet, createPlanet } from './Planet';
 
 const HOMEPLANET_KEY = 'homePlanet';
 function Player(name: string) {
@@ -72,7 +68,6 @@ Player.prototype = {
   hasPlanet(planet: Planet): Promise<boolean> {
     return this.planets.has(planet.id);
   },
-
 };
 
 export async function createPlayer(name): Promise<Player> {

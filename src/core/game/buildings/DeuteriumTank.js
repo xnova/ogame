@@ -22,10 +22,10 @@
 import Building from './Building';
 import Storage from './Storage';
 
-
 const name = 'Deuterium Tank';
 const shortDesc = 'Giant tanks for storing newly-extracted deuterium.';
-const description = 'The Deuterium tank is for storing newly-synthesized deuterium. Once it is processed by the synthesizer, it is piped into this tank for later use. With each upgrade of the tank, the total storage capacity is increased. Once the capacity is reached, no further Deuterium will be synthesized.';
+const description =
+  'The Deuterium tank is for storing newly-synthesized deuterium. Once it is processed by the synthesizer, it is piped into this tank for later use. With each upgrade of the tank, the total storage capacity is increased. Once the capacity is reached, no further Deuterium will be synthesized.';
 
 /**
  * http://ogame.wikia.com/wiki/Metal_Storage

@@ -29,7 +29,6 @@ function Producer(key: string) {
   this.resources = new Counter(`${key}:resources`);
 }
 Producer.prototype = {
-
   async updateResources(force = false) {
     await this.fetchResources(force);
 
@@ -79,7 +78,6 @@ Producer.prototype = {
     await this.updateResources();
     return this.resourcesCache;
   },
-
 };
 
 export default Producer;

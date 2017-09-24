@@ -22,8 +22,9 @@ import test from 'ava';
 
 import { Counter } from '../../src/data/redis';
 
-test('counter can set & get', async (t) => {
-  const key = 'test:counter:setnget';
+const keyPrefix = 'test:counter';
+test('counter can set & get', async t => {
+  const key = `${keyPrefix}:setnget`;
   const field = 'population';
   const value = 1234567890;
   const counter = new Counter(key);
@@ -32,8 +33,8 @@ test('counter can set & get', async (t) => {
   t.is(await counter.getInt(field), value);
 });
 
-test('counter can update', async (t) => {
-  const key = 'test:counter:update';
+test('counter can update', async t => {
+  const key = `${keyPrefix}:update`;
   const counter = new Counter(key);
   await counter.update({
     locke: 4,
@@ -61,8 +62,8 @@ test('counter can update', async (t) => {
   t.is(kwon, 42);
 });
 
-test('counter can incr', async (t) => {
-  const key = 'test:counter:incr';
+test('counter can incr', async t => {
+  const key = `${keyPrefix}:incr`;
   const counter = new Counter(key);
   await counter.update({
     year: 1994,
@@ -75,9 +76,8 @@ test('counter can incr', async (t) => {
   t.is(await counter.getInt('year'), 2017);
 });
 
-
-test('counter can add', async (t) => {
-  const key = 'test:counter:add';
+test('counter can add', async t => {
+  const key = `${keyPrefix}:add`;
   const counter = new Counter(key);
 
   await counter.update({
@@ -103,8 +103,8 @@ test('counter can add', async (t) => {
   t.is(deuterium, 2017);
 });
 
-test('counter can subtract', async (t) => {
-  const key = 'test:counter:subtract';
+test('counter can subtract', async t => {
+  const key = `${keyPrefix}:subtract`;
   const counter = new Counter(key);
 
   await counter.update({
@@ -130,8 +130,8 @@ test('counter can subtract', async (t) => {
   t.is(deuterium, 0);
 });
 
-test('counter can addByFloat', async (t) => {
-  const key = 'test:counter:addByFloat';
+test('counter can addByFloat', async t => {
+  const key = `${keyPrefix}:addByFloat`;
   const counter = new Counter(key);
 
   await counter.update({
@@ -142,7 +142,7 @@ test('counter can addByFloat', async (t) => {
 
   await counter.addByFloat({
     metal: 0.5,
-    crystal: 3.20,
+    crystal: 3.2,
     deuterium: 8.99,
   });
 
@@ -153,12 +153,12 @@ test('counter can addByFloat', async (t) => {
   ]);
 
   t.is(metal, 1.5);
-  t.is(crystal, 4.20);
+  t.is(crystal, 4.2);
   t.is(deuterium, 9.99);
 });
 
-test('counter can subtractByFloat', async (t) => {
-  const key = 'test:counter:subtractByFloat';
+test('counter can subtractByFloat', async t => {
+  const key = `${keyPrefix}:subtractByFloat`;
   const counter = new Counter(key);
 
   await counter.update({

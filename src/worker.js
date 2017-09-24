@@ -19,21 +19,22 @@
  * @flow
  */
 
-import {
-  constructionQueue,
-} from './data/queues';
+import { constructionQueue } from './data/queues';
 import { Buildings } from './data/models';
 import { forceGC } from './utils/gc';
 import logger from './core/logger';
 import { SECOND } from './core/constants';
 
-
-constructionQueue.process(async (job) => {
+constructionQueue.process(async job => {
   // job.data contains the custom data passed when the job was created
   // job.id contains id of this job.
   const key = job.id;
   const { buildingId, isDemolotion } = job.data;
-  console.log(`processing ${isDemolotion ? 'demolition' : 'improvement'} of ${buildingId} on ${key}`);
+  logger.log(
+    `processing ${isDemolotion
+      ? 'demolition'
+      : 'improvement'} of ${buildingId} on ${key}`,
+  );
 
   // TODO delete construction job?
 
@@ -46,7 +47,6 @@ constructionQueue.process(async (job) => {
 // Call Garbage Collector every 30 seconds
 setInterval(forceGC, 30 * SECOND);
 
-console.log(
+logger.log(
   `Worker is now running in ${process.env.NODE_ENV || 'development'} mode`,
 );
-

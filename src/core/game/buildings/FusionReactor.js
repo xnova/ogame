@@ -1,6 +1,5 @@
 import Building from './Building';
 
-
 const name = 'Fusion Reactor';
 const shortDesc = 'The fusion reactor uses deuterium to produce energy.';
 // TODO

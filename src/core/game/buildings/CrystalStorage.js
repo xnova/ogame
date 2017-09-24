@@ -22,10 +22,10 @@
 import Building from './Building';
 import Storage from './Storage';
 
-
 const name = 'Crystal Storage';
 const shortDesc = 'Provides storage for excess crystal.';
-const description = 'The unprocessed crystal will be stored in these giant storage halls in the meantime. With each level of upgrade, it increases the amount of crystal can be stored. If the crystal stores are full, no further crystal will be mined.';
+const description =
+  'The unprocessed crystal will be stored in these giant storage halls in the meantime. With each level of upgrade, it increases the amount of crystal can be stored. If the crystal stores are full, no further crystal will be mined.';
 
 /**
  * http://ogame.wikia.com/wiki/Metal_Storage

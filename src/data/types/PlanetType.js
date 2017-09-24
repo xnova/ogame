@@ -34,7 +34,6 @@ import resources from '../queries/planet.resources';
 import buildings from '../queries/planet.buildings';
 import construction from '../queries/planet.construction';
 
-
 const PlanetType = new ObjectType({
   name: 'Planet',
   fields: {

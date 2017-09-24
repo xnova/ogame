@@ -26,7 +26,6 @@ function Defenses(parentKey: string) {
   this.counter = new Counter(`${parentKey}:defenses`);
 }
 Defenses.prototype = {
-
   getDict(): Promise<Dict<string, number>> {
     return this.counter.getAll();
   },
@@ -43,7 +42,6 @@ Defenses.prototype = {
   incrAmount(defenseId: string, delta: number) {
     return this.counter.incr(defenseId, delta);
   },
-
 };
 
 export default Defenses;

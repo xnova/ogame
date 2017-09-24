@@ -1,6 +1,5 @@
 import Ship from './Ship';
 
-
 const name = 'SolarSatellite';
 
 /**
@@ -8,7 +7,7 @@ const name = 'SolarSatellite';
  * @param {*} player
  */
 function SolarSatellite(player) {
-
+  this.player = player;
 }
 
 SolarSatellite.prototype = {
@@ -18,6 +17,6 @@ SolarSatellite.prototype = {
     crystal: 2000,
     deuterium: 500,
   },
-}
+};
 
 export default SolarSatellite;

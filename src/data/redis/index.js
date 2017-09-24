@@ -25,6 +25,5 @@ import HashMap from './HashMap';
 import Set from './Set';
 import { del, exists } from './utils';
 
-
 export default redis;
 export { Counter, HashMap, Set, del, exists };

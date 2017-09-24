@@ -25,7 +25,6 @@ import {
   GraphQLNonNull as NonNull,
 } from 'graphql';
 
-
 const ResourcesType = new ObjectType({
   name: 'Resources',
   fields: {

@@ -11,7 +11,6 @@ import run from './run';
 import clean from './clean';
 import copy from './copy';
 import bundle from './bundle';
-import pkg from '../package.json';
 
 /**
  * Compiles the project from source files into a distributable

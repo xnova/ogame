@@ -29,7 +29,6 @@ import {
 import planets from '../queries/player.planets';
 import technologies from '../queries/player.technologies';
 
-
 const UserType = new ObjectType({
   name: 'User',
   fields: {

@@ -21,10 +21,11 @@
 
 import Building from './Building';
 
-
 const name = 'Research Lab';
-const shortDesc = 'A research lab is required in order to conduct research into new technologies.';
-const description = 'An essential part of any empire, Research Labs are where new technologies are discovered and older technologies are improved upon. With each level of the Research Lab constructed, the speed in which new technologies are researched is increased, while also unlocking newer technologies to research. In order to conduct research as quickly as possible, research scientists are immediately dispatched to the colony to begin work and development. In this way, knowledge about new technologies can easily be disseminated throughout the empire.';
+const shortDesc =
+  'A research lab is required in order to conduct research into new technologies.';
+const description =
+  'An essential part of any empire, Research Labs are where new technologies are discovered and older technologies are improved upon. With each level of the Research Lab constructed, the speed in which new technologies are researched is increased, while also unlocking newer technologies to research. In order to conduct research as quickly as possible, research scientists are immediately dispatched to the colony to begin work and development. In this way, knowledge about new technologies can easily be disseminated throughout the empire.';
 
 /**
  * http://ogame.wikia.com/wiki/Robotics_Factory

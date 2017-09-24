@@ -22,10 +22,10 @@
 import Building from './Building';
 import Storage from './Storage';
 
-
 const name = 'Metal Storage';
 const shortDesc = 'Provides storage for excess metal.';
-const description = 'This giant storage facility is used to store metal ore. Each level of upgrading increases the amount of metal ore that can be stored. If the stores are full, no further metal will be mined.';
+const description =
+  'This giant storage facility is used to store metal ore. Each level of upgrading increases the amount of metal ore that can be stored. If the stores are full, no further metal will be mined.';
 
 /**
  * http://ogame.wikia.com/wiki/Metal_Storage

@@ -30,7 +30,6 @@ import { mutationWithClientMutationId } from 'graphql-relay';
 import Planet from '../models/Planet';
 import PlanetType from '../types/PlanetType';
 
-
 const improveBuilding = mutationWithClientMutationId({
   name: 'ImproveBuilding',
   inputFields: {

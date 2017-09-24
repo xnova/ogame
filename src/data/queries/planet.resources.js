@@ -28,7 +28,7 @@ const endpoint = {
   type: new NonNull(ResourcesType),
   async resolve(planet: Planet) {
     const resources = await planet.getResources();
-    RESOURCES.forEach((resource) => {
+    RESOURCES.forEach(resource => {
       resources[resource] = Math.floor(resources[resource] || 0);
     });
     return resources;

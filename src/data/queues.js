@@ -23,5 +23,5 @@ import Queue from 'bull';
 
 import { REDIS_URL } from '../config';
 
-
 export const constructionQueue = new Queue('construction', REDIS_URL);
+export const researchQueue = new Queue('research', REDIS_URL);

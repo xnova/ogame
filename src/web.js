@@ -30,13 +30,13 @@ import schema from './data/schema';
 import { SECOND, HOUR } from './core/constants';
 import { PORT } from './config';
 
-
 async function fakeData() {
   try {
     const arkeros = await createPlayer('arkeros');
     arkeros.technologies.incrLevel('gravitonTech');
     arkeros.technologies.setLevel('energyTech', 13);
     arkeros.technologies.setLevel('weaponsTech', 18);
+
     const homePlanet = await arkeros.getHomePlanet();
     homePlanet.setName('Arrakis');
     homePlanet.buildings.setLevel('metalMine', 32);
@@ -68,9 +68,11 @@ const app = express();
 
 // serve static files on dev env
 if (__DEV__) {
-  app.use(express.static(path.join(__dirname, 'public'), {
-    maxAge: HOUR,
-  }));
+  app.use(
+    express.static(path.join(__dirname, 'public'), {
+      maxAge: HOUR,
+    }),
+  );
 }
 
 //
@@ -89,9 +91,12 @@ app.use(
 
 app.use('/', (req, res) => res.redirect('/graphql'));
 
-app.listen(PORT, () => console.log(
-  `WebServer is now running in ${process.env.NODE_ENV || 'development'} mode on http://localhost:${PORT}`,
-));
+app.listen(PORT, () =>
+  logger.log(
+    `WebServer is now running in ${process.env.NODE_ENV ||
+      'development'} mode on http://localhost:${PORT}`,
+  ),
+);
 
 // Call Garbage Collector every 30 seconds
 setInterval(forceGC, 30 * SECOND);

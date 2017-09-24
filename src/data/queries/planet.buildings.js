@@ -22,7 +22,6 @@
 import { GraphQLList as List } from 'graphql';
 import BuildingType from '../types/BuildingType';
 
-
 const buildings = {
   type: new List(BuildingType),
   resolve(planet) {

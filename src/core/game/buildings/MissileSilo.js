@@ -1,6 +1,5 @@
 import Building from './Building';
 
-
 const name = 'Missile Silo';
 const shortDesc = 'Missile silos are used to store missiles.';
 const description = `Missile silos are used to construct, store and launch interplanetary and anti-ballistic missiles. With each level of the silo, five interplanetary missiles or ten anti-ballistic missiles can be stored. One Interplanetary missile uses the same space as two Anti-Ballistic missiles. Storage of both Interplanetary missiles and Anti-Ballistic missiles in the same silo is allowed.`;

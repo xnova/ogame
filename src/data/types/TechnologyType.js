@@ -27,7 +27,6 @@ import {
   GraphQLNonNull as NonNull,
 } from 'graphql';
 
-
 const TechnologyType = new ObjectType({
   name: 'Technology',
   fields: {

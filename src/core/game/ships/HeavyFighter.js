@@ -1,6 +1,5 @@
 import Ship from './Ship';
 
-
 const name = 'Heavy Fighter';
 
 /**
@@ -8,7 +7,7 @@ const name = 'Heavy Fighter';
  * @param {*} player
  */
 function HeavyFighter(player) {
-
+  this.player = player;
 }
 
 HeavyFighter.prototype = {
@@ -33,6 +32,6 @@ HeavyFighter.prototype = {
 
   // http://ogame.wikia.com/wiki/Fuel_Consumption
   fuelUsage: 37.5,
-}
+};
 
 export default HeavyFighter;

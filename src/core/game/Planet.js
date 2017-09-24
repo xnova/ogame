@@ -33,7 +33,7 @@ import {
 } from './buildings';
 import distance from './utils/distance';
 
- /**
+/**
  * http://ogame.wikia.com/wiki/Diameter
  * @param {*} diameter
  */
@@ -48,7 +48,6 @@ function Planet(player: Player) {
   this.defenses = new Map();
 }
 Planet.prototype = {
-
   name: '',
 
   availableBuildings: new Set([
@@ -114,13 +113,9 @@ Planet.prototype = {
     return this.player.getTechnology(techId);
   },
 
-  async getShip(shipId: string) {
+  async getShip(shipId: string) {},
 
-  },
-
-  async getDefense(defenseId: string) {
-
-  },
+  async getDefense(defenseId: string) {},
 
   async getBuildingSpeed(): Promise<number> {
     const [roboticsLevel, naniteLevel] = await Promise.all([

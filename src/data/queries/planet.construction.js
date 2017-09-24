@@ -22,7 +22,6 @@
 import ConstructionType from '../types/ConstructionType';
 import { RESOURCES } from '../../core/game/resources';
 
-
 const construction = {
   type: ConstructionType,
   resolve: planet => planet.getConstruction(),

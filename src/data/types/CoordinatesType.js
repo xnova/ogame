@@ -25,7 +25,6 @@ import {
   GraphQLNonNull as NonNull,
 } from 'graphql';
 
-
 const CoordinatesType = new ObjectType({
   name: 'Coordinates',
   fields: {

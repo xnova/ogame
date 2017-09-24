@@ -23,7 +23,6 @@ import moment from 'moment';
 
 import Technology from '../technologies/Technology';
 
-
 function Building(level) {
   this.level = level;
 }
@@ -51,14 +50,11 @@ Building.prototype = {
    */
   // TODO return type: moment duration
   getDuration(buildingSpeed): Duration {
-    console.log(this.level);
     const cost = this.getCost();
-    console.log(cost);
     const baseHours = (cost.metal + cost.crystal) / 2500;
     const hours = baseHours / buildingSpeed;
     return moment.duration(hours, 'hours');
   },
-
 };
 
 export default Building;
