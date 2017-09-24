@@ -31,6 +31,18 @@ class HashMap<T> {
     return redis.hgetAsync(this.key, id);
   }
 
+  async getInt(id: string): Promise<number> {
+    const value = await this.get(id);
+    if (value) return parseInt(value, 10);
+    return 0;
+  }
+
+  async getFloat(id: string): Promise<number> {
+    const value = await this.get(id);
+    if (value) return parseFloat(value);
+    return 0;
+  }
+
   // TODO check return type
   set(id: string, value: T): Promise<T> {
     return redis.hsetAsync(this.key, id, value);
@@ -45,9 +57,7 @@ class HashMap<T> {
    * @param {*} dict
    */
   update(dict: Dict) {
-    return redis.hmsetAsync(this.key,
-      ...Array.concat(...Object.entries(dict)),
-    );
+    return redis.hmsetAsync(this.key, dict);
   }
 }
 

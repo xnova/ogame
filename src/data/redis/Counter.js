@@ -43,20 +43,28 @@ class Counter extends HashMap<number> {
     return this.incrByFloat(id, -delta);
   }
 
-  add(dict: Dict): Promise {
-    return Promise.all(Object.entries(dict).map(this.incr));
+  add(dict: Dict<string, number>): Promise {
+    return Promise.all(
+      Object.entries(dict).map(([id, value]) => this.incr(id, value)),
+    );
   }
 
-  subtract(dict: Dict): Promise {
-    return Promise.all(Object.entries(dict).map(this.decr));
+  subtract(dict: Dict<string, number>): Promise {
+    return Promise.all(
+      Object.entries(dict).map(([id, value]) => this.decr(id, value)),
+    );
   }
 
-  addByFloat(dict: Dict): Promise {
-    return Promise.all(Object.entries(dict).map(this.incrByFloat));
+  addByFloat(dict: Dict<string, number>): Promise {
+    return Promise.all(
+      Object.entries(dict).map(([id, value]) => this.incrByFloat(id, value)),
+    );
   }
 
-  subtractByFloat(dict: Dict): Promise {
-    return Promise.all(Object.entries(dict).map(this.decrByFloat));
+  subtractByFloat(dict: Dict<string, number>): Promise {
+    return Promise.all(
+      Object.entries(dict).map(([id, value]) => this.decrByFloat(id, value)),
+    );
   }
 }
 

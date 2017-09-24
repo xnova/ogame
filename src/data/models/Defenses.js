@@ -31,10 +31,8 @@ Defenses.prototype = {
     return this.counter.getAll();
   },
 
-  async getAmount(defenseId: string): Promise<number> {
-    const amount = await this.counter.get(defenseId);
-    if (amount) return parseInt(amount, 10);
-    return 0;
+  getAmount(defenseId: string): Promise<number> {
+    return this.counter.getInt(defenseId);
   },
 
   // TODO this shouldnt be needed on production, only on fake data introduction!!!

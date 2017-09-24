@@ -67,9 +67,9 @@ Producer.prototype = {
       lastUpdate,
     } = await this.resources.getAll();
     this.resourcesCache = {
-      metal: parseFloat(metal, 10),
-      crystal: parseFloat(crystal, 10),
-      deuterium: parseFloat(deuterium, 10),
+      metal: parseFloat(metal),
+      crystal: parseFloat(crystal),
+      deuterium: parseFloat(deuterium),
       lastUpdate: parseInt(lastUpdate, 10),
     };
     // console.log('fetched resources', this.resources);
