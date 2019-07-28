@@ -3,78 +3,45 @@
  *
  * This file is part of Xnova OGame.
  *
- * Xnova OGame is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Xnova OGame is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Xnova OGame.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @flow
+ * This code is licensed under MIT license (see LICENSE.md for details)
  */
 
-import { RESOURCES } from '../resources';
+import { Resources } from '../../../shared/resources';
+import { ResearchLab } from '../buildings/ResearchLab';
 
-function Technology(level) {
-  this.level = level;
+interface Requirement {
+  technology: new (level: number) => Technology;
+  level: number;
 }
-Technology.prototype = {
-  name: 'Unnamed Technology',
 
-  shortDesc: 'No short description!',
+export abstract class Technology {
+  public id: string; // TODO think better...
+  public name: string;
+  public baseCost: Resources;
+  public costFactor: number;
+  public requirements: Requirement[];
 
-  description: 'No description!',
-
-  level: 0,
-
-  baseCost: {},
-
-  costFactor: 2,
-
-  requirements: new Map(),
-
-  getDescription(): string {
-    return this.description;
-  },
+  constructor(public level: number) {}
 
   /**
    * http://ogame.wikia.com/wiki/Building#Facilities_cost
    */
-  getCost(): Resources {
-    const { baseCost, level, costFactor: k } = this;
-    const cost = {};
-    RESOURCES.forEach(resource => {
-      const b = baseCost[resource] || 0;
-      cost[resource] = Math.floor(b * k ** (level - 1));
-    });
-    return cost;
-  },
+  public getCost(): Resources {
+    const { level, costFactor: k } = this;
+    return this.baseCost.map(b => Math.floor(b * k ** (level - 1)));
+  }
 
   /**
    * https://www.wolframalpha.com/input/?i=sum+b+*+k+%5E+l+from+l%3D1+to+n
    */
-  getAccumulatedCost(): Resources {
-    const { baseCost, level, costFactor: k } = this;
-    const cost = {};
-    RESOURCES.forEach(resource => {
-      const b = baseCost[resource];
-      cost[resource] = b * k * (k ** level - 1) / (k - 1);
-    });
-    return cost;
-  },
+  public getAccumulatedCost(): Resources {
+    const { level, costFactor: k } = this;
+    return this.baseCost.map(b => (b * k * (k ** level - 1)) / (k - 1));
+  }
+}
 
-  getScore(): number {
-    const totalCost = this.getAccumulatedCost();
-    const sum = totalCost.metal + totalCost.crystal + totalCost.deuterium;
-    const score = sum / 1000;
-    return score;
-  },
-};
-
-export default Technology;
+Technology.prototype.name = 'Unnamed Technology';
+Technology.prototype.level = 0;
+Technology.prototype.baseCost = Resources.Partial({ metal: 1, crystal: 1 });
+Technology.prototype.costFactor = 2;
+Technology.prototype.requirements = [{ technology: ResearchLab, level: 1 }];
