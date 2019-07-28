@@ -1,28 +1,25 @@
-import Technology from './Technology';
+/**
+ * Copyright (C) 2017 Rafael Arquero (@arkeros)
+ *
+ * This file is part of Xnova OGame.
+ *
+ * This code is licensed under MIT license (see LICENSE.md for details)
+ */
+
+import { Resources } from '../../../shared/resources';
+
+import { Technology } from './Technology';
 
 const name = 'Energy Technology';
-const shortDesc =
-  'The command of different types of energy is necessary for many new technologies.';
-const description = `As various fields of research advanced, it was discovered that the current technology of energy distribution was not sufficient enough to begin certain specialized research. With each upgrade of your Energy Technology, new research can be conducted which unlocks development of more sophisticated ships and defences.`;
 
 /**
- * http://ogame.wikia.com/wiki/Terraformer
- * @param {*} level
+ * http://ogame.wikia.com/wiki/Energy_Technology
  */
-function EnergyTechnology(level) {
-  Technology.call(this, level);
-}
+export class EnergyTechnology extends Technology {}
 
-EnergyTechnology.prototype = {
-  ...Technology.prototype,
-  id: 'energyTech',
-  name,
-  shortDesc,
-  description,
-  baseCost: {
+EnergyTechnology.prototype.id = 'energyTech';
+EnergyTechnology.prototype.name = name;
+EnergyTechnology.prototype.baseCost = Resources.Partial({
     crystal: 800,
     deuterium: 400,
-  },
-};
-
-export default EnergyTechnology;
+});

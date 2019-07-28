@@ -1,23 +1,25 @@
-import Technology from './Technology';
+/**
+ * Copyright (C) 2017 Rafael Arquero (@arkeros)
+ *
+ * This file is part of Xnova OGame.
+ *
+ * This code is licensed under MIT license (see LICENSE.md for details)
+ */
+
+import { Resources } from '../../../shared/resources';
+
+import { Technology } from './Technology';
 
 const name = 'Weapons Technology';
 
 /**
- * http://ogame.wikia.com/wiki/Terraformer
- * @param {*} level
+ * http://ogame.wikia.com/wiki/Weapons Technology
  */
-function WeaponsTechnology(level) {
-  Technology.call(this, level);
-}
+export class WeaponsTechnology extends Technology {}
 
-WeaponsTechnology.prototype = {
-  ...Technology.prototype,
-  id: 'weaponsTech',
-  name,
-  baseCost: {
+WeaponsTechnology.prototype.id = 'weaponsTech';
+WeaponsTechnology.prototype.name = name;
+WeaponsTechnology.prototype.baseCost = Resources.Partial({
     metal: 800,
     crystal: 200,
-  },
-};
-
-export default WeaponsTechnology;
+});

@@ -1,25 +1,27 @@
-import Technology from './Technology';
+/**
+ * Copyright (C) 2017 Rafael Arquero (@arkeros)
+ *
+ * This file is part of Xnova OGame.
+ *
+ * This code is licensed under MIT license (see LICENSE.md for details)
+ */
+
+import { Resources } from '../../../shared/resources';
+
+import { Technology } from './Technology';
 
 const name = 'Astrophysics';
 
 /**
- * http://ogame.wikia.com/wiki/Terraformer
- * @param {*} level
+ * http://ogame.wikia.com/wiki/Astrophysics
  */
-function Astrophysics(level) {
-  Technology.call(this, level);
-}
+export class Astrophysics extends Technology {}
 
-Astrophysics.prototype = {
-  ...Technology.prototype,
-  id: 'astrophysics',
-  name,
-  baseCost: {
+Astrophysics.prototype.id = 'astrophysics';
+Astrophysics.prototype.name = name;
+Astrophysics.prototype.baseCost = Resources.Partial({
     metal: 4000,
     crystal: 8000,
     deuterium: 4000,
-  },
-  costFactor: 1.75,
-};
-
-export default Astrophysics;
+});
+Astrophysics.prototype.costFactor = 1.75;

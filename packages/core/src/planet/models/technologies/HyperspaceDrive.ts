@@ -1,24 +1,26 @@
-import Technology from './Technology';
+/**
+ * Copyright (C) 2017 Rafael Arquero (@arkeros)
+ *
+ * This file is part of Xnova OGame.
+ *
+ * This code is licensed under MIT license (see LICENSE.md for details)
+ */
+
+import { Resources } from '../../../shared/resources';
+
+import { Technology } from './Technology';
 
 const name = 'Hyperspace Drive';
 
 /**
- * http://ogame.wikia.com/wiki/Terraformer
- * @param {*} level
+ * http://ogame.wikia.com/wiki/Hyperspace_Drive
  */
-function HyperspaceDrive(level) {
-  Technology.call(this, level);
-}
+export class HyperspaceDrive extends Technology {}
 
-HyperspaceDrive.prototype = {
-  ...Technology.prototype,
-  id: 'hyperspaceDrive',
-  name,
-  baseCost: {
+HyperspaceDrive.prototype.id = 'hyperspaceDrive';
+HyperspaceDrive.prototype.name = name;
+HyperspaceDrive.prototype.baseCost = Resources.Partial({
     metal: 10000,
     crystal: 20000,
     deuterium: 6000,
-  },
-};
-
-export default HyperspaceDrive;
+});
