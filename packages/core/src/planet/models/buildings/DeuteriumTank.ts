@@ -6,33 +6,20 @@
  * This code is licensed under MIT license (see LICENSE.md for details)
  */
 
-import Building from './Building';
-import Storage from './Storage';
+import { Resources } from '../../../shared/resources';
+
+import { Building } from './Building';
 
 const name = 'Deuterium Tank';
-const shortDesc = 'Giant tanks for storing newly-extracted deuterium.';
-const description =
-  'The Deuterium tank is for storing newly-synthesized deuterium. Once it is processed by the synthesizer, it is piped into this tank for later use. With each upgrade of the tank, the total storage capacity is increased. Once the capacity is reached, no further Deuterium will be synthesized.';
 
 /**
- * http://ogame.wikia.com/wiki/Metal_Storage
- * @param {*} level
+ * http://ogame.wikia.com/wiki/Deuterium_Tank
  */
-function DeuteriumTank(level) {
-  Building.call(this, level);
-}
+export class DeuteriumTank extends Building {}
 
-DeuteriumTank.prototype = {
-  ...Building.prototype,
-  ...Storage.prototype,
-  id: 'deuteriumTank',
-  name,
-  shortDesc,
-  description,
-  baseCost: {
+DeuteriumTank.prototype.id = 'deuteriumTank';
+DeuteriumTank.prototype.name = name;
+DeuteriumTank.prototype.baseCost = Resources.Partial({
     metal: 1000,
     crystal: 1000,
-  },
-};
-
-export default DeuteriumTank;
+});

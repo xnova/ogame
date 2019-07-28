@@ -1,30 +1,26 @@
-import Building from './Building';
+/**
+ * Copyright (C) 2017 Rafael Arquero (@arkeros)
+ *
+ * This file is part of Xnova OGame.
+ *
+ * This code is licensed under MIT license (see LICENSE.md for details)
+ */
+
+import { Resources } from '../../../shared/resources';
+
+import { Building } from './Building';
 
 const name = 'Crystal Mine';
-const shortDesc =
-  'Crystals are the main resource used to build electronic circuits and form certain alloy compounds.';
-const description =
-  'Metal is the primary resource used in the foundation of your Empire. At greater depths, the mines can produce more output of viable metal for use in the construction of buildings, ships, defence systems, and research. As the mines drill deeper, more energy is required for maximum production. As metal is the most abundant of all resources available, its value is considered to be the lowest of all resources for trading.';
 
 /**
  * http://ogame.wikia.com/wiki/Crystal_Mine
- * @param {*} level
  */
-function CrystalMine(level) {
-  Building.call(this, level);
-}
+export class CrystalMine extends Building {}
 
-CrystalMine.prototype = {
-  ...Building.prototype,
-  id: 'crystalMine',
-  name,
-  shortDesc,
-  description,
-  baseCost: {
+CrystalMine.prototype.id = 'crystalMine';
+CrystalMine.prototype.name = name;
+CrystalMine.prototype.baseCost = Resources.Partial({
     metal: 48,
     crystal: 24,
-  },
-  costFactor: 1.6,
-};
-
-export default CrystalMine;
+});
+CrystalMine.prototype.costFactor = 1.6;

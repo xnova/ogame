@@ -1,32 +1,26 @@
-import Building from './Building';
+/**
+ * Copyright (C) 2017 Rafael Arquero (@arkeros)
+ *
+ * This file is part of Xnova OGame.
+ *
+ * This code is licensed under MIT license (see LICENSE.md for details)
+ */
+
+import { Resources } from '../../../shared/resources';
+
+import { Building } from './Building';
 
 const name = 'Missile Silo';
-const shortDesc = 'Missile silos are used to store missiles.';
-const description = `Missile silos are used to construct, store and launch interplanetary and anti-ballistic missiles. With each level of the silo, five interplanetary missiles or ten anti-ballistic missiles can be stored. One Interplanetary missile uses the same space as two Anti-Ballistic missiles. Storage of both Interplanetary missiles and Anti-Ballistic missiles in the same silo is allowed.`;
 
 /**
- * http://ogame.wikia.com/wiki/Terraformer
- * @param {*} level
+ * http://ogame.wikia.com/wiki/Missile_Silo
  */
-function MissileSilo(level) {
-  Building.call(this, level);
-}
+export class MissileSilo extends Building {}
 
-MissileSilo.prototype = {
-  ...Building.prototype,
-  id: 'silo',
-  name,
-  shortDesc,
-  description,
-  baseCost: {
+MissileSilo.prototype.id = 'silo';
+MissileSilo.prototype.name = name;
+MissileSilo.prototype.baseCost = Resources.Partial({
     metal: 20000,
     crystal: 20000,
     deuterium: 1000,
-  },
-
-  getStorageCapacity() {
-    return 10 * this.level;
-  },
-};
-
-export default MissileSilo;
+});

@@ -1,30 +1,27 @@
-import Building from './Building';
+/**
+ * Copyright (C) 2017 Rafael Arquero (@arkeros)
+ *
+ * This file is part of Xnova OGame.
+ *
+ * This code is licensed under MIT license (see LICENSE.md for details)
+ */
+
+import { Resources } from '../../../shared/resources';
+
+import { Building } from './Building';
 
 const name = 'Fusion Reactor';
-const shortDesc = 'The fusion reactor uses deuterium to produce energy.';
-// TODO
-const description = 'TODO';
 
 /**
- * http://ogame.wikia.com/wiki/Solar_Plant
- * @param {*} level
+ * http://ogame.wikia.com/wiki/Fusion_Reactor
  */
-function FusionReactor(level) {
-  Building.call(this, level);
-}
+export class FusionReactor extends Building {}
 
-FusionReactor.prototype = {
-  ...Building.prototype,
-  id: 'fusionReactor',
-  name,
-  shortDesc,
-  description,
-  baseCost: {
+FusionReactor.prototype.id = 'fusionReactor';
+FusionReactor.prototype.name = name;
+FusionReactor.prototype.baseCost = Resources.Partial({
     metal: 900,
     crystal: 360,
     deuterium: 180,
-  },
-  costFactor: 1.8,
-};
-
-export default FusionReactor;
+});
+FusionReactor.prototype.costFactor = 1.8;
