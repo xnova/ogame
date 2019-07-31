@@ -8,36 +8,31 @@
 
 import { Resources } from '../../../shared/resources';
 import { ResearchLab } from '../buildings/ResearchLab';
+import { Unit } from '../defenses/Unit';
 
-interface Requirement {
-  technology: new (level: number) => Technology;
-  level: number;
-}
+export abstract class Technology extends Unit {
+    public baseCost: Resources;
+    public costFactor: number;
 
-export abstract class Technology {
-  public id: string; // TODO think better...
-  public name: string;
-  public baseCost: Resources;
-  public costFactor: number;
-  public requirements: Requirement[];
+    constructor(public level: number) {
+        super();
+    }
 
-  constructor(public level: number) {}
+    /**
+     * http://ogame.wikia.com/wiki/Building#Facilities_cost
+     */
+    public getCost(): Resources {
+        const { level, costFactor: k } = this;
+        return this.baseCost.map(b => Math.floor(b * k ** (level - 1)));
+    }
 
-  /**
-   * http://ogame.wikia.com/wiki/Building#Facilities_cost
-   */
-  public getCost(): Resources {
-    const { level, costFactor: k } = this;
-    return this.baseCost.map(b => Math.floor(b * k ** (level - 1)));
-  }
-
-  /**
-   * https://www.wolframalpha.com/input/?i=sum+b+*+k+%5E+l+from+l%3D1+to+n
-   */
-  public getAccumulatedCost(): Resources {
-    const { level, costFactor: k } = this;
-    return this.baseCost.map(b => (b * k * (k ** level - 1)) / (k - 1));
-  }
+    /**
+     * https://www.wolframalpha.com/input/?i=sum+b+*+k+%5E+l+from+l%3D1+to+n
+     */
+    public getAccumulatedCost(): Resources {
+        const { level, costFactor: k } = this;
+        return this.baseCost.map(b => (b * k * (k ** level - 1)) / (k - 1));
+    }
 }
 
 Technology.prototype.name = 'Unnamed Technology';

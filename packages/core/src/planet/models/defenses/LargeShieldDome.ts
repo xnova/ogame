@@ -1,27 +1,25 @@
-import Defense from './Defense';
+/**
+ * Copyright (C) 2017 Rafael Arquero (@arkeros)
+ *
+ * This file is part of Xnova OGame.
+ *
+ * This code is licensed under MIT license (see LICENSE.md for details)
+ */
+
+import { Resources } from '../../../shared/resources';
+
+import { Defense } from './Defense';
 
 const name = 'Large Shield Dome';
 
 /**
  * http://ogame.wikia.com/wiki/Large_Shield_Dome
- * @param {*} player
  */
-function LargeShieldDome(player) {
-  this.player = player;
-}
+export class LargeShieldDome extends Defense {}
 
-LargeShieldDome.prototype = {
-  ...Defense.prototype,
-  name,
-  cost: {
+LargeShieldDome.prototype.name = name;
+LargeShieldDome.prototype.cost = Resources.Partial({
     metal: 50000,
     crystal: 50000,
-  },
-
-  max: 1,
-
-  // http://ogame.wikia.com/wiki/Shield_Power
-  basicShield: 10000,
-};
-
-export default LargeShieldDome;
+});
+LargeShieldDome.prototype.max = 1;

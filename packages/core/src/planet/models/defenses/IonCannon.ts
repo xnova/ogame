@@ -1,28 +1,24 @@
-import Defense from './Defense';
+/**
+ * Copyright (C) 2017 Rafael Arquero (@arkeros)
+ *
+ * This file is part of Xnova OGame.
+ *
+ * This code is licensed under MIT license (see LICENSE.md for details)
+ */
+
+import { Resources } from '../../../shared/resources';
+
+import { Defense } from './Defense';
 
 const name = 'Ion Cannon';
 
 /**
  * http://ogame.wikia.com/wiki/Ion_Cannon
- * @param {*} player
  */
-function IonCannon(player) {
-  this.player = player;
-}
+export class IonCannon extends Defense {}
 
-IonCannon.prototype = {
-  ...Defense.prototype,
-  name,
-  cost: {
+IonCannon.prototype.name = name;
+IonCannon.prototype.cost = Resources.Partial({
     metal: 2000,
     crystal: 6000,
-  },
-
-  // http://ogame.wikia.com/wiki/Shield_Power
-  basicShield: 500,
-
-  // http://ogame.wikia.com/wiki/Weapons_Technology
-  basicAttack: 150,
-};
-
-export default IonCannon;
+});

@@ -1,21 +1,16 @@
-import Defense from './Defense';
-import RocketLauncher from './RocketLauncher';
-import LightLaser from './LightLaser';
-import HeavyLaser from './HeavyLaser';
-import GaussCannon from './GaussCannon';
-import IonCannon from './IonCannon';
-import PlasmaTurret from './PlasmaTurret';
-import SmallShieldDome from './SmallShieldDome';
-import LargeShieldDome from './LargeShieldDome';
+/**
+ * Copyright (C) 2017 Rafael Arquero (@arkeros)
+ *
+ * This file is part of Xnova OGame.
+ *
+ * This code is licensed under MIT license (see LICENSE.md for details)
+ */
 
-export default {
-  Defense,
-  RocketLauncher,
-  LightLaser,
-  HeavyLaser,
-  GaussCannon,
-  IonCannon,
-  PlasmaTurret,
-  SmallShieldDome,
-  LargeShieldDome,
-};
+export * from './RocketLauncher';
+export * from './LightLaser';
+export * from './HeavyLaser';
+export * from './GaussCannon';
+export * from './IonCannon';
+export * from './PlasmaTurret';
+export * from './SmallShieldDome';
+export * from './LargeShieldDome';

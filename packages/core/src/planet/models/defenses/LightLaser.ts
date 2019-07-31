@@ -1,28 +1,24 @@
-import Defense from './Defense';
+/**
+ * Copyright (C) 2017 Rafael Arquero (@arkeros)
+ *
+ * This file is part of Xnova OGame.
+ *
+ * This code is licensed under MIT license (see LICENSE.md for details)
+ */
+
+import { Resources } from '../../../shared/resources';
+
+import { Defense } from './Defense';
 
 const name = 'Light Laser';
 
 /**
  * http://ogame.wikia.com/wiki/Light_Laser
- * @param {*} player
  */
-function LightLaser(player) {
-  this.player = player;
-}
+export class LightLaser extends Defense {}
 
-LightLaser.prototype = {
-  ...Defense.prototype,
-  name,
-  cost: {
+LightLaser.prototype.name = name;
+LightLaser.prototype.cost = Resources.Partial({
     metal: 1500,
     crystal: 500,
-  },
-
-  // http://ogame.wikia.com/wiki/Shield_Power
-  basicShield: 25,
-
-  // http://ogame.wikia.com/wiki/Weapons_Technology
-  basicAttack: 100,
-};
-
-export default LightLaser;
+});

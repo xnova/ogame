@@ -1,29 +1,25 @@
-import Defense from './Defense';
+/**
+ * Copyright (C) 2017 Rafael Arquero (@arkeros)
+ *
+ * This file is part of Xnova OGame.
+ *
+ * This code is licensed under MIT license (see LICENSE.md for details)
+ */
+
+import { Resources } from '../../../shared/resources';
+
+import { Defense } from './Defense';
 
 const name = 'Plasma Turret';
 
 /**
  * http://ogame.wikia.com/wiki/Plasma_Turret
- * @param {*} player
  */
-function PlasmaTurret(player) {
-  this.player = player;
-}
+export class PlasmaTurret extends Defense {}
 
-PlasmaTurret.prototype = {
-  ...Defense.prototype,
-  name,
-  cost: {
+PlasmaTurret.prototype.name = name;
+PlasmaTurret.prototype.cost = Resources.Partial({
     metal: 50000,
     crystal: 50000,
     deuterium: 30000,
-  },
-
-  // http://ogame.wikia.com/wiki/Shield_Power
-  basicShield: 300,
-
-  // http://ogame.wikia.com/wiki/Weapons_Technology
-  basicAttack: 3000,
-};
-
-export default PlasmaTurret;
+});
