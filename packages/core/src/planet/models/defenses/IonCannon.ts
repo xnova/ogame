@@ -7,6 +7,8 @@
  */
 
 import { Resources } from '../../../shared/resources';
+import { Shipyard } from '../buildings/Shipyard';
+import { IonTechnology } from '../technologies/IonTechnology';
 
 import { Defense } from './Defense';
 
@@ -22,3 +24,4 @@ IonCannon.prototype.cost = Resources.Partial({
     metal: 2000,
     crystal: 6000,
 });
+IonCannon.prototype.requirements = [new Shipyard(4), new IonTechnology(4)];

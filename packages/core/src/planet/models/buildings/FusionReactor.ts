@@ -7,8 +7,10 @@
  */
 
 import { Resources } from '../../../shared/resources';
+import { EnergyTechnology } from '../technologies/EnergyTechnology';
 
 import { Building } from './Building';
+import { DeuteriumSynthesizer } from './DeuteriumSynthesizer';
 
 const name = 'Fusion Reactor';
 
@@ -25,3 +27,7 @@ FusionReactor.prototype.baseCost = Resources.Partial({
     deuterium: 180,
 });
 FusionReactor.prototype.costFactor = 1.8;
+FusionReactor.prototype.requirements = [
+    new DeuteriumSynthesizer(5),
+    new EnergyTechnology(3),
+];

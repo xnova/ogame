@@ -7,13 +7,14 @@
  */
 
 import { Resources } from '../../../shared/resources';
+import { ResearchLab } from '../buildings/ResearchLab';
 
 import { Technology } from './Technology';
 
 const name = 'Graviton Technology';
 
 /**
- * http://ogame.wikia.com/wiki/Graviton _Technology
+ * http://ogame.wikia.com/wiki/Graviton_Technology
  */
 export class GravitonTechnology extends Technology {}
 
@@ -23,3 +24,4 @@ GravitonTechnology.prototype.baseCost = Resources.Partial({
     energy: 300000,
 });
 GravitonTechnology.prototype.costFactor = 3;
+GravitonTechnology.prototype.requirements = [new ResearchLab(12)];

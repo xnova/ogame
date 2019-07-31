@@ -7,8 +7,10 @@
  */
 
 import { Resources } from '../../../shared/resources';
+import { EnergyTechnology } from '../technologies/EnergyTechnology';
 
 import { Building } from './Building';
+import { NaniteFactory } from './NaniteFactory';
 
 const name = 'Terraformer';
 
@@ -24,3 +26,7 @@ Terraformer.prototype.baseCost = Resources.Partial({
     deuterium: 100000,
     energy: 1000,
 });
+Terraformer.prototype.requirements = [
+    new NaniteFactory(10),
+    new EnergyTechnology(12),
+];

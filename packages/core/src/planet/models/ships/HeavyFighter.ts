@@ -7,6 +7,9 @@
  */
 
 import { Resources } from '../../../shared/resources';
+import { Shipyard } from '../buildings/Shipyard';
+import { ArmourTechnology } from '../technologies/ArmourTechnology';
+import { ImpulseDrive } from '../technologies/ImpulseDrive';
 
 import { Ship } from './Ship';
 
@@ -22,3 +25,8 @@ HeavyFighter.prototype.cost = Resources.Partial({
     metal: 6000,
     crystal: 4000,
 });
+HeavyFighter.prototype.requirements = [
+    new Shipyard(3),
+    new ArmourTechnology(2),
+    new ImpulseDrive(2),
+];

@@ -7,7 +7,7 @@
  */
 
 import { Resources } from '../../../shared/resources';
-import { Shipyard } from '../buildings';
+import { Shipyard } from '../buildings/Shipyard';
 
 import { Unit } from './Unit';
 
@@ -18,6 +18,10 @@ export abstract class Defense extends Unit {
     public getCost(): Resources {
         return this.cost;
     }
+
+    public satisfies(requirement: Unit): boolean {
+        return false;
+    }
 }
 
 Defense.prototype.name = 'Unnamed Defense';
@@ -25,5 +29,5 @@ Defense.prototype.cost = Resources.Partial({
     metal: 1,
     crystal: 1,
 });
-Defense.prototype.requirements = [{ technology: Shipyard, level: 2 }];
+Defense.prototype.requirements = [new Shipyard(1)];
 Defense.prototype.max = Number.POSITIVE_INFINITY;

@@ -7,6 +7,9 @@
  */
 
 import { Resources } from '../../../shared/resources';
+import { Shipyard } from '../buildings/Shipyard';
+import { ImpulseDrive } from '../technologies/ImpulseDrive';
+import { PlasmaTechnology } from '../technologies/PlasmaTechnology';
 
 import { Ship } from './Ship';
 
@@ -23,3 +26,8 @@ Bomber.prototype.cost = Resources.Partial({
     crystal: 25000,
     deuterium: 15000,
 });
+Bomber.prototype.requirements = [
+    new ImpulseDrive(6),
+    new Shipyard(8),
+    new PlasmaTechnology(5),
+];

@@ -7,7 +7,9 @@
  */
 
 import { Resources } from '../../../shared/resources';
+import { ResearchLab } from '../buildings/ResearchLab';
 
+import { EnergyTechnology } from './EnergyTechnology';
 import { Technology } from './Technology';
 
 const name = 'Shielding Technology';
@@ -23,3 +25,7 @@ ShieldingTechnology.prototype.baseCost = Resources.Partial({
     metal: 200,
     crystal: 600,
 });
+ShieldingTechnology.prototype.requirements = [
+    new EnergyTechnology(3),
+    new ResearchLab(6),
+];

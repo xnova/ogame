@@ -7,7 +7,10 @@
  */
 
 import { Resources } from '../../../shared/resources';
+import { ResearchLab } from '../buildings/ResearchLab';
 
+import { EnergyTechnology } from './EnergyTechnology';
+import { LaserTechnology } from './LaserTechnology';
 import { Technology } from './Technology';
 
 const name = 'Ion Technology';
@@ -24,3 +27,8 @@ IonTechnology.prototype.baseCost = Resources.Partial({
     crystal: 300,
     deuterium: 100,
 });
+IonTechnology.prototype.requirements = [
+    new ResearchLab(4),
+    new LaserTechnology(5),
+    new EnergyTechnology(4),
+];

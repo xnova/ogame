@@ -7,6 +7,8 @@
  */
 
 import { Resources } from '../../../shared/resources';
+import { Shipyard } from '../buildings/Shipyard';
+import { HyperspaceDrive } from '../technologies/HyperspaceDrive';
 
 import { Ship } from './Ship';
 
@@ -22,3 +24,4 @@ Battleship.prototype.cost = Resources.Partial({
     metal: 45000,
     crystal: 15000,
 });
+Battleship.prototype.requirements = [new Shipyard(7), new HyperspaceDrive(4)];

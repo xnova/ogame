@@ -7,7 +7,10 @@
  */
 
 import { Resources } from '../../../shared/resources';
+import { ResearchLab } from '../buildings/ResearchLab';
 
+import { EspionageTechnology } from './EspionageTechnology';
+import { ImpulseDrive } from './ImpulseDrive';
 import { Technology } from './Technology';
 
 const name = 'Astrophysics';
@@ -25,3 +28,8 @@ Astrophysics.prototype.baseCost = Resources.Partial({
     deuterium: 4000,
 });
 Astrophysics.prototype.costFactor = 1.75;
+Astrophysics.prototype.requirements = [
+    new ResearchLab(3),
+    new EspionageTechnology(4),
+    new ImpulseDrive(3),
+];

@@ -7,7 +7,10 @@
  */
 
 import { Resources } from '../../../shared/resources';
+import { ResearchLab } from '../buildings/ResearchLab';
 
+import { EnergyTechnology } from './EnergyTechnology';
+import { ShieldingTechnology } from './ShieldingTechnology';
 import { Technology } from './Technology';
 
 const name = 'Hyperspace Technology';
@@ -23,3 +26,8 @@ HyperspaceTechnology.prototype.baseCost = Resources.Partial({
     metal: 4000,
     crystal: 2000,
 });
+HyperspaceTechnology.prototype.requirements = [
+    new ResearchLab(7),
+    new EnergyTechnology(5),
+    new ShieldingTechnology(5),
+];

@@ -7,8 +7,10 @@
  */
 
 import { Resources } from '../../../shared/resources';
+import { ComputerTechnology } from '../technologies/ComputerTechnology';
 
 import { Building } from './Building';
+import { RoboticsFactory } from './RoboticsFactory';
 
 const name = 'Nanite Factory';
 
@@ -24,3 +26,7 @@ NaniteFactory.prototype.baseCost = Resources.Partial({
     crystal: 500000,
     deuterium: 100000,
 });
+NaniteFactory.prototype.requirements = [
+    new RoboticsFactory(10),
+    new ComputerTechnology(10),
+];

@@ -7,6 +7,7 @@
  */
 
 import { Resources } from '../../../shared/resources';
+import { Shipyard } from '../buildings/Shipyard';
 
 import { Ship } from './Ship';
 
@@ -22,3 +23,4 @@ SolarSatellite.prototype.cost = Resources.Partial({
     crystal: 2000,
     deuterium: 500,
 });
+SolarSatellite.prototype.requirements = [new Shipyard(1)];

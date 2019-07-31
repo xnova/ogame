@@ -33,10 +33,22 @@ export abstract class Technology extends Unit {
         const { level, costFactor: k } = this;
         return this.baseCost.map(b => (b * k * (k ** level - 1)) / (k - 1));
     }
+
+    public satisfies(requirement: Unit): boolean {
+        if (requirement instanceof Technology) {
+            return (
+                // TODO force unique ids!
+                this.constructor.name === requirement.constructor.name &&
+                this.level >= requirement.level
+            );
+        } else {
+            return false;
+        }
+    }
 }
 
 Technology.prototype.name = 'Unnamed Technology';
 Technology.prototype.level = 0;
 Technology.prototype.baseCost = Resources.Partial({ metal: 1, crystal: 1 });
 Technology.prototype.costFactor = 2;
-Technology.prototype.requirements = [{ technology: ResearchLab, level: 1 }];
+Technology.prototype.requirements = [new ResearchLab(1)];

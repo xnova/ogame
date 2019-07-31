@@ -8,24 +8,26 @@
 
 import { Resources } from '../../../shared/resources';
 import { Shipyard } from '../buildings/Shipyard';
+import { CombustionDrive } from '../technologies/CombustionDrive';
 import { ShieldingTechnology } from '../technologies/ShieldingTechnology';
 
-import { Defense } from './Defense';
+import { Ship } from './Ship';
 
-const name = 'Small Shield Dome';
+const name = 'Recycler';
 
 /**
- * http://ogame.wikia.com/wiki/Small_Shield_Dome
+ * http://ogame.wikia.com/wiki/Recycler
  */
-export class SmallShieldDome extends Defense {}
+export class Recycler extends Ship {}
 
-SmallShieldDome.prototype.name = name;
-SmallShieldDome.prototype.cost = Resources.Partial({
+Recycler.prototype.name = name;
+Recycler.prototype.cost = Resources.Partial({
     metal: 10000,
-    crystal: 10000,
+    crystal: 6000,
+    deuterium: 2000,
 });
-SmallShieldDome.prototype.max = 1;
-SmallShieldDome.prototype.requirements = [
+Recycler.prototype.requirements = [
+    new Shipyard(4),
+    new CombustionDrive(6),
     new ShieldingTechnology(2),
-    new Shipyard(1),
 ];

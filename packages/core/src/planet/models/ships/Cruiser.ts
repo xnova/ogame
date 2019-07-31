@@ -7,6 +7,9 @@
  */
 
 import { Resources } from '../../../shared/resources';
+import { Shipyard } from '../buildings/Shipyard';
+import { ImpulseDrive } from '../technologies/ImpulseDrive';
+import { IonTechnology } from '../technologies/IonTechnology';
 
 import { Ship } from './Ship';
 
@@ -23,3 +26,8 @@ Cruiser.prototype.cost = Resources.Partial({
     crystal: 7000,
     deuterium: 2000,
 });
+Cruiser.prototype.requirements = [
+    new Shipyard(5),
+    new ImpulseDrive(4),
+    new IonTechnology(2),
+];

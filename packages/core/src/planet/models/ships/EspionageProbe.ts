@@ -7,6 +7,9 @@
  */
 
 import { Resources } from '../../../shared/resources';
+import { Shipyard } from '../buildings/Shipyard';
+import { CombustionDrive } from '../technologies/CombustionDrive';
+import { EspionageTechnology } from '../technologies/EspionageTechnology';
 
 import { Ship } from './Ship';
 
@@ -19,5 +22,10 @@ export class EspionageProbe extends Ship {}
 
 EspionageProbe.prototype.name = name;
 EspionageProbe.prototype.cost = Resources.Partial({
-    metal: 1000,
+    crystal: 1000,
 });
+EspionageProbe.prototype.requirements = [
+    new Shipyard(3),
+    new CombustionDrive(3),
+    new EspionageTechnology(2),
+];

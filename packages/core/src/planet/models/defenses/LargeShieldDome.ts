@@ -7,6 +7,8 @@
  */
 
 import { Resources } from '../../../shared/resources';
+import { Shipyard } from '../buildings/Shipyard';
+import { ShieldingTechnology } from '../technologies/ShieldingTechnology';
 
 import { Defense } from './Defense';
 
@@ -23,3 +25,7 @@ LargeShieldDome.prototype.cost = Resources.Partial({
     crystal: 50000,
 });
 LargeShieldDome.prototype.max = 1;
+LargeShieldDome.prototype.requirements = [
+    new ShieldingTechnology(6),
+    new Shipyard(6),
+];

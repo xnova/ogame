@@ -7,7 +7,9 @@
  */
 
 import { Resources } from '../../../shared/resources';
+import { ResearchLab } from '../buildings/ResearchLab';
 
+import { EnergyTechnology } from './EnergyTechnology';
 import { Technology } from './Technology';
 
 const name = 'Combustion Drive';
@@ -23,3 +25,7 @@ CombustionDrive.prototype.baseCost = Resources.Partial({
     metal: 400,
     crystal: 600,
 });
+CombustionDrive.prototype.requirements = [
+    new ResearchLab(1),
+    new EnergyTechnology(1),
+];

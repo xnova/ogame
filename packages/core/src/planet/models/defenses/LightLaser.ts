@@ -7,6 +7,9 @@
  */
 
 import { Resources } from '../../../shared/resources';
+import { Shipyard } from '../buildings/Shipyard';
+import { EnergyTechnology } from '../technologies/EnergyTechnology';
+import { LaserTechnology } from '../technologies/LaserTechnology';
 
 import { Defense } from './Defense';
 
@@ -22,3 +25,8 @@ LightLaser.prototype.cost = Resources.Partial({
     metal: 1500,
     crystal: 500,
 });
+LightLaser.prototype.requirements = [
+    new EnergyTechnology(1),
+    new Shipyard(4),
+    new LaserTechnology(3),
+];

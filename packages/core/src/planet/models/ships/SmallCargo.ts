@@ -12,16 +12,16 @@ import { CombustionDrive } from '../technologies/CombustionDrive';
 
 import { Ship } from './Ship';
 
-const name = 'Light Fighter';
+const name = 'Small Cargo';
 
 /**
- * http://ogame.wikia.com/wiki/Light_Fighter
+ * http://ogame.wikia.com/wiki/Small_Cargo
  */
-export class LightFighter extends Ship {}
+export class SmallCargo extends Ship {}
 
-LightFighter.prototype.name = name;
-LightFighter.prototype.cost = Resources.Partial({
-    metal: 3000,
-    crystal: 1000,
+SmallCargo.prototype.name = name;
+SmallCargo.prototype.cost = Resources.Partial({
+    metal: 2000,
+    crystal: 2000,
 });
-LightFighter.prototype.requirements = [new Shipyard(1), new CombustionDrive(1)];
+SmallCargo.prototype.requirements = [new Shipyard(2), new CombustionDrive(2)];

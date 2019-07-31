@@ -7,6 +7,7 @@
  */
 
 import { Resources } from '../../../shared/resources';
+import { ResearchLab } from '../buildings/ResearchLab';
 
 import { Technology } from './Technology';
 
@@ -24,3 +25,4 @@ EspionageTechnology.prototype.baseCost = Resources.Partial({
     crystal: 1000,
     deuterium: 200,
 });
+EspionageTechnology.prototype.requirements = [new ResearchLab(3)];

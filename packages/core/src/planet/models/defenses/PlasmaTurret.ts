@@ -7,6 +7,8 @@
  */
 
 import { Resources } from '../../../shared/resources';
+import { Shipyard } from '../buildings/Shipyard';
+import { PlasmaTechnology } from '../technologies/PlasmaTechnology';
 
 import { Defense } from './Defense';
 
@@ -23,3 +25,7 @@ PlasmaTurret.prototype.cost = Resources.Partial({
     crystal: 50000,
     deuterium: 30000,
 });
+PlasmaTurret.prototype.requirements = [
+    new Shipyard(8),
+    new PlasmaTechnology(7),
+];

@@ -9,15 +9,10 @@
 import { Resources } from '../../../shared/resources';
 import { Technology } from '../technologies';
 
-export interface Requirement {
-    technology: new (level: number) => Technology;
-    level: number;
-}
-
 export abstract class Unit {
     public id: string; // TODO think better...
     public name: string;
-    public requirements: Requirement[];
+    public requirements: Unit[];
 
     public abstract getCost(): Resources;
 
@@ -27,6 +22,8 @@ export abstract class Unit {
         const hours = baseHours / speed;
         return hours * 3600 * 1000;
     }
+
+    public abstract satisfies(requirement: Unit): boolean;
 }
 
 Unit.prototype.name = 'Unnamed Unit';

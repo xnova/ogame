@@ -7,7 +7,9 @@
  */
 
 import { Resources } from '../../../shared/resources';
+import { ResearchLab } from '../buildings/ResearchLab';
 
+import { EnergyTechnology } from './EnergyTechnology';
 import { Technology } from './Technology';
 
 const name = 'Impulse Drive';
@@ -24,3 +26,7 @@ ImpulseDrive.prototype.baseCost = Resources.Partial({
     crystal: 4000,
     deuterium: 600,
 });
+ImpulseDrive.prototype.requirements = [
+    new ResearchLab(2),
+    new EnergyTechnology(1),
+];

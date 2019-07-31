@@ -7,6 +7,10 @@
  */
 
 import { Resources } from '../../../shared/resources';
+import { Shipyard } from '../buildings/Shipyard';
+import { EnergyTechnology } from '../technologies/EnergyTechnology';
+import { ShieldingTechnology } from '../technologies/ShieldingTechnology';
+import { WeaponsTechnology } from '../technologies/WeaponsTechnology';
 
 import { Defense } from './Defense';
 
@@ -23,3 +27,9 @@ GaussCannon.prototype.cost = Resources.Partial({
     crystal: 15000,
     deuterium: 2000,
 });
+GaussCannon.prototype.requirements = [
+    new Shipyard(6),
+    new EnergyTechnology(6),
+    new WeaponsTechnology(3),
+    new ShieldingTechnology(1),
+];

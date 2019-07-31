@@ -9,6 +9,7 @@
 import { Resources } from '../../../shared/resources';
 
 import { Building } from './Building';
+import { RoboticsFactory } from './RoboticsFactory';
 
 const name = 'Shipyard';
 
@@ -24,3 +25,4 @@ Shipyard.prototype.baseCost = Resources.Partial({
     crystal: 200,
     deuterium: 100,
 });
+Shipyard.prototype.requirements = [new RoboticsFactory(2)];

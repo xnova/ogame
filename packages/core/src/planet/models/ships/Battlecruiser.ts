@@ -7,6 +7,10 @@
  */
 
 import { Resources } from '../../../shared/resources';
+import { Shipyard } from '../buildings/Shipyard';
+import { HyperspaceDrive } from '../technologies/HyperspaceDrive';
+import { HyperspaceTechnology } from '../technologies/HyperspaceTechnology';
+import { LaserTechnology } from '../technologies/LaserTechnology';
 
 import { Ship } from './Ship';
 
@@ -23,3 +27,9 @@ Battlecruiser.prototype.cost = Resources.Partial({
     crystal: 40000,
     deuterium: 15000,
 });
+Battlecruiser.prototype.requirements = [
+    new HyperspaceTechnology(5),
+    new LaserTechnology(12),
+    new HyperspaceDrive(5),
+    new Shipyard(8),
+];

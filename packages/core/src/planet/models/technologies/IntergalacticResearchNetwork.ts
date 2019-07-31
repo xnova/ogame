@@ -7,7 +7,10 @@
  */
 
 import { Resources } from '../../../shared/resources';
+import { ResearchLab } from '../buildings/ResearchLab';
 
+import { ComputerTechnology } from './ComputerTechnology';
+import { HyperspaceTechnology } from './HyperspaceTechnology';
 import { Technology } from './Technology';
 
 const name = 'Intergalactic Research Network';
@@ -24,3 +27,8 @@ IntergalacticResearchNetwork.prototype.baseCost = Resources.Partial({
     crystal: 400000,
     deuterium: 160000,
 });
+IntergalacticResearchNetwork.prototype.requirements = [
+    new ComputerTechnology(8),
+    new HyperspaceTechnology(8),
+    new ResearchLab(10),
+];

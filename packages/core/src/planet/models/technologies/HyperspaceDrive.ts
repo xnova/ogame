@@ -7,7 +7,9 @@
  */
 
 import { Resources } from '../../../shared/resources';
+import { ResearchLab } from '../buildings/ResearchLab';
 
+import { HyperspaceTechnology } from './HyperspaceTechnology';
 import { Technology } from './Technology';
 
 const name = 'Hyperspace Drive';
@@ -24,3 +26,7 @@ HyperspaceDrive.prototype.baseCost = Resources.Partial({
     crystal: 20000,
     deuterium: 6000,
 });
+HyperspaceDrive.prototype.requirements = [
+    new ResearchLab(7),
+    new HyperspaceTechnology(3),
+];

@@ -7,6 +7,7 @@
  */
 
 import { Resources } from '../../../shared/resources';
+import { Shipyard } from '../buildings/Shipyard';
 
 import { Defense } from './Defense';
 
@@ -21,3 +22,4 @@ RocketLauncher.prototype.name = name;
 RocketLauncher.prototype.cost = Resources.Partial({
     metal: 2000,
 });
+RocketLauncher.prototype.requirements = [new Shipyard(1)];

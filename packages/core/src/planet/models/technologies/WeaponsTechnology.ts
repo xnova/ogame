@@ -7,6 +7,7 @@
  */
 
 import { Resources } from '../../../shared/resources';
+import { ResearchLab } from '../buildings/ResearchLab';
 
 import { Technology } from './Technology';
 
@@ -23,3 +24,4 @@ WeaponsTechnology.prototype.baseCost = Resources.Partial({
     metal: 800,
     crystal: 200,
 });
+WeaponsTechnology.prototype.requirements = [new ResearchLab(4)];
