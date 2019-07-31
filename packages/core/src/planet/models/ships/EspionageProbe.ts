@@ -1,36 +1,23 @@
-import Ship from './Ship';
+/**
+ * Copyright (C) 2017 Rafael Arquero (@arkeros)
+ *
+ * This file is part of Xnova OGame.
+ *
+ * This code is licensed under MIT license (see LICENSE.md for details)
+ */
+
+import { Resources } from '../../../shared/resources';
+
+import { Ship } from './Ship';
 
 const name = 'Espionage Probe';
 
 /**
  * http://ogame.wikia.com/wiki/Espionage_Probe
- * @param {*} player
  */
-function EspionageProbe(player) {
-  this.player = player;
-}
+export class EspionageProbe extends Ship {}
 
-EspionageProbe.prototype = {
-  ...Ship.prototype,
-  name,
-  cost: {
+EspionageProbe.prototype.name = name;
+EspionageProbe.prototype.cost = Resources.Partial({
     metal: 1000,
-  },
-
-  // http://ogame.wikia.com/wiki/Shield_Power
-  basicShield: 0.01,
-
-  // http://ogame.wikia.com/wiki/Weapons_Technology
-  basicAttack: 0.01,
-
-  // http://ogame.wikia.com/wiki/Base_Speed
-  baseSpeed: 100000000,
-
-  // http://ogame.wikia.com/wiki/Cargo_Capacity
-  cargoCapacity: 0,
-
-  // http://ogame.wikia.com/wiki/Fuel_Consumption
-  fuelUsage: 0.5,
-};
-
-export default EspionageProbe;
+});

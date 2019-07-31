@@ -1,38 +1,25 @@
-import Ship from './Ship';
+/**
+ * Copyright (C) 2017 Rafael Arquero (@arkeros)
+ *
+ * This file is part of Xnova OGame.
+ *
+ * This code is licensed under MIT license (see LICENSE.md for details)
+ */
+
+import { Resources } from '../../../shared/resources';
+
+import { Ship } from './Ship';
 
 const name = 'Cruiser';
 
 /**
- * http://ogame.wikia.com/wiki/Rocket_Launcher
- * @param {*} player
+ * http://ogame.wikia.com/wiki/Cruiser
  */
-function Cruiser(player) {
-  this.player = player;
-}
+export class Cruiser extends Ship {}
 
-Cruiser.prototype = {
-  ...Ship.prototype,
-  name,
-  cost: {
+Cruiser.prototype.name = name;
+Cruiser.prototype.cost = Resources.Partial({
     metal: 20000,
     crystal: 7000,
     deuterium: 2000,
-  },
-
-  // http://ogame.wikia.com/wiki/Shield_Power
-  basicShield: 50,
-
-  // http://ogame.wikia.com/wiki/Weapons_Technology
-  basicAttack: 400,
-
-  // http://ogame.wikia.com/wiki/Base_Speed
-  baseSpeed: 15000,
-
-  // http://ogame.wikia.com/wiki/Cargo_Capacity
-  cargoCapacity: 800,
-
-  // http://ogame.wikia.com/wiki/Fuel_Consumption
-  fuelUsage: 150,
-};
-
-export default Cruiser;
+});

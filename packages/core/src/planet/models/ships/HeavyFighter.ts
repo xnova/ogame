@@ -1,37 +1,24 @@
-import Ship from './Ship';
+/**
+ * Copyright (C) 2017 Rafael Arquero (@arkeros)
+ *
+ * This file is part of Xnova OGame.
+ *
+ * This code is licensed under MIT license (see LICENSE.md for details)
+ */
+
+import { Resources } from '../../../shared/resources';
+
+import { Ship } from './Ship';
 
 const name = 'Heavy Fighter';
 
 /**
- * http://ogame.wikia.com/wiki/Rocket_Launcher
- * @param {*} player
+ * http://ogame.wikia.com/wiki/Heavy_Fighter
  */
-function HeavyFighter(player) {
-  this.player = player;
-}
+export class HeavyFighter extends Ship {}
 
-HeavyFighter.prototype = {
-  ...Ship.prototype,
-  name,
-  cost: {
+HeavyFighter.prototype.name = name;
+HeavyFighter.prototype.cost = Resources.Partial({
     metal: 6000,
     crystal: 4000,
-  },
-
-  // http://ogame.wikia.com/wiki/Shield_Power
-  basicShield: 25,
-
-  // http://ogame.wikia.com/wiki/Weapons_Technology
-  basicAttack: 150,
-
-  // http://ogame.wikia.com/wiki/Base_Speed
-  baseSpeed: 10000,
-
-  // http://ogame.wikia.com/wiki/Cargo_Capacity
-  cargoCapacity: 100,
-
-  // http://ogame.wikia.com/wiki/Fuel_Consumption
-  fuelUsage: 37.5,
-};
-
-export default HeavyFighter;
+});

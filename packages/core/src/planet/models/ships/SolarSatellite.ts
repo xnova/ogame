@@ -1,22 +1,24 @@
-import Ship from './Ship';
+/**
+ * Copyright (C) 2017 Rafael Arquero (@arkeros)
+ *
+ * This file is part of Xnova OGame.
+ *
+ * This code is licensed under MIT license (see LICENSE.md for details)
+ */
 
-const name = 'SolarSatellite';
+import { Resources } from '../../../shared/resources';
+
+import { Ship } from './Ship';
+
+const name = 'Solar Satellite';
 
 /**
  * http://ogame.wikia.com/wiki/Solar_Satellite
- * @param {*} player
  */
-function SolarSatellite(player) {
-  this.player = player;
-}
+export class SolarSatellite extends Ship {}
 
-SolarSatellite.prototype = {
-  ...Ship.prototype,
-  name,
-  cost: {
+SolarSatellite.prototype.name = name;
+SolarSatellite.prototype.cost = Resources.Partial({
     crystal: 2000,
     deuterium: 500,
-  },
-};
-
-export default SolarSatellite;
+});

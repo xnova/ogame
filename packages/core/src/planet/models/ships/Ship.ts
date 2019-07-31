@@ -3,42 +3,23 @@
  *
  * This file is part of Xnova OGame.
  *
- * Xnova OGame is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Xnova OGame is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Xnova OGame.  If not, see <http://www.gnu.org/licenses/>.
- *
+ * This code is licensed under MIT license (see LICENSE.md for details)
  */
 
-import { Defense } from '../defenses';
+import { Resources } from '../../../shared/resources';
+import { Shipyard } from '../buildings';
+import { Unit } from '../defenses/Unit';
 
-function Ship(player) {
-  this.player = player;
+export class Ship extends Unit {
+    public cost: Resources;
+
+    public getCost(): Resources {
+        return this.cost;
+    }
 }
-Ship.prototype = {
-  ...Defense.prototype,
-
-  name: 'Unnamed Ship',
-
-  // http://ogame.wikia.com/wiki/Base_Speed
-  baseSpeed: 0,
-
-  // http://ogame.wikia.com/wiki/Cargo_Capacity
-  cargoCapacity: 0,
-
-  // http://ogame.wikia.com/wiki/Fuel_Consumption
-  fuelUsage: 0,
-
-  // http://ogame.wikia.com/wiki/Rapid_Fire
-  rapidFire: new Map(),
-};
-
-export default Ship;
+Ship.prototype.name = 'Unnamed Ship';
+Ship.prototype.cost = Resources.Partial({
+    metal: 1,
+    crystal: 1,
+});
+Ship.prototype.requirements = [{ technology: Shipyard, level: 2 }];
