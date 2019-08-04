@@ -1,0 +1,63 @@
+{
+    "name": "@ogame/core",
+    "version": "0.0.0-PLACEHOLDER",
+    "description": "OGame - the core framework",
+    "author": "Rafael Arquero <rafael@arquero.cat>",
+    "license": "MIT",
+    "private": true,
+    "main": "./lib/index.js",
+    "types": "./lib/index.d.ts",
+    "scripts": {
+        "build": "rm -rf lib && tsc -p tsconfig.build.json",
+        "lint": "tslint -c ../../tslint.json -p tsconfig.json",
+        "lint:fix": "tslint -c ../../tslint.json -p tsconfig.json --fix",
+        "format": "prettier --write \"src/**/*.ts\"",
+        "watch": "tsc-watch -p tsconfig.build.json",
+        "test:e2e": "jest --config ./test/jest-e2e.json"
+    },
+    "dependencies": {
+        "fp-ts": "2.0.3",
+        "io-ts": "2.0.0",
+        "io-ts-types": "0.5.0",
+        "monocle-ts": "2.0.0"
+    },
+    "peerDependencies": {
+        "@nestjs/common": "^6.0.0",
+        "@nestjs/core": "^6.0.0",
+        "@nestjs/cqrs": "^6.0.0",
+        "reflect-metadata": "^0.1.12",
+        "rxjs": "^6.4.0"
+    },
+    "devDependencies": {
+        "@nestjs/common": "6.5.3",
+        "@nestjs/core": "6.5.3",
+        "@nestjs/cqrs": "6.0.1",
+        "@nestjs/testing": "6.1.1",
+        "@types/jest": "24.0.16",
+        "@types/node": "11.13.4",
+        "@types/uuid": "3.4.5",
+        "jest": "24.8.0",
+        "reflect-metadata": "0.1.13",
+        "rxjs": "6.5.2",
+        "ts-jest": "24.0.2",
+        "ts-node": "8.1.0",
+        "tsc-watch": "2.2.1",
+        "tsconfig-paths": "3.8.0",
+        "typescript": "3.5.2",
+        "uuid": "3.3.2"
+    },
+    "jest": {
+        "moduleFileExtensions": [
+            "js",
+            "json",
+            "ts"
+        ],
+        "rootDir": "src",
+        "testRegex": ".spec.ts$",
+        "transform": {
+            "^.+\\.(t|j)s$": "ts-jest"
+        },
+        "coverageDirectory": "../coverage",
+        "testEnvironment": "node"
+    }
+}

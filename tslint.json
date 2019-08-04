@@ -1,0 +1,31 @@
+{
+  "defaultSeverity": "error",
+  "extends": ["tslint:recommended"],
+  "jsRules": {
+    "no-unused-expression": true
+  },
+  "rules": {
+    "quotemark": [true, "single"],
+    "member-access": [true],
+    "max-line-length": [true, 80],
+    "member-ordering": [false],
+    "interface-name": [false],
+    "arrow-parens": false,
+    "object-literal-sort-keys": false,
+    "ordered-imports": [
+      true,
+      {
+        "import-sources-order": "case-insensitive",
+        "named-imports-order": "case-insensitive",
+        "grouped-imports": true,
+        "groups": ["^@nestjs", "^rxjs", "^[^.]", "^[.][.]", "^[.]"]
+      }
+    ],
+    "await-promise": true,
+    "prefer-case-blocks": true,
+    "max-params": [true, 3],
+    "no-implicit-dependencies": [true],
+    "deprecation": true
+  },
+  "rulesDirectory": []
+}

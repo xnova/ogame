@@ -7,14 +7,13 @@
  */
 
 import { Resources } from '../../../shared/resources';
-import { ResearchLab } from '../buildings/ResearchLab';
 import { Unit } from '../defenses/Unit';
 
 export abstract class Technology extends Unit {
     public baseCost: Resources;
     public costFactor: number;
 
-    constructor(public level: number) {
+    constructor(public readonly level: number) {
         super();
     }
 
@@ -48,7 +47,5 @@ export abstract class Technology extends Unit {
 }
 
 Technology.prototype.name = 'Unnamed Technology';
-Technology.prototype.level = 0;
 Technology.prototype.baseCost = Resources.Partial({ metal: 1, crystal: 1 });
 Technology.prototype.costFactor = 2;
-Technology.prototype.requirements = [new ResearchLab(1)];
