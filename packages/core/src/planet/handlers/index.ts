@@ -1,3 +1,4 @@
+import { BuildStartHandler } from './build-start.handler';
 import { PlayerJoinHandler } from './player-join.handler';
 
-export const CommandHandlers = [PlayerJoinHandler];
+export const CommandHandlers = [BuildStartHandler, PlayerJoinHandler];

@@ -6,12 +6,7 @@ import { PlanetRepository } from '../src/planet/planet.repository';
 import { PlanetModel } from '../src/planet/models/planet.model';
 import { PointT, distance } from '../src/shared/Point';
 import { PlayerJoinedEvent } from '../src/planet/events';
-import { type } from 'os';
-
-// TODO abstract
-export type Type<T> = new (...args: any[]) => T;
-
-const isA = <T>(type: Type<T>) => (value): value is T => value instanceof type;
+import { isA } from '../src/utils';
 
 export class MemoryPlanetRepository extends PlanetRepository {
     public readonly events: IEvent[];

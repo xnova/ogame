@@ -6,6 +6,8 @@
  * This code is licensed under MIT license (see LICENSE.md for details)
  */
 
+import * as t from 'io-ts';
+
 import { Resources } from '../../../shared/resources';
 import { Unit } from '../defenses/Unit';
 
@@ -13,7 +15,7 @@ export abstract class Technology extends Unit {
     public baseCost: Resources;
     public costFactor: number;
 
-    constructor(public readonly level: number) {
+    constructor(public readonly level: t.Int) {
         super();
     }
 

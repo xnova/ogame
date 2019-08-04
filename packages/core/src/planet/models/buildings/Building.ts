@@ -8,18 +8,18 @@
 import { Technology } from '../technologies/Technology';
 
 export abstract class Building extends Technology {
-  public dismantlable: boolean;
+    public dismantlable: boolean;
 
-  /**
-   * http://ogame.wikia.com/wiki/Buildings#Buildings_construction_time
-   * Returns the construction time of this building on the given planet.
-   */
-  public getDurationMs(buildingSpeed: number): number {
-    const cost = this.getCost();
-    const baseHours = (cost.metal + cost.crystal) / 2500;
-    const hours = baseHours / buildingSpeed;
-    return hours * 3600 * 1000;
-  }
+    /**
+     * http://ogame.wikia.com/wiki/Buildings#Buildings_construction_time
+     * Returns the construction time of this building on the given planet.
+     */
+    public getDurationMs(buildingSpeed: number): number {
+        const cost = this.getCost();
+        const baseHours = (cost.metal + cost.crystal) / 2500;
+        const hours = baseHours / buildingSpeed;
+        return hours * 3600 * 1000;
+    }
 }
 Building.prototype.name = 'Unnamed Building';
 Building.prototype.dismantlable = true;

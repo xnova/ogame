@@ -19,3 +19,5 @@ export * from './Shipyard';
 export * from './ResearchLab';
 export * from './NaniteFactory';
 export * from './Terraformer';
+
+export * from './Building';

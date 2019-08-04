@@ -47,10 +47,17 @@ export class Resources implements ResourcesT {
         });
     }
 
+    public values(): number[] {
+        const values: number[] = [];
+        for (const resource of RESOURCE_KEYS) {
+            values.push(this[resource]);
+        }
+        return values;
+    }
+
     public map(f: (x: number, key: keyof ResourcesT) => number): Resources {
         const newResources: ResourcesT = { ...ZERO };
         for (const resource of RESOURCE_KEYS) {
-            // TODO check it works
             newResources[resource] = f(this[resource], resource);
         }
         return new Resources(newResources);
@@ -62,5 +69,9 @@ export class Resources implements ResourcesT {
 
     public add(other: Resources): Resources {
         return this.map((amount, resource) => amount + other[resource]);
+    }
+
+    public subtract(other: Resources): Resources {
+        return this.map((amount, resource) => amount - other[resource]);
     }
 }

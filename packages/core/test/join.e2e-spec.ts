@@ -1,19 +1,17 @@
 import { CommandBus, CqrsModule, EventBus } from '@nestjs/cqrs';
 import { Test } from '@nestjs/testing';
 
-import * as t from 'io-ts';
-import { UUID } from 'io-ts-types/lib/UUID';
-import * as uuid from 'uuid';
-
 import { PlayerJoinCommand } from '../src/planet/commands';
 import { CommandHandlers } from '../src/planet/handlers';
 import { PlanetRepository } from '../src/planet/planet.repository';
 import { PointT } from '../src/shared/Point';
+import { Resources } from '../src/shared/resources';
 
 import { MemoryPlanetRepository } from './memory-planet.repository';
-import { niceError } from './utils';
+import { generateUUID, niceError, resourceDist } from './utils';
 
-const generateUUID = uuid.v4 as () => UUID;
+const EPSILON = 0.01;
+const INITIAL_RESOURCES = Resources.Partial({ metal: 500, crystal: 500 });
 
 describe('PlanetModule', () => {
     let command$: CommandBus;
@@ -74,6 +72,9 @@ describe('PlanetModule', () => {
             }
             expect(planet.id).toBe(planetId);
             expect(planet.temperature).toBe(temperature);
+            expect(
+                resourceDist(planet.resources)(INITIAL_RESOURCES),
+            ).toBeLessThan(EPSILON);
         });
 
         it('find planet by position', async () => {

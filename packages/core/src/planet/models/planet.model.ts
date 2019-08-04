@@ -5,10 +5,24 @@ import { UUID } from 'io-ts-types/lib/UUID';
 
 import { Resources, ResourcesC } from '../../shared/resources';
 import { PlayerJoinCommandT } from '../commands';
-import { PlayerJoinedEvent } from '../events';
+import { BuildStartedEvent, PlayerJoinedEvent } from '../events';
 
-import { CrystalMine, DeuteriumSynthesizer, MetalMine } from './buildings';
+import {
+    Building,
+    CrystalMine,
+    DeuteriumSynthesizer,
+    MetalMine,
+} from './buildings';
 import { Technology } from './technologies';
+
+const ConstructionC = t.type({
+    buildingId: t.string,
+    level: t.Int,
+    start: t.number,
+    end: t.number,
+});
+
+type ConstructionT = t.TypeOf<typeof ConstructionC>;
 
 export const PlanetC = t.type({
     id: UUID,
@@ -16,6 +30,7 @@ export const PlanetC = t.type({
     diameter: t.Int,
     temperature: t.Int,
     resources: ResourcesC,
+    construction: t.union([t.null, ConstructionC]),
 });
 
 export type PlanetT = t.TypeOf<typeof PlanetC>;
@@ -29,6 +44,7 @@ export class PlanetModel extends AggregateRoot implements PlanetT {
     public diameter: t.Int;
     public temperature: t.Int;
     public resources: Resources;
+    public construction: ConstructionT | null;
 
     constructor(public readonly id: UUID) {
         super();
@@ -37,6 +53,7 @@ export class PlanetModel extends AggregateRoot implements PlanetT {
         this.diameter = 12800 as any;
         // TODO config? Universe?
         this.resources = Resources.Partial({ metal: 500, crystal: 500 });
+        this.construction = null;
     }
 
     public get<T = any>(type: Type<T>): T {
@@ -66,8 +83,40 @@ export class PlanetModel extends AggregateRoot implements PlanetT {
         // TODO cap by storage
     }
 
+    public withdraw(resources: Resources): void {
+        this.resources = this.resources.subtract(resources);
+    }
+
     public join(command: PlayerJoinCommandT) {
         // TODO logic...
         this.apply(new PlayerJoinedEvent(command));
+    }
+
+    public buildStart(building: Building) {
+        // TODO logic...
+        if (this.construction) {
+            // TODO better errors
+            throw new Error('Planet already under construction');
+        }
+
+        const now = Date.now(); // TODO ClockService
+        const buildingSpeed = 1; // TODO universe, robots, nanite
+        this.construction = {
+            buildingId: building.id,
+            level: building.level,
+            start: now,
+            end: now + building.getDurationMs(buildingSpeed),
+        };
+        this.withdraw(building.getCost());
+
+        const event = new BuildStartedEvent({
+            ms: now,
+            planetId: this.id,
+            buildingId: building.id,
+            level: building.level,
+            start: this.construction.start,
+            end: this.construction.end,
+        });
+        this.apply(event);
     }
 }
