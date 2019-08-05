@@ -19,7 +19,6 @@ const name = 'Nanite Factory';
  */
 export class NaniteFactory extends Building {}
 
-NaniteFactory.prototype.id = 'naniteFactory';
 NaniteFactory.prototype.name = name;
 NaniteFactory.prototype.baseCost = Resources.Partial({
     metal: 1000000,

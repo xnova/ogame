@@ -18,7 +18,6 @@ const name = 'Armour Technology';
  */
 export class ArmourTechnology extends Technology {}
 
-ArmourTechnology.prototype.id = 'armourTech';
 ArmourTechnology.prototype.name = name;
 ArmourTechnology.prototype.baseCost = Resources.Partial({
     metal: 1000,

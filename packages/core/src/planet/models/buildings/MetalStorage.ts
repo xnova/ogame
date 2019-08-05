@@ -17,7 +17,6 @@ const name = 'Metal Storage';
  */
 export class MetalStorage extends Building {}
 
-MetalStorage.prototype.id = 'metalStorage';
 MetalStorage.prototype.name = name;
 MetalStorage.prototype.baseCost = Resources.Partial({
     metal: 1000,

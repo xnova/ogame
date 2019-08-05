@@ -18,7 +18,6 @@ const name = 'Computer Technology';
  */
 export class ComputerTechnology extends Technology {}
 
-ComputerTechnology.prototype.id = 'computerTech';
 ComputerTechnology.prototype.name = name;
 ComputerTechnology.prototype.baseCost = Resources.Partial({
     crystal: 400,

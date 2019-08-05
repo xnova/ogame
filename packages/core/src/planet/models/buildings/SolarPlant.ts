@@ -17,7 +17,6 @@ const name = 'Solar Plant';
  */
 export class SolarPlant extends Building {}
 
-SolarPlant.prototype.id = 'solarPlant';
 SolarPlant.prototype.name = name;
 SolarPlant.prototype.baseCost = Resources.Partial({
     metal: 75,

@@ -19,7 +19,6 @@ const name = 'Laser Technology';
  */
 export class LaserTechnology extends Technology {}
 
-LaserTechnology.prototype.id = 'laserTech';
 LaserTechnology.prototype.name = name;
 LaserTechnology.prototype.baseCost = Resources.Partial({
     metal: 200,

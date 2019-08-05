@@ -19,7 +19,6 @@ const name = 'Terraformer';
  */
 export class Terraformer extends Building {}
 
-Terraformer.prototype.id = 'terraformer';
 Terraformer.prototype.name = name;
 Terraformer.prototype.baseCost = Resources.Partial({
     crystal: 50000,

@@ -17,7 +17,6 @@ const name = 'Deuterium Tank';
  */
 export class DeuteriumTank extends Building {}
 
-DeuteriumTank.prototype.id = 'deuteriumTank';
 DeuteriumTank.prototype.name = name;
 DeuteriumTank.prototype.baseCost = Resources.Partial({
     metal: 1000,

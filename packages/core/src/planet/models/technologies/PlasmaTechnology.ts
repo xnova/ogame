@@ -21,7 +21,6 @@ const name = 'Plasma Technology';
  */
 export class PlasmaTechnology extends Technology {}
 
-PlasmaTechnology.prototype.id = 'plasmaTech';
 PlasmaTechnology.prototype.name = name;
 PlasmaTechnology.prototype.baseCost = Resources.Partial({
     metal: 2000,

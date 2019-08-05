@@ -17,7 +17,6 @@ const name = 'Research Lab';
  */
 export class ResearchLab extends Building {}
 
-ResearchLab.prototype.id = 'researchLab';
 ResearchLab.prototype.name = name;
 ResearchLab.prototype.baseCost = Resources.Partial({
     metal: 400,

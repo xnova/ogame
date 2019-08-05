@@ -18,7 +18,6 @@ const name = 'Missile Silo';
  */
 export class MissileSilo extends Building {}
 
-MissileSilo.prototype.id = 'silo';
 MissileSilo.prototype.name = name;
 MissileSilo.prototype.baseCost = Resources.Partial({
     metal: 20000,

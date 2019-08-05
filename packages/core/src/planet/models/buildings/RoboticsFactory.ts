@@ -17,7 +17,6 @@ const name = 'Robotics Factory';
  */
 export class RoboticsFactory extends Building {}
 
-RoboticsFactory.prototype.id = 'roboticsFactory';
 RoboticsFactory.prototype.name = name;
 RoboticsFactory.prototype.baseCost = Resources.Partial({
     metal: 400,

@@ -20,7 +20,6 @@ const name = 'Intergalactic Research Network';
  */
 export class IntergalacticResearchNetwork extends Technology {}
 
-IntergalacticResearchNetwork.prototype.id = 'IRN';
 IntergalacticResearchNetwork.prototype.name = name;
 IntergalacticResearchNetwork.prototype.baseCost = Resources.Partial({
     metal: 240000,

@@ -19,7 +19,6 @@ const name = 'Impulse Drive';
  */
 export class ImpulseDrive extends Technology {}
 
-ImpulseDrive.prototype.id = 'impulseDrive';
 ImpulseDrive.prototype.name = name;
 ImpulseDrive.prototype.baseCost = Resources.Partial({
     metal: 2000,

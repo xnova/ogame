@@ -19,7 +19,6 @@ const name = 'Hyperspace Drive';
  */
 export class HyperspaceDrive extends Technology {}
 
-HyperspaceDrive.prototype.id = 'hyperspaceDrive';
 HyperspaceDrive.prototype.name = name;
 HyperspaceDrive.prototype.baseCost = Resources.Partial({
     metal: 10000,

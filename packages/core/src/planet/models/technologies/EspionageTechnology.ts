@@ -18,7 +18,6 @@ const name = 'Espionage Technology';
  */
 export class EspionageTechnology extends Technology {}
 
-EspionageTechnology.prototype.id = 'espionageTech';
 EspionageTechnology.prototype.name = name;
 EspionageTechnology.prototype.baseCost = Resources.Partial({
     metal: 200,

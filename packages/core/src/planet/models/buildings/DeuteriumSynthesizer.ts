@@ -17,7 +17,6 @@ const name = 'Deuterium Synthesizer';
  */
 export class DeuteriumSynthesizer extends Building {}
 
-DeuteriumSynthesizer.prototype.id = 'deuteriumSynthesizer';
 DeuteriumSynthesizer.prototype.name = name;
 DeuteriumSynthesizer.prototype.baseCost = Resources.Partial({
     metal: 225,

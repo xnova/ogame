@@ -20,7 +20,6 @@ const name = 'Hyperspace Technology';
  */
 export class HyperspaceTechnology extends Technology {}
 
-HyperspaceTechnology.prototype.id = 'hyperspaceTech';
 HyperspaceTechnology.prototype.name = name;
 HyperspaceTechnology.prototype.baseCost = Resources.Partial({
     metal: 4000,

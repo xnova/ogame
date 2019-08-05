@@ -9,9 +9,12 @@
 import { Resources } from '../../../shared/resources';
 
 export abstract class Unit {
-    public id: string; // TODO think better...
     public name: string;
     public requirements: Unit[];
+
+    public get id(): string {
+        return this.constructor.name;
+    }
 
     public abstract getCost(): Resources;
 

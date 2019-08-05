@@ -18,7 +18,6 @@ const name = 'Shipyard';
  */
 export class Shipyard extends Building {}
 
-Shipyard.prototype.id = 'shipyard';
 Shipyard.prototype.name = name;
 Shipyard.prototype.baseCost = Resources.Partial({
     metal: 400,

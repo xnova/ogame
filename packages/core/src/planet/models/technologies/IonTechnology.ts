@@ -20,7 +20,6 @@ const name = 'Ion Technology';
  */
 export class IonTechnology extends Technology {}
 
-IonTechnology.prototype.id = 'ionTech';
 IonTechnology.prototype.name = name;
 IonTechnology.prototype.baseCost = Resources.Partial({
     metal: 1000,

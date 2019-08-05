@@ -18,7 +18,6 @@ const name = 'Graviton Technology';
  */
 export class GravitonTechnology extends Technology {}
 
-GravitonTechnology.prototype.id = 'gravitonTech';
 GravitonTechnology.prototype.name = name;
 GravitonTechnology.prototype.baseCost = Resources.Partial({
     energy: 300000,

@@ -19,7 +19,6 @@ const name = 'Fusion Reactor';
  */
 export class FusionReactor extends Building {}
 
-FusionReactor.prototype.id = 'fusionReactor';
 FusionReactor.prototype.name = name;
 FusionReactor.prototype.baseCost = Resources.Partial({
     metal: 900,

@@ -20,7 +20,6 @@ const name = 'Astrophysics';
  */
 export class Astrophysics extends Technology {}
 
-Astrophysics.prototype.id = 'astrophysics';
 Astrophysics.prototype.name = name;
 Astrophysics.prototype.baseCost = Resources.Partial({
     metal: 4000,

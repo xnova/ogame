@@ -19,7 +19,6 @@ const name = 'Shielding Technology';
  */
 export class ShieldingTechnology extends Technology {}
 
-ShieldingTechnology.prototype.id = 'shieldingTech';
 ShieldingTechnology.prototype.name = name;
 ShieldingTechnology.prototype.baseCost = Resources.Partial({
     metal: 200,
