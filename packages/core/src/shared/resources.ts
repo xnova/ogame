@@ -74,4 +74,9 @@ export class Resources implements ResourcesT {
     public subtract(other: Resources): Resources {
         return this.map((amount, resource) => amount - other[resource]);
     }
+
+    public includes(other: Resources): boolean {
+        const diff = this.subtract(other).values();
+        return diff.every(x => x >= 0);
+    }
 }

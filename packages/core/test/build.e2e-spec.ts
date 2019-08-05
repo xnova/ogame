@@ -1,7 +1,13 @@
-import { CommandBus, CqrsModule, EventBus } from '@nestjs/cqrs';
+import { CommandBus, CqrsModule, EventBus, ICommand } from '@nestjs/cqrs';
 import { Test } from '@nestjs/testing';
 
-import { BuildStartCommand, PlayerJoinCommand } from '../src/planet/commands';
+import { UUID } from 'io-ts-types/lib/UUID';
+
+import {
+    BuildCancelCommand,
+    BuildStartCommand,
+    PlayerJoinCommand,
+} from '../src/planet/commands';
 import { CommandHandlers } from '../src/planet/handlers';
 import { PlanetRepository } from '../src/planet/planet.repository';
 import { Resources } from '../src/shared/resources';
@@ -15,6 +21,18 @@ describe('PlanetModule', () => {
     let command$: CommandBus;
     let event$: EventBus;
     const planetRepo = new MemoryPlanetRepository();
+
+    const fetchPlanet = (id: UUID) =>
+        niceError(planetRepo.getById(id)).then(p => {
+            if (!p) {
+                return fail('planet not found');
+            }
+            expect(p.id).toBe(id);
+            return p;
+        });
+
+    const submit = <T extends ICommand>(command: T) =>
+        niceError(command$.execute(command));
 
     const joinCommand = new PlayerJoinCommand({
         ms: Date.now(),
@@ -51,36 +69,57 @@ describe('PlanetModule', () => {
         command$.register(CommandHandlers);
         console.log('HANDLERS', (command$ as any).handlers);
 
-        const request = niceError(command$.execute(joinCommand));
+        const request = submit(joinCommand);
         expect(await request).toBe(undefined);
     });
 
     describe('Build', () => {
-        it.todo('cannot cancel if not building anything');
-
-        it('can start building metalMine', async () => {
+        it('cannot cancel if not building anything', async () => {
             const { planetId } = joinCommand.payload;
 
-            const beforePlanet = await niceError(planetRepo.getById(planetId));
-            if (!beforePlanet) {
-                return fail('planet not found');
-            }
+            const beforePlanet = await fetchPlanet(planetId);
+            expect(beforePlanet.construction).toBeNull();
+
+            const cancelCommand = new BuildCancelCommand({
+                ms: Date.now(),
+                planetId,
+            });
+            const request = submit(cancelCommand);
+            await expect(request).rejects.toThrow();
+        });
+
+        it('cannot build negative levels', async () => {
+            const { planetId } = joinCommand.payload;
+
+            const beforePlanet = await fetchPlanet(planetId);
             expect(beforePlanet.construction).toBeNull();
 
             const buildCommand = new BuildStartCommand({
                 ms: Date.now(),
                 planetId,
-                buildingId: 'metalMine',
+                buildingId: 'MetalMine',
+                level: -1 as any,
+            });
+            const request = submit(buildCommand);
+            await expect(request).rejects.toThrow();
+        });
+
+        it('can start building MetalMine', async () => {
+            const { planetId } = joinCommand.payload;
+
+            const beforePlanet = await fetchPlanet(planetId);
+            expect(beforePlanet.construction).toBeNull();
+
+            const buildCommand = new BuildStartCommand({
+                ms: Date.now(),
+                planetId,
+                buildingId: 'MetalMine',
                 level: 1 as any,
             });
-            const request = niceError(command$.execute(buildCommand));
+            const request = submit(buildCommand);
             expect(await request).toBe(undefined);
 
-            const planet = await niceError(planetRepo.getById(planetId));
-            if (!planet) {
-                return fail('planet not found');
-            }
-            expect(planet.id).toBe(planetId);
+            const planet = await fetchPlanet(planetId);
             if (!planet.construction) {
                 return fail('planet construction not found');
             }
@@ -106,16 +145,74 @@ describe('PlanetModule', () => {
                 buildingId: 'crystalMine',
                 level: 1 as any,
             });
-            const request = niceError(command$.execute(buildCommand));
+            const request = submit(buildCommand);
             await expect(request).rejects.toThrow();
         });
 
-        it.todo('can cancel');
+        it.todo('cannot cancel different than current construction');
 
-        it.todo('cannot build negative levels');
+        it('can cancel', async () => {
+            const { planetId } = joinCommand.payload;
 
-        it.todo('build level must be +1 than current level');
+            const beforePlanet = await fetchPlanet(planetId);
+
+            const cancelCommand = new BuildCancelCommand({
+                ms: Date.now(),
+                planetId,
+            });
+            const request = submit(cancelCommand);
+            expect(await request).toBe(undefined);
+
+            const planet = await fetchPlanet(planetId);
+            expect(planet.construction).toBeNull();
+
+            const cost = Resources.Partial({ metal: 60, crystal: 15 });
+            const restored = planet.resources.subtract(beforePlanet.resources);
+            expect(resourceDist(restored)(cost)).toBeLessThan(EPSILON);
+        });
+
+        it('build level must be +1 than current level', async () => {
+            const { planetId } = joinCommand.payload;
+
+            const beforePlanet = await fetchPlanet(planetId);
+            expect(beforePlanet.construction).toBeNull();
+
+            const buildCommand = new BuildStartCommand({
+                ms: Date.now(),
+                planetId,
+                buildingId: 'metalMine',
+                level: 2 as any,
+            });
+            const request = submit(buildCommand);
+            await expect(request).rejects.toThrow();
+        });
 
         it.todo('can start building crystalMine');
+
+        it('cannot build if not enough resources', async () => {
+            const { planetId } = joinCommand.payload;
+
+            const beforePlanet = await fetchPlanet(planetId);
+            expect(beforePlanet.construction).toBeNull();
+
+            const buildCommand = new BuildStartCommand({
+                ms: Date.now(),
+                planetId,
+                buildingId: 'researchLab',
+                level: 1 as any,
+            });
+            const request = submit(buildCommand);
+            await expect(request).rejects.toThrow();
+        });
+
+        it.todo('cannot build if not satisfying requirements');
+
+        it.todo('can finish building');
+
+        it.todo('finished building occupies 1 field');
+
+        it.todo('cannot build if not enough available fields');
+
+        it.todo('can dismantle a building');
     });
 });
