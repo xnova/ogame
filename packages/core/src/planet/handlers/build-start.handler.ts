@@ -1,6 +1,7 @@
 import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
 
 import { BuildStartCommand } from '../commands';
+import { PlanetNotFoundException } from '../exceptions';
 import { createBuilding } from '../models/createBuilding';
 import { PlanetRepository } from '../planet.repository';
 
@@ -15,8 +16,7 @@ export class BuildStartHandler implements ICommandHandler<BuildStartCommand> {
         const { payload } = command;
         const found = await this.repository.getById(payload.planetId);
         if (!found) {
-            // TODO better errors
-            throw new Error('planet not found');
+            throw new PlanetNotFoundException();
         }
 
         // parse buildingId

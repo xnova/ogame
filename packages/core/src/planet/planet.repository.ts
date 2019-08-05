@@ -5,8 +5,8 @@ import { UUID } from 'io-ts-types/lib/UUID';
 import { PointT } from '../shared/Point';
 import { isA } from '../utils';
 
-import { PlanetModel, PlanetEvent } from './models/planet.model';
 import { PlayerJoinedEvent } from './events';
+import { PlanetEvent, PlanetModel } from './models/planet.model';
 
 @Injectable()
 export class PlanetRepository {
@@ -40,7 +40,9 @@ export class PlanetRepository {
         events: PlanetEvent[],
         now: number,
     ): PlanetModel | undefined {
-        if (events.length === 0) return undefined;
+        if (events.length === 0) {
+            return undefined;
+        }
 
         const firstEvent = events[0];
         if (!isA(PlayerJoinedEvent)(firstEvent)) {

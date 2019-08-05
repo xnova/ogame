@@ -9,14 +9,21 @@
 import * as t from 'io-ts';
 
 import { Resources } from '../../../shared/resources';
+import { valueOrThrow } from '../../../shared/types';
+import { InvalidLevelException } from '../../exceptions';
 import { Unit } from '../defenses/Unit';
 
 export abstract class Technology extends Unit {
+    public readonly level: t.Int;
     public baseCost: Resources;
     public costFactor: number;
 
-    constructor(public readonly level: t.Int) {
+    constructor(level: number) {
         super();
+        if (level < 0) {
+            throw new InvalidLevelException();
+        }
+        this.level = valueOrThrow(t.Int)(level);
     }
 
     /**

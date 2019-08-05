@@ -1,6 +1,11 @@
 import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
 
 import { PlayerJoinCommand } from '../commands';
+import {
+    PlanetAlreadyCreatedException,
+    PlayerAlreadyJoinedException,
+    PointAlreadyOccupied,
+} from '../exceptions';
 import { PlanetRepository } from '../planet.repository';
 
 @CommandHandler(PlayerJoinCommand)
@@ -14,18 +19,15 @@ export class PlayerJoinHandler implements ICommandHandler<PlayerJoinCommand> {
         const { payload } = command;
         const sameId = await this.repository.getById(payload.planetId);
         if (sameId) {
-            // TODO better errors
-            throw new Error('planet already occupied');
+            throw new PlanetAlreadyCreatedException();
         }
         const samePlace = await this.repository.getByPoint(payload.point);
         if (samePlace) {
-            // TODO better errors
-            throw new Error('place already occupied');
+            throw new PointAlreadyOccupied();
         }
-        const player = await this.repository.getByPlayerId(payload.playerId);
-        if (player.length > 0) {
-            // TODO better errors
-            throw new Error('place already occupied');
+        const planets = await this.repository.getByPlayerId(payload.playerId);
+        if (planets.length > 0) {
+            throw new PlayerAlreadyJoinedException();
         }
 
         const planet = this.publisher.mergeObjectContext(

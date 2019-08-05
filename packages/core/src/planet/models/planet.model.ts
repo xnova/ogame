@@ -10,6 +10,12 @@ import {
     BuildStartedEvent,
     PlayerJoinedEvent,
 } from '../events';
+import {
+    PlanetAlreadyBuildingException,
+    PlanetNotBuildingException,
+    PlanetNotEnoughResourcesException,
+    BuildingTooMuchException,
+} from '../exceptions';
 
 import { Building, MetalMine } from './buildings';
 import { Technology } from './technologies';
@@ -107,16 +113,15 @@ export class PlanetModel extends AggregateRoot implements PlanetT {
     public buildStart(building: Building) {
         // TODO logic...
         if (this.construction) {
-            // TODO better errors
-            throw new Error('Planet already under construction');
-        }
-        if (building.level < 0) {
-            throw new Error('Cannot build negative levels');
+            throw new PlanetAlreadyBuildingException();
         }
         // TODO fetch from construction.buildingId
         const current = this.get(MetalMine);
         if (building.level !== current.level + 1) {
-            throw new Error('Can only improve level one by one');
+            throw new BuildingTooMuchException();
+        }
+        if (!this.resources.includes(building.getCost())) {
+            throw new PlanetNotEnoughResourcesException();
         }
 
         const now = Date.now(); // TODO ClockService
@@ -149,7 +154,7 @@ export class PlanetModel extends AggregateRoot implements PlanetT {
         const now = Date.now(); // TODO ClockService
         const construction = this.construction;
         if (!construction) {
-            throw new Error('Planet not under construction');
+            throw new PlanetNotBuildingException();
         }
 
         const event = new BuildCancelledEvent({

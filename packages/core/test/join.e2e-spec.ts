@@ -2,6 +2,11 @@ import { CommandBus, CqrsModule, EventBus } from '@nestjs/cqrs';
 import { Test } from '@nestjs/testing';
 
 import { PlayerJoinCommand } from '../src/planet/commands';
+import {
+    PlanetAlreadyCreatedException,
+    PlayerAlreadyJoinedException,
+    PointAlreadyOccupied,
+} from '../src/planet/exceptions';
 import { CommandHandlers } from '../src/planet/handlers';
 import { PlanetRepository } from '../src/planet/planet.repository';
 import { PointT } from '../src/shared/Point';
@@ -108,7 +113,9 @@ describe('PlanetModule', () => {
                 point: diffPoint,
             });
             const request = niceError(command$.execute(command));
-            await expect(request).rejects.toThrow();
+            await expect(request).rejects.toThrowError(
+                PlayerAlreadyJoinedException,
+            );
         });
 
         it('cannot create a planet on the same place', async () => {
@@ -118,7 +125,7 @@ describe('PlanetModule', () => {
                 planetId: generateUUID(),
             });
             const request = niceError(command$.execute(command));
-            await expect(request).rejects.toThrow();
+            await expect(request).rejects.toThrowError(PointAlreadyOccupied);
         });
 
         it('cannot create a planet with the same id', async () => {
@@ -131,7 +138,9 @@ describe('PlanetModule', () => {
                 point: diffPoint,
             });
             const request = niceError(command$.execute(command));
-            await expect(request).rejects.toThrow();
+            await expect(request).rejects.toThrowError(
+                PlanetAlreadyCreatedException,
+            );
         });
     });
 });

@@ -8,6 +8,14 @@ import {
     BuildStartCommand,
     PlayerJoinCommand,
 } from '../src/planet/commands';
+import {
+    BuildingNotFoundException,
+    BuildingTooMuchException,
+    InvalidLevelException,
+    PlanetAlreadyBuildingException,
+    PlanetNotBuildingException,
+    PlanetNotEnoughResourcesException,
+} from '../src/planet/exceptions';
 import { CommandHandlers } from '../src/planet/handlers';
 import { PlanetRepository } from '../src/planet/planet.repository';
 import { Resources } from '../src/shared/resources';
@@ -85,7 +93,27 @@ describe('PlanetModule', () => {
                 planetId,
             });
             const request = submit(cancelCommand);
-            await expect(request).rejects.toThrow();
+            await expect(request).rejects.toThrowError(
+                PlanetNotBuildingException,
+            );
+        });
+
+        it('cannot build non existing building', async () => {
+            const { planetId } = joinCommand.payload;
+
+            const beforePlanet = await fetchPlanet(planetId);
+            expect(beforePlanet.construction).toBeNull();
+
+            const buildCommand = new BuildStartCommand({
+                ms: Date.now(),
+                planetId,
+                buildingId: 'Foo',
+                level: 1 as any,
+            });
+            const request = submit(buildCommand);
+            await expect(request).rejects.toThrowError(
+                BuildingNotFoundException,
+            );
         });
 
         it('cannot build negative levels', async () => {
@@ -101,7 +129,7 @@ describe('PlanetModule', () => {
                 level: -1 as any,
             });
             const request = submit(buildCommand);
-            await expect(request).rejects.toThrow();
+            await expect(request).rejects.toThrowError(InvalidLevelException);
         });
 
         it('can start building MetalMine', async () => {
@@ -142,11 +170,13 @@ describe('PlanetModule', () => {
             const buildCommand = new BuildStartCommand({
                 ms: Date.now(),
                 planetId,
-                buildingId: 'crystalMine',
+                buildingId: 'CrystalMine',
                 level: 1 as any,
             });
             const request = submit(buildCommand);
-            await expect(request).rejects.toThrow();
+            await expect(request).rejects.toThrowError(
+                PlanetAlreadyBuildingException,
+            );
         });
 
         it.todo('cannot cancel different than current construction');
@@ -180,11 +210,13 @@ describe('PlanetModule', () => {
             const buildCommand = new BuildStartCommand({
                 ms: Date.now(),
                 planetId,
-                buildingId: 'metalMine',
+                buildingId: 'MetalMine',
                 level: 2 as any,
             });
             const request = submit(buildCommand);
-            await expect(request).rejects.toThrow();
+            await expect(request).rejects.toThrowError(
+                BuildingTooMuchException,
+            );
         });
 
         it.todo('can start building crystalMine');
@@ -198,11 +230,13 @@ describe('PlanetModule', () => {
             const buildCommand = new BuildStartCommand({
                 ms: Date.now(),
                 planetId,
-                buildingId: 'researchLab',
+                buildingId: 'ResearchLab',
                 level: 1 as any,
             });
             const request = submit(buildCommand);
-            await expect(request).rejects.toThrow();
+            await expect(request).rejects.toThrowError(
+                PlanetNotEnoughResourcesException,
+            );
         });
 
         it.todo('cannot build if not satisfying requirements');

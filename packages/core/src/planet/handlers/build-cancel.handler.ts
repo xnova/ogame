@@ -1,7 +1,7 @@
 import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
 
 import { BuildCancelCommand } from '../commands';
-import { Building, MetalMine } from '../models/buildings';
+import { PlanetNotFoundException } from '../exceptions';
 import { PlanetRepository } from '../planet.repository';
 
 @CommandHandler(BuildCancelCommand)
@@ -15,8 +15,7 @@ export class BuildCancelHandler implements ICommandHandler<BuildCancelCommand> {
         const { payload } = command;
         const found = await this.repository.getById(payload.planetId);
         if (!found) {
-            // TODO better errors
-            throw new Error('planet not found');
+            throw new PlanetNotFoundException();
         }
 
         const planet = this.publisher.mergeObjectContext(found);
