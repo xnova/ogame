@@ -10,6 +10,7 @@
         "sourceMap": true,
         "outDir": "./lib",
         "baseUrl": "./",
+        "noUnusedLocals": true,
         "incremental": true
     },
     "exclude": ["node_modules", "lib"]

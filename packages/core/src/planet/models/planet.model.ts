@@ -11,12 +11,7 @@ import {
     PlayerJoinedEvent,
 } from '../events';
 
-import {
-    Building,
-    CrystalMine,
-    DeuteriumSynthesizer,
-    MetalMine,
-} from './buildings';
+import { Building, MetalMine } from './buildings';
 import { Technology } from './technologies';
 
 const ConstructionC = t.type({
@@ -76,9 +71,6 @@ export class PlanetModel extends AggregateRoot implements PlanetT {
      * Resources produced in this planet per hour.
      */
     public getProduction(): Resources {
-        const metalMine = this.get(MetalMine);
-        const crystalMine = this.get(CrystalMine);
-        const deuteriumMine = this.get(DeuteriumSynthesizer);
         return BASIC_INCOME;
     }
 
@@ -108,7 +100,7 @@ export class PlanetModel extends AggregateRoot implements PlanetT {
         this.apply(new PlayerJoinedEvent(command));
     }
 
-    private onPlayerJoinedEvent(event: PlayerJoinedEvent) {
+    protected onPlayerJoinedEvent(event: PlayerJoinedEvent) {
         this.temperature = event.payload.temperature;
     }
 
@@ -140,7 +132,7 @@ export class PlanetModel extends AggregateRoot implements PlanetT {
         this.apply(event);
     }
 
-    private onBuildStartedEvent(event: BuildStartedEvent) {
+    protected onBuildStartedEvent(event: BuildStartedEvent) {
         this.construction = {
             buildingId: event.payload.buildingId,
             level: event.payload.level,
@@ -169,7 +161,7 @@ export class PlanetModel extends AggregateRoot implements PlanetT {
         this.apply(event);
     }
 
-    private onBuildCancelledEvent(event: BuildCancelledEvent) {
+    protected onBuildCancelledEvent(event: BuildCancelledEvent) {
         this.construction = null;
         // TODO fetch from construction.buildingId and level
         const building = new MetalMine(event.payload.level);

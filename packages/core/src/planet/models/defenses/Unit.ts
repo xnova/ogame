@@ -7,7 +7,6 @@
  */
 
 import { Resources } from '../../../shared/resources';
-import { Technology } from '../technologies';
 
 export abstract class Unit {
     public id: string; // TODO think better...
