@@ -24,8 +24,6 @@ export abstract class Unit {
         const hours = baseHours / speed;
         return hours * 3600 * 1000;
     }
-
-    public abstract satisfies(requirement: Unit): boolean;
 }
 
 Unit.prototype.name = 'Unnamed Unit';

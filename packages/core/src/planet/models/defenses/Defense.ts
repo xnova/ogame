@@ -18,10 +18,6 @@ export abstract class Defense extends Unit {
     public getCost(): Resources {
         return this.cost;
     }
-
-    public satisfies(requirement: Unit): boolean {
-        return false;
-    }
 }
 
 Defense.prototype.name = 'Unnamed Defense';

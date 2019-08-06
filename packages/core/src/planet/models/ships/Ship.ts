@@ -16,10 +16,6 @@ export abstract class Ship extends Unit {
     public getCost(): Resources {
         return this.cost;
     }
-
-    public satisfies(requirement: Unit): boolean {
-        return false;
-    }
 }
 Ship.prototype.name = 'Unnamed Ship';
 Ship.prototype.cost = Resources.Partial({

@@ -27,7 +27,7 @@ describe('PlanetModule', () => {
     const planetRepo = new MemoryPlanetRepository(clock);
 
     const joinCommand = new PlayerJoinCommand({
-        ms: Date.now(),
+        ms: clock.now(),
         playerId: generateUUID(),
         planetId: generateUUID(),
         point: {

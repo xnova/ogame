@@ -21,7 +21,7 @@ import {
     RequirementsAreNotMeetException,
 } from '../exceptions';
 
-import { Building, MetalMine } from './buildings';
+import { Building, DeuteriumSynthesizer } from './buildings';
 import { createBuilding } from './createBuilding';
 import { Unit } from './defenses/Unit';
 import { Technology } from './technologies';
@@ -96,7 +96,17 @@ export class PlanetModel extends AggregateRoot implements PlanetT {
      * Resources produced in this planet per hour.
      */
     public getProduction(): Resources {
-        return BASIC_INCOME;
+        // TODO logic
+        const { level } = this.get(DeuteriumSynthesizer);
+        const minesProduction = Resources.Partial({
+            deuterium: 10,
+            energy: -20,
+        }).map(x => x * level * Math.pow(1.1, level));
+        const totalProduction = BASIC_INCOME.add(minesProduction);
+        // TODO energy adjustements
+        return totalProduction.map((amount, key) =>
+            key === 'energy' ? 0 : amount,
+        );
     }
 
     private produce(ms: number): void {
@@ -122,9 +132,13 @@ export class PlanetModel extends AggregateRoot implements PlanetT {
 
     public meetsRequirements(unit: Unit): boolean {
         return unit.requirements.every(requirement => {
+            if (requirement instanceof Technology) {
+                // TODO implement at technology scope, not planet
+                const level = this.getBuildingLevel(requirement.id);
+                return level >= requirement.level;
+            }
             // TODO logic
-            const our = this.get(MetalMine);
-            return our.satisfies(requirement);
+            return false;
         });
     }
 

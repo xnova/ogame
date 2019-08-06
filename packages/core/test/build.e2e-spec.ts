@@ -26,6 +26,7 @@ import { CommandHandlers } from '../src/planet/handlers';
 import { MetalMine } from '../src/planet/models/buildings';
 import { PlanetModel } from '../src/planet/models/planet.model';
 import { PlanetRepository } from '../src/planet/planet.repository';
+import { PointT } from '../src/shared/Point';
 import { Resources } from '../src/shared/resources';
 
 import { MemoryPlanetRepository } from './memory-planet.repository';
@@ -52,20 +53,20 @@ describe('PlanetModule', () => {
     const submit = <T extends ICommand>(command: T) =>
         niceError(command$.execute(command));
 
-    const joinCommand = new PlayerJoinCommand({
-        ms: clock.now(),
-        playerId: generateUUID(),
-        planetId: generateUUID(),
-        point: {
-            x: 1 as any,
-            y: 1 as any,
-            z: 8 as any,
-            t: 1 as any,
-        },
-        temperature: 69 as any,
-    });
+    const createPlanet = (planetId: UUID, point: PointT) => async () => {
+        const joinCommand = new PlayerJoinCommand({
+            ms: clock.now(),
+            playerId: generateUUID(),
+            planetId,
+            point,
+            temperature: 69 as any,
+        });
+        const request = submit(joinCommand);
+        expect(await request).toBe(undefined);
+    };
 
     const TestBuilding = (options: {
+        planetId: UUID;
         buildingId: string;
         level: number;
         duration: number;
@@ -75,8 +76,7 @@ describe('PlanetModule', () => {
         canCancel: () => Promise<any>;
         canFinish: () => Promise<any>;
     } => {
-        const { planetId } = joinCommand.payload;
-
+        const { planetId } = options;
         const testConstruction = (planet: PlanetModel) => {
             if (!planet.construction) {
                 return fail('planet construction not found');
@@ -162,22 +162,25 @@ describe('PlanetModule', () => {
         console.log('HANDLERS', (command$ as any).handlers);
         command$.register(CommandHandlers);
         console.log('HANDLERS', (command$ as any).handlers);
-
-        const request = submit(joinCommand);
-        expect(await request).toBe(undefined);
     });
 
     describe('Build', () => {
-        it('new planet has no occupied fields', async () => {
-            const { planetId } = joinCommand.payload;
+        const planetId = generateUUID();
+        const point: PointT = {
+            x: 1 as any,
+            y: 1 as any,
+            z: 8 as any,
+            t: 1 as any,
+        };
 
+        beforeAll(createPlanet(planetId, point));
+
+        it('new planet has no occupied fields', async () => {
             const planet = await fetchPlanet(planetId);
             expect(planet.occupiedFields).toBe(0);
         });
 
         it('cannot cancel if not building anything', async () => {
-            const { planetId } = joinCommand.payload;
-
             const beforePlanet = await fetchPlanet(planetId);
             expect(beforePlanet.construction).toBeNull();
 
@@ -192,8 +195,6 @@ describe('PlanetModule', () => {
         });
 
         it('cannot build non existing building', async () => {
-            const { planetId } = joinCommand.payload;
-
             const beforePlanet = await fetchPlanet(planetId);
             expect(beforePlanet.construction).toBeNull();
 
@@ -210,8 +211,6 @@ describe('PlanetModule', () => {
         });
 
         it('cannot build negative levels', async () => {
-            const { planetId } = joinCommand.payload;
-
             const beforePlanet = await fetchPlanet(planetId);
             expect(beforePlanet.construction).toBeNull();
 
@@ -226,6 +225,7 @@ describe('PlanetModule', () => {
         });
 
         const metalMine = TestBuilding({
+            planetId,
             buildingId: 'MetalMine',
             level: 1,
             duration: 108 * 1000,
@@ -235,8 +235,6 @@ describe('PlanetModule', () => {
         it('can start building MetalMine', metalMine.canStart);
 
         it('cannot start building if already building', async () => {
-            const { planetId } = joinCommand.payload;
-
             const buildCommand = new BuildStartCommand({
                 ms: clock.now(),
                 planetId,
@@ -255,8 +253,6 @@ describe('PlanetModule', () => {
         it('can cancel', metalMine.canCancel);
 
         it('build level must be +1 than current level', async () => {
-            const { planetId } = joinCommand.payload;
-
             const beforePlanet = await fetchPlanet(planetId);
             expect(beforePlanet.construction).toBeNull();
 
@@ -273,8 +269,6 @@ describe('PlanetModule', () => {
         });
 
         it('cannot build if not enough resources', async () => {
-            const { planetId } = joinCommand.payload;
-
             const beforePlanet = await fetchPlanet(planetId);
             expect(beforePlanet.construction).toBeNull();
 
@@ -290,25 +284,8 @@ describe('PlanetModule', () => {
             );
         });
 
-        it('cannot build if not satisfying requirements', async () => {
-            const { planetId } = joinCommand.payload;
-
-            const beforePlanet = await fetchPlanet(planetId);
-            expect(beforePlanet.construction).toBeNull();
-
-            const buildCommand = new BuildStartCommand({
-                ms: clock.now(),
-                planetId,
-                buildingId: 'Shipyard',
-                level: 1 as any,
-            });
-            const request = submit(buildCommand);
-            await expect(request).rejects.toThrowError(
-                RequirementsAreNotMeetException,
-            );
-        });
-
         const crystalMine = TestBuilding({
+            planetId,
             buildingId: 'CrystalMine',
             level: 1,
             duration: 103680,
@@ -320,8 +297,6 @@ describe('PlanetModule', () => {
         it('can cancel CrystalMine', crystalMine.canCancel);
 
         it('cannot finish if not building anything', async () => {
-            const { planetId } = joinCommand.payload;
-
             const beforePlanet = await fetchPlanet(planetId);
             expect(beforePlanet.construction).toBeNull();
 
@@ -336,8 +311,6 @@ describe('PlanetModule', () => {
         });
 
         it('cannot finish building before construction ends', async () => {
-            const { planetId } = joinCommand.payload;
-
             await metalMine.canStart();
 
             const finishCommand = new BuildFinishCommand({
@@ -353,14 +326,13 @@ describe('PlanetModule', () => {
         it('can finish building when construction ends', metalMine.canFinish);
 
         it('finished building occupies 1 field', async () => {
-            const { planetId } = joinCommand.payload;
-
             const planet = await fetchPlanet(planetId);
             expect(planet.occupiedFields).toBe(1);
         });
 
         it('can improve MetalMine to level 2', async () => {
             const improvement = TestBuilding({
+                planetId,
                 buildingId: 'MetalMine',
                 level: 2,
                 duration: 161280,
@@ -372,6 +344,7 @@ describe('PlanetModule', () => {
 
         it('can improve CrystalMine to level 2', async () => {
             const improvement = TestBuilding({
+                planetId,
                 buildingId: 'CrystalMine',
                 level: 2,
                 duration: 164160,
@@ -384,8 +357,6 @@ describe('PlanetModule', () => {
         });
 
         it('cannot build if not enough available fields', async () => {
-            const { planetId } = joinCommand.payload;
-
             // mock a lot of buildings
             clock.fastForward(30 * 24 * 3600 * 1000);
             const metalEvent = new BuildFinishedEvent({
@@ -442,12 +413,74 @@ describe('PlanetModule', () => {
             );
         });
 
-        it.todo('can build a Shipyard when requirements are meet');
-
         it.todo('can dismantle a building');
 
         // TODO another module
         it.todo('new planet fields is a function of diameter');
         it.todo('home planet has 163 fields');
+        it.todo('new planet has basic income');
+    });
+
+    describe('Requirements', () => {
+        const planetId = generateUUID();
+        const point: PointT = {
+            x: 2 as any,
+            y: 1 as any,
+            z: 8 as any,
+            t: 1 as any,
+        };
+
+        beforeAll(createPlanet(planetId, point));
+
+        it('cannot build if not satisfying requirements', async () => {
+            const beforePlanet = await fetchPlanet(planetId);
+            expect(beforePlanet.construction).toBeNull();
+
+            const buildCommand = new BuildStartCommand({
+                ms: clock.now(),
+                planetId,
+                buildingId: 'Shipyard',
+                level: 1 as any,
+            });
+            const request = submit(buildCommand);
+            await expect(request).rejects.toThrowError(
+                RequirementsAreNotMeetException,
+            );
+        });
+
+        const shipyard = TestBuilding({
+            planetId,
+            buildingId: 'Shipyard',
+            level: 1,
+            duration: 864 * 1000,
+            cost: Resources.Partial({
+                metal: 400,
+                crystal: 200,
+                deuterium: 100,
+            }),
+        });
+
+        it('can build a Shipyard when requirements are meet', async () => {
+            // mock shipyard requirements
+            const robotsEvent = new BuildFinishedEvent({
+                ms: clock.now(),
+                planetId,
+                buildingId: 'RoboticsFactory',
+                level: 2 as any,
+            });
+            planetRepo.events.push(robotsEvent);
+            // give 100 deuterium
+            const synthEvent = new BuildFinishedEvent({
+                ms: clock.now(),
+                planetId,
+                buildingId: 'DeuteriumSynthesizer',
+                level: 1 as any,
+            });
+            planetRepo.events.push(synthEvent);
+            // TODO add solar plant to have enough energy
+            clock.fastForward(7 * 24 * 3600 * 1000);
+
+            await shipyard.canStart();
+        });
     });
 });

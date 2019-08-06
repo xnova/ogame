@@ -41,17 +41,6 @@ export abstract class Technology extends Unit {
         const { level, costFactor: k } = this;
         return this.baseCost.map(b => (b * k * (k ** level - 1)) / (k - 1));
     }
-
-    public satisfies(requirement: Unit): boolean {
-        if (requirement instanceof Technology) {
-            return (
-                // unique ids are enforced by Unit
-                this.id === requirement.id && this.level >= requirement.level
-            );
-        } else {
-            return false;
-        }
-    }
 }
 
 Technology.prototype.name = 'Unnamed Technology';
