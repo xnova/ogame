@@ -49,6 +49,7 @@ export class PlanetRepository {
             return undefined;
         }
         const planet = new PlanetModel(firstEvent.payload.planetId);
+        // TODO fetch now from clock?
         planet.loadFromHistory(events, now);
         return planet;
     }

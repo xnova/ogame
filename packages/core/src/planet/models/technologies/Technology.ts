@@ -45,9 +45,8 @@ export abstract class Technology extends Unit {
     public satisfies(requirement: Unit): boolean {
         if (requirement instanceof Technology) {
             return (
-                // TODO force unique ids!
-                this.constructor.name === requirement.constructor.name &&
-                this.level >= requirement.level
+                // unique ids are enforced by Unit
+                this.id === requirement.id && this.level >= requirement.level
             );
         } else {
             return false;

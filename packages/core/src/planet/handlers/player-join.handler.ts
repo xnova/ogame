@@ -4,7 +4,7 @@ import { PlayerJoinCommand } from '../commands';
 import {
     PlanetAlreadyCreatedException,
     PlayerAlreadyJoinedException,
-    PointAlreadyOccupied,
+    PointAlreadyOccupiedException,
 } from '../exceptions';
 import { PlanetRepository } from '../planet.repository';
 
@@ -23,7 +23,7 @@ export class PlayerJoinHandler implements ICommandHandler<PlayerJoinCommand> {
         }
         const samePlace = await this.repository.getByPoint(payload.point);
         if (samePlace) {
-            throw new PointAlreadyOccupied();
+            throw new PointAlreadyOccupiedException();
         }
         const planets = await this.repository.getByPlayerId(payload.playerId);
         if (planets.length > 0) {

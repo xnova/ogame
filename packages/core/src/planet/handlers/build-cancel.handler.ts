@@ -19,7 +19,7 @@ export class BuildCancelHandler implements ICommandHandler<BuildCancelCommand> {
         }
 
         const planet = this.publisher.mergeObjectContext(found);
-        planet.buildCancel();
+        planet.buildCancel(payload.ms);
         planet.commit();
     }
 }

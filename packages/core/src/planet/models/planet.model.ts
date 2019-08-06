@@ -7,17 +7,23 @@ import { Resources, ResourcesC } from '../../shared/resources';
 import { PlayerJoinCommandT } from '../commands';
 import {
     BuildCancelledEvent,
+    BuildFinishedEvent,
     BuildStartedEvent,
     PlayerJoinedEvent,
 } from '../events';
 import {
+    BuildingTooMuchException,
     PlanetAlreadyBuildingException,
     PlanetNotBuildingException,
+    PlanetNotEnoughFieldsException,
     PlanetNotEnoughResourcesException,
-    BuildingTooMuchException,
+    PlanetNotFinishedBuildingException,
+    RequirementsAreNotMeetException,
 } from '../exceptions';
 
 import { Building, MetalMine } from './buildings';
+import { createBuilding } from './createBuilding';
+import { Unit } from './defenses/Unit';
 import { Technology } from './technologies';
 
 const ConstructionC = t.type({
@@ -35,7 +41,10 @@ export const PlanetC = t.type({
     diameter: t.Int,
     temperature: t.Int,
     resources: ResourcesC,
+    fields: t.Int,
+    occupiedFields: t.Int,
     construction: t.union([t.null, ConstructionC]),
+    buildings: t.record(t.string, t.Int),
 });
 
 export type PlanetT = t.TypeOf<typeof PlanetC>;
@@ -54,7 +63,10 @@ export class PlanetModel extends AggregateRoot implements PlanetT {
     public diameter: t.Int;
     public temperature: t.Int;
     public resources: Resources;
+    public fields: t.Int;
+    public occupiedFields: t.Int;
     public construction: ConstructionT | null;
+    public buildings: Record<string, t.Int>;
 
     constructor(public readonly id: UUID) {
         super();
@@ -63,12 +75,19 @@ export class PlanetModel extends AggregateRoot implements PlanetT {
         this.diameter = 12800 as any;
         // TODO config? Universe?
         this.resources = Resources.Partial({ metal: 500, crystal: 500 });
+        this.fields = 163 as any;
+        this.occupiedFields = 0 as any;
         this.construction = null;
+        this.buildings = {};
     }
 
-    public get<T = any>(type: Type<T>): T {
+    private getBuildingLevel(buildingId: string): number {
+        return this.buildings[buildingId] || 0;
+    }
+
+    public get<T extends Unit>(type: Type<T>): T {
         if (Technology.isPrototypeOf(type)) {
-            return new type(0);
+            return new type(this.getBuildingLevel(type.name));
         }
         return new type();
     }
@@ -101,6 +120,14 @@ export class PlanetModel extends AggregateRoot implements PlanetT {
         this.resources = this.resources.subtract(resources);
     }
 
+    public meetsRequirements(unit: Unit): boolean {
+        return unit.requirements.every(requirement => {
+            // TODO logic
+            const our = this.get(MetalMine);
+            return our.satisfies(requirement);
+        });
+    }
+
     public join(command: PlayerJoinCommandT) {
         // TODO logic...
         this.apply(new PlayerJoinedEvent(command));
@@ -110,21 +137,25 @@ export class PlanetModel extends AggregateRoot implements PlanetT {
         this.temperature = event.payload.temperature;
     }
 
-    public buildStart(building: Building) {
+    public buildStart(building: Building, now: number) {
         // TODO logic...
         if (this.construction) {
             throw new PlanetAlreadyBuildingException();
         }
-        // TODO fetch from construction.buildingId
-        const current = this.get(MetalMine);
-        if (building.level !== current.level + 1) {
+        if (!this.meetsRequirements(building)) {
+            throw new RequirementsAreNotMeetException();
+        }
+        const currentLevel: number = this.getBuildingLevel(building.id);
+        if (building.level !== currentLevel + 1) {
             throw new BuildingTooMuchException();
         }
         if (!this.resources.includes(building.getCost())) {
             throw new PlanetNotEnoughResourcesException();
         }
+        if (this.occupiedFields >= this.fields) {
+            throw new PlanetNotEnoughFieldsException();
+        }
 
-        const now = Date.now(); // TODO ClockService
         const buildingSpeed = 1; // TODO universe, robots, nanite
         const event = new BuildStartedEvent({
             ms: now,
@@ -137,21 +168,19 @@ export class PlanetModel extends AggregateRoot implements PlanetT {
         this.apply(event);
     }
 
-    protected onBuildStartedEvent(event: BuildStartedEvent) {
+    protected onBuildStartedEvent({ payload }: BuildStartedEvent) {
         this.construction = {
-            buildingId: event.payload.buildingId,
-            level: event.payload.level,
-            start: event.payload.start,
-            end: event.payload.end,
+            buildingId: payload.buildingId,
+            level: payload.level,
+            start: payload.start,
+            end: payload.end,
         };
-        // TODO fetch from construction.buildingId and level
-        const building = new MetalMine(event.payload.level);
+        const building = createBuilding(payload.buildingId, payload.level);
         this.withdraw(building.getCost());
     }
 
-    public buildCancel() {
+    public buildCancel(now: number) {
         // TODO logic...
-        const now = Date.now(); // TODO ClockService
         const construction = this.construction;
         if (!construction) {
             throw new PlanetNotBuildingException();
@@ -166,11 +195,37 @@ export class PlanetModel extends AggregateRoot implements PlanetT {
         this.apply(event);
     }
 
-    protected onBuildCancelledEvent(event: BuildCancelledEvent) {
+    protected onBuildCancelledEvent({ payload }: BuildCancelledEvent) {
         this.construction = null;
-        // TODO fetch from construction.buildingId and level
-        const building = new MetalMine(event.payload.level);
+        const building = createBuilding(payload.buildingId, payload.level);
         this.deposit(building.getCost());
+    }
+
+    public buildFinish(now: number) {
+        // TODO logic...
+        const construction = this.construction;
+        if (!construction) {
+            throw new PlanetNotBuildingException();
+        }
+        if (now < construction.end) {
+            throw new PlanetNotFinishedBuildingException();
+        }
+
+        const event = new BuildFinishedEvent({
+            ms: now,
+            planetId: this.id,
+            buildingId: construction.buildingId,
+            level: construction.level,
+        });
+        this.apply(event);
+    }
+
+    protected onBuildFinishedEvent({ payload }: BuildFinishedEvent) {
+        this.construction = null;
+        //  increment fields
+        const currentLevel: number = this.getBuildingLevel(payload.buildingId);
+        this.occupiedFields += (payload.level - currentLevel) as any;
+        this.buildings[payload.buildingId] = payload.level;
     }
 
     public loadFromHistory(history: PlanetEvent[], now: number = Date.now()) {

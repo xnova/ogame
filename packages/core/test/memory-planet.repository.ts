@@ -2,16 +2,17 @@ import { IEvent } from '@nestjs/cqrs';
 
 import { UUID } from 'io-ts-types/lib/UUID';
 
-import { PlanetRepository } from '../src/planet/planet.repository';
-import { PlanetModel } from '../src/planet/models/planet.model';
-import { PointT, distance } from '../src/shared/Point';
+import { Clock } from '../src/planet/clock';
 import { PlayerJoinedEvent } from '../src/planet/events';
+import { PlanetModel } from '../src/planet/models/planet.model';
+import { PlanetRepository } from '../src/planet/planet.repository';
+import { distance, PointT } from '../src/shared/Point';
 import { isA } from '../src/utils';
 
 export class MemoryPlanetRepository extends PlanetRepository {
     public readonly events: IEvent[];
 
-    constructor() {
+    constructor(private readonly clock: Clock) {
         super();
         this.events = [];
     }
@@ -20,7 +21,7 @@ export class MemoryPlanetRepository extends PlanetRepository {
         const events = this.events.filter(
             (event: any) => event.payload.planetId === id,
         );
-        return this.fromEvents(events as any, Date.now());
+        return this.fromEvents(events as any, this.clock.now());
     }
 
     public async getByPoint(point: PointT): Promise<PlanetModel | undefined> {
@@ -32,11 +33,11 @@ export class MemoryPlanetRepository extends PlanetRepository {
     }
 
     public async getByPlayerId(playerId: UUID): Promise<PlanetModel[]> {
-        const inits = this.events
+        const joinedEvents = this.events
             .filter(isA(PlayerJoinedEvent))
             .filter(event => event.payload.playerId === playerId);
         const planets = await Promise.all(
-            inits.map(event => this.getById(event.payload.planetId)),
+            joinedEvents.map(event => this.getById(event.payload.planetId)),
         );
         return planets.filter(isA(PlanetModel));
     }

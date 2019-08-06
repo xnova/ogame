@@ -1,11 +1,12 @@
 import { CommandBus, CqrsModule, EventBus } from '@nestjs/cqrs';
 import { Test } from '@nestjs/testing';
 
+import { Clock } from '../src/planet/clock';
 import { PlayerJoinCommand } from '../src/planet/commands';
 import {
     PlanetAlreadyCreatedException,
     PlayerAlreadyJoinedException,
-    PointAlreadyOccupied,
+    PointAlreadyOccupiedException,
 } from '../src/planet/exceptions';
 import { CommandHandlers } from '../src/planet/handlers';
 import { PlanetRepository } from '../src/planet/planet.repository';
@@ -13,6 +14,7 @@ import { PointT } from '../src/shared/Point';
 import { Resources } from '../src/shared/resources';
 
 import { MemoryPlanetRepository } from './memory-planet.repository';
+import { TimeTravelClock } from './TimeTravelClock';
 import { generateUUID, niceError, resourceDist } from './utils';
 
 const EPSILON = 0.01;
@@ -21,7 +23,8 @@ const INITIAL_RESOURCES = Resources.Partial({ metal: 500, crystal: 500 });
 describe('PlanetModule', () => {
     let command$: CommandBus;
     let event$: EventBus;
-    const planetRepo = new MemoryPlanetRepository();
+    const clock = new TimeTravelClock();
+    const planetRepo = new MemoryPlanetRepository(clock);
 
     const joinCommand = new PlayerJoinCommand({
         ms: Date.now(),
@@ -43,6 +46,8 @@ describe('PlanetModule', () => {
         })
             .overrideProvider(PlanetRepository)
             .useValue(planetRepo)
+            .overrideProvider(Clock)
+            .useValue(clock)
             .compile();
 
         command$ = module.get<CommandBus>(CommandBus);
@@ -125,7 +130,9 @@ describe('PlanetModule', () => {
                 planetId: generateUUID(),
             });
             const request = niceError(command$.execute(command));
-            await expect(request).rejects.toThrowError(PointAlreadyOccupied);
+            await expect(request).rejects.toThrowError(
+                PointAlreadyOccupiedException,
+            );
         });
 
         it('cannot create a planet with the same id', async () => {
