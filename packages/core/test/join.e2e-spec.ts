@@ -1,5 +1,3 @@
-import * as t from 'io-ts';
-
 import { PlayerJoinCommand } from '../src/planet/commands';
 import {
     PlanetAlreadyCreatedException,
@@ -8,15 +6,12 @@ import {
 } from '../src/planet/exceptions';
 import { PointT } from '../src/shared/Point';
 import { Resources } from '../src/shared/resources';
-import { valueOrThrow } from '../src/shared/types';
 
 import { PlanetTestModule } from './PlanetTestModule';
-import { generateUUID, resourceDist } from './utils';
+import { failure, generateUUID, int, resourceDist, success } from './utils';
 
 const EPSILON = 0.01;
 const INITIAL_RESOURCES = Resources.Partial({ metal: 500, crystal: 500 });
-
-const int = valueOrThrow(t.Int);
 
 describe('PlanetModule', () => {
     let module: PlanetTestModule;
@@ -54,7 +49,7 @@ describe('PlanetModule', () => {
             expect(await byPoint).toBe(undefined);
 
             const request = module.execute(joinCommand());
-            expect(await request).toBe(undefined);
+            await success(request);
 
             const planet = await module.getPlanetById(planetId);
             if (!planet) {
@@ -93,9 +88,7 @@ describe('PlanetModule', () => {
                 point: otherPoint,
             });
             const request = module.execute(command);
-            await expect(request).rejects.toThrowError(
-                PlayerAlreadyJoinedException,
-            );
+            await failure(request, PlayerAlreadyJoinedException);
         });
 
         it('cannot create a planet on the same place', async () => {
@@ -105,9 +98,7 @@ describe('PlanetModule', () => {
                 planetId: generateUUID(),
             });
             const request = module.execute(command);
-            await expect(request).rejects.toThrowError(
-                PointAlreadyOccupiedException,
-            );
+            await failure(request, PointAlreadyOccupiedException);
         });
 
         it('cannot create a planet with the same id', async () => {
@@ -117,9 +108,7 @@ describe('PlanetModule', () => {
                 point: otherPoint,
             });
             const request = module.execute(command);
-            await expect(request).rejects.toThrowError(
-                PlanetAlreadyCreatedException,
-            );
+            await failure(request, PlanetAlreadyCreatedException);
         });
     });
 });

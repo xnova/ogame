@@ -1,4 +1,3 @@
-import * as t from 'io-ts';
 import { UUID } from 'io-ts-types/lib/UUID';
 
 import {
@@ -20,14 +19,11 @@ import {
 import { MetalMine } from '../src/planet/models/buildings';
 import { PlanetModel } from '../src/planet/models/planet.model';
 import { Resources } from '../src/shared/resources';
-import { valueOrThrow } from '../src/shared/types';
 
 import { PlanetTestModule } from './PlanetTestModule';
-import { generateUUID, resourceDist } from './utils';
+import { failure, generateUUID, int, resourceDist, success } from './utils';
 
 const EPSILON = 0.001;
-
-const int = valueOrThrow(t.Int);
 
 describe('PlanetModule', () => {
     let module: PlanetTestModule;
@@ -64,14 +60,13 @@ describe('PlanetModule', () => {
         canFinish: () => Promise<any>;
     } => {
         const { planetId } = options;
-        const testConstruction = (planet: PlanetModel) => {
-            if (!planet.construction) {
+        const testConstruction = ({ construction }: PlanetModel) => {
+            if (!construction) {
                 return fail('planet construction not found');
             }
-            expect(planet.construction.buildingId).toBe(options.buildingId);
-            expect(planet.construction.level).toBe(options.level);
-            const duration =
-                planet.construction.end - planet.construction.start;
+            expect(construction.buildingId).toBe(options.buildingId);
+            expect(construction.level).toBe(options.level);
+            const duration = construction.end - construction.start;
             expect(duration).toBe(options.duration);
         };
         const canStart = async () => {
@@ -79,7 +74,7 @@ describe('PlanetModule', () => {
             expect(beforePlanet.construction).toBeNull();
 
             const request = build(planetId, options.buildingId, options.level);
-            expect(await request).toBe(undefined);
+            await success(request);
 
             const planet = await module.getPlanet(planetId);
             testConstruction(planet);
@@ -92,7 +87,7 @@ describe('PlanetModule', () => {
             testConstruction(beforePlanet);
 
             const request = cancel(planetId);
-            expect(await request).toBe(undefined);
+            await success(request);
 
             const planet = await module.getPlanet(planetId);
             expect(planet.construction).toBeNull();
@@ -103,10 +98,11 @@ describe('PlanetModule', () => {
         const canFinish = async () => {
             module.clock.fastForward(options.duration);
             const request = finish(planetId);
-            expect(await request).toBe(undefined);
+            await success(request);
 
             const planet = await module.getPlanet(planetId);
             expect(planet.construction).toBeNull();
+            // TODO can finish others buildings
             expect(planet.get(MetalMine).level).toBe(options.level);
         };
         return { canStart, canCancel, canFinish };
@@ -131,9 +127,7 @@ describe('PlanetModule', () => {
             expect(beforePlanet.construction).toBeNull();
 
             const request = cancel(planetId);
-            await expect(request).rejects.toThrowError(
-                PlanetNotBuildingException,
-            );
+            await failure(request, PlanetNotBuildingException);
         });
 
         it('cannot build non existing building', async () => {
@@ -141,9 +135,7 @@ describe('PlanetModule', () => {
             expect(beforePlanet.construction).toBeNull();
 
             const request = build(planetId, 'Foo', 1);
-            await expect(request).rejects.toThrowError(
-                BuildingNotFoundException,
-            );
+            await failure(request, BuildingNotFoundException);
         });
 
         it('cannot build negative levels', async () => {
@@ -151,7 +143,7 @@ describe('PlanetModule', () => {
             expect(beforePlanet.construction).toBeNull();
 
             const request = build(planetId, 'MetalMine', -1);
-            await expect(request).rejects.toThrowError(InvalidLevelException);
+            await failure(request, InvalidLevelException);
         });
 
         const metalMine = TestBuilding({
@@ -166,9 +158,7 @@ describe('PlanetModule', () => {
 
         it('cannot start building if already building', async () => {
             const request = build(planetId, 'CrystalMine', 1);
-            await expect(request).rejects.toThrowError(
-                PlanetAlreadyBuildingException,
-            );
+            await failure(request, PlanetAlreadyBuildingException);
         });
 
         // In case CancelCommand carries id of construction
@@ -182,9 +172,7 @@ describe('PlanetModule', () => {
             expect(beforePlanet.construction).toBeNull();
 
             const request = build(planetId, 'MetalMine', 2);
-            await expect(request).rejects.toThrowError(
-                BuildingTooMuchException,
-            );
+            await failure(request, BuildingTooMuchException);
         });
 
         it('cannot build if not enough resources', async () => {
@@ -192,9 +180,7 @@ describe('PlanetModule', () => {
             expect(beforePlanet.construction).toBeNull();
 
             const request = build(planetId, 'ResearchLab', 1);
-            await expect(request).rejects.toThrowError(
-                PlanetNotEnoughResourcesException,
-            );
+            await failure(request, PlanetNotEnoughResourcesException);
         });
 
         const crystalMine = TestBuilding({
@@ -214,18 +200,14 @@ describe('PlanetModule', () => {
             expect(beforePlanet.construction).toBeNull();
 
             const request = finish(planetId);
-            await expect(request).rejects.toThrowError(
-                PlanetNotBuildingException,
-            );
+            await failure(request, PlanetNotBuildingException);
         });
 
         it('cannot finish building before construction ends', async () => {
             await metalMine.canStart();
 
             const request = finish(planetId);
-            await expect(request).rejects.toThrowError(
-                PlanetNotFinishedBuildingException,
-            );
+            await failure(request, PlanetNotFinishedBuildingException);
         });
 
         it('can finish building when construction ends', metalMine.canFinish);
@@ -279,9 +261,7 @@ describe('PlanetModule', () => {
 
             // expect error when doing ampliation
             const request = build(planetId, 'MetalStorage', 1);
-            await expect(request).rejects.toThrowError(
-                PlanetNotEnoughFieldsException,
-            );
+            await failure(request, PlanetNotEnoughFieldsException);
         });
 
         it.todo('can dismantle a building');
@@ -305,9 +285,7 @@ describe('PlanetModule', () => {
             expect(beforePlanet.construction).toBeNull();
 
             const request = build(planetId, 'Shipyard', 1);
-            await expect(request).rejects.toThrowError(
-                RequirementsAreNotMeetException,
-            );
+            await failure(request, RequirementsAreNotMeetException);
         });
 
         const shipyard = TestBuilding({
@@ -328,9 +306,9 @@ describe('PlanetModule', () => {
                 RoboticsFactory: 2,
                 // give 100 deuterium
                 DeuteriumSynthesizer: 1,
+                // TODO add solar plant to have enough energy
             });
 
-            // TODO add solar plant to have enough energy
             module.clock.fastForward(7 * 24 * 3600 * 1000);
 
             await shipyard.canStart();
