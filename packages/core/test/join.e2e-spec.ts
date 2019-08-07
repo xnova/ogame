@@ -19,22 +19,25 @@ describe('PlanetModule', () => {
     const playerId = generateUUID();
     const planetId = generateUUID();
     const point: PointT = {
-        x: 1 as any,
-        y: 1 as any,
-        z: 8 as any,
-        t: 1 as any,
+        x: int(1),
+        y: int(1),
+        z: int(8),
+        t: int(1),
     };
-    const otherPoint: PointT = { ...point, x: (point.x + 1) as any };
+    const otherPoint: PointT = { ...point, x: int(point.x + 1) };
     const temperature = int(69);
 
-    const joinCommand = () =>
-        new PlayerJoinCommand({
+    const join = (payload: Partial<PlayerJoinCommand['payload']> = {}) => {
+        const command = new PlayerJoinCommand({
             ms: module.clock.now(),
             playerId,
             planetId,
             point,
             temperature,
+            ...payload,
         });
+        return module.execute(command);
+    };
 
     beforeAll(async () => {
         module = new PlanetTestModule();
@@ -48,7 +51,7 @@ describe('PlanetModule', () => {
             expect(await byId).toBe(undefined);
             expect(await byPoint).toBe(undefined);
 
-            const request = module.execute(joinCommand());
+            const request = join();
             await success(request);
 
             const planet = await module.getPlanetById(planetId);
@@ -82,32 +85,26 @@ describe('PlanetModule', () => {
         });
 
         it('player cannot join again', async () => {
-            const command = new PlayerJoinCommand({
-                ...joinCommand().payload,
+            const request = join({
                 planetId: generateUUID(),
                 point: otherPoint,
             });
-            const request = module.execute(command);
             await failure(request, PlayerAlreadyJoinedException);
         });
 
         it('cannot create a planet on the same place', async () => {
-            const command = new PlayerJoinCommand({
-                ...joinCommand().payload,
+            const request = join({
                 playerId: generateUUID(),
                 planetId: generateUUID(),
             });
-            const request = module.execute(command);
             await failure(request, PointAlreadyOccupiedException);
         });
 
         it('cannot create a planet with the same id', async () => {
-            const command = new PlayerJoinCommand({
-                ...joinCommand().payload,
+            const request = join({
                 playerId: generateUUID(),
                 point: otherPoint,
             });
-            const request = module.execute(command);
             await failure(request, PlanetAlreadyCreatedException);
         });
     });
