@@ -8,14 +8,14 @@
 
 import { Resources } from '../../../shared/resources';
 
-import { Building } from './Building';
+import { Mine } from './Mine';
 
 const name = 'Deuterium Synthesizer';
 
 /**
  * http://ogame.wikia.com/wiki/Deuterium_Synthesizer
  */
-export class DeuteriumSynthesizer extends Building {}
+export class DeuteriumSynthesizer extends Mine {}
 
 DeuteriumSynthesizer.prototype.name = name;
 DeuteriumSynthesizer.prototype.baseCost = Resources.Partial({
@@ -23,3 +23,7 @@ DeuteriumSynthesizer.prototype.baseCost = Resources.Partial({
     crystal: 75,
 });
 DeuteriumSynthesizer.prototype.costFactor = 1.5;
+DeuteriumSynthesizer.prototype.baseProduction = Resources.Partial({
+    deuterium: 10,
+    energy: -20,
+});

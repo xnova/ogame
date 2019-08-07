@@ -8,14 +8,14 @@
 
 import { Resources } from '../../../shared/resources';
 
-import { Building } from './Building';
+import { Mine } from './Mine';
 
 const name = 'Metal Mine';
 
 /**
  * http://ogame.wikia.com/wiki/Metal_Mine
  */
-export class MetalMine extends Building {}
+export class MetalMine extends Mine {}
 
 MetalMine.prototype.name = name;
 MetalMine.prototype.baseCost = Resources.Partial({
@@ -23,3 +23,7 @@ MetalMine.prototype.baseCost = Resources.Partial({
     crystal: 15,
 });
 MetalMine.prototype.costFactor = 1.5;
+MetalMine.prototype.baseProduction = Resources.Partial({
+    metal: 30,
+    energy: -10,
+});

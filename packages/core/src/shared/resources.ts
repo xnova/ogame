@@ -1,5 +1,7 @@
 import * as t from 'io-ts';
 
+import { add } from '../utils';
+
 export const ResourcesC = t.type({
     metal: t.number,
     crystal: t.number,
@@ -16,12 +18,9 @@ const ZERO: ResourcesT = {
     energy: 0,
 };
 
-const RESOURCE_KEYS: Array<keyof ResourcesT> = [
-    'metal',
-    'crystal',
-    'deuterium',
-    'energy',
-];
+export type Resource = keyof ResourcesT;
+
+const RESOURCE_KEYS: Resource[] = ['metal', 'crystal', 'deuterium', 'energy'];
 
 export class Resources implements ResourcesT {
     public readonly metal: number;
@@ -40,11 +39,28 @@ export class Resources implements ResourcesT {
         return new Resources(ZERO);
     }
 
-    public static Partial(partial: Partial<Resources>): Resources {
+    public static Partial(partial: Partial<ResourcesT>): Resources {
         return new Resources({
             ...ZERO,
             ...partial,
         });
+    }
+
+    /**
+     * Applies reduce element-wise to each resource
+     */
+    public static reduce(
+        xs: ResourcesT[],
+        cb: (previousValue: number, currentValue: number) => number,
+        initalValue: number = 0,
+    ): Resources {
+        return Resources.Zero().map((_, resource) =>
+            xs.map(x => x[resource]).reduce(cb, initalValue),
+        );
+    }
+
+    public static sum(xs: ResourcesT[]): Resources {
+        return Resources.reduce(xs, add);
     }
 
     public values(): number[] {
@@ -67,11 +83,11 @@ export class Resources implements ResourcesT {
         return this.map(x => k * x);
     }
 
-    public add(other: Resources): Resources {
+    public add(other: ResourcesT): Resources {
         return this.map((amount, resource) => amount + other[resource]);
     }
 
-    public subtract(other: Resources): Resources {
+    public subtract(other: ResourcesT): Resources {
         return this.map((amount, resource) => amount - other[resource]);
     }
 

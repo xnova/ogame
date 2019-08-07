@@ -7,7 +7,6 @@ import {
 } from '@nestjs/cqrs';
 import { Test } from '@nestjs/testing';
 
-import * as t from 'io-ts';
 import { UUID } from 'io-ts-types/lib/UUID';
 
 import { Clock } from '../src/planet/clock';
@@ -16,13 +15,10 @@ import { BuildFinishedEvent } from '../src/planet/events';
 import { CommandHandlers } from '../src/planet/handlers';
 import { PlanetRepository } from '../src/planet/planet.repository';
 import { PointT } from '../src/shared/Point';
-import { valueOrThrow } from '../src/shared/types';
 
 import { MemoryPlanetRepository } from './memory-planet.repository';
 import { TimeTravelClock } from './TimeTravelClock';
-import { generateUUID, niceError } from './utils';
-
-const int = valueOrThrow(t.Int);
+import { generateUUID, int, niceError, success } from './utils';
 
 export class PlanetTestModule {
     // TODO i dont like clock being public
@@ -56,9 +52,9 @@ export class PlanetTestModule {
         });
 
         // TODO check why ExplorerSerice is not working
-        console.log('HANDLERS', (this.command$ as any).handlers);
+        // console.log('HANDLERS', (this.command$ as any).handlers);
         this.command$.register(CommandHandlers);
-        console.log('HANDLERS', (this.command$ as any).handlers);
+        // console.log('HANDLERS', (this.command$ as any).handlers);
     }
 
     public execute<T extends ICommand>(command: T) {
@@ -86,7 +82,7 @@ export class PlanetTestModule {
             temperature: 69 as any,
         });
         const request = this.execute(joinCommand);
-        expect(await request).toBe(undefined);
+        await success(request);
     }
 
     public async getPlanet(id: UUID) {

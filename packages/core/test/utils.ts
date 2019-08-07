@@ -4,7 +4,7 @@ import * as uuid from 'uuid';
 
 import { Resources } from '../src/shared/resources';
 import { valueOrThrow } from '../src/shared/types';
-import { Type } from '../src/utils';
+import { sum, Type } from '../src/utils';
 
 export const niceError = async <T>(promise: Promise<T>): Promise<T> => {
     try {
@@ -20,9 +20,6 @@ export const niceError = async <T>(promise: Promise<T>): Promise<T> => {
         throw potentialError;
     }
 };
-
-const add = (a: number, b: number) => a + b;
-export const sum = (xs: number[]): number => xs.reduce(add, 0);
 
 export const resourceDist = (a: Resources) => (b: Resources): number =>
     sum(

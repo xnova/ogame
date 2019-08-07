@@ -8,17 +8,20 @@
 
 import { Resources } from '../../../shared/resources';
 
-import { Building } from './Building';
+import { Mine } from './Mine';
 
 const name = 'Solar Plant';
 
 /**
  * http://ogame.wikia.com/wiki/Solar_Plant
  */
-export class SolarPlant extends Building {}
+export class SolarPlant extends Mine {}
 
 SolarPlant.prototype.name = name;
 SolarPlant.prototype.baseCost = Resources.Partial({
     metal: 75,
     crystal: 30,
+});
+SolarPlant.prototype.baseProduction = Resources.Partial({
+    energy: 20,
 });

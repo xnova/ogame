@@ -4,6 +4,7 @@ import * as t from 'io-ts';
 import { UUID } from 'io-ts-types/lib/UUID';
 
 import { Resources, ResourcesC } from '../../shared/resources';
+import { add } from '../../utils';
 import { PlayerJoinCommandT } from '../commands';
 import {
     BuildCancelledEvent,
@@ -21,7 +22,13 @@ import {
     RequirementsAreNotMeetException,
 } from '../exceptions';
 
-import { Building, DeuteriumSynthesizer } from './buildings';
+import {
+    Building,
+    CrystalMine,
+    DeuteriumSynthesizer,
+    MetalMine,
+    SolarPlant,
+} from './buildings';
 import { createBuilding } from './createBuilding';
 import { Unit } from './defenses/Unit';
 import { Technology } from './technologies';
@@ -96,17 +103,37 @@ export class PlanetModel extends AggregateRoot implements PlanetT {
      * Resources produced in this planet per hour.
      */
     public getProduction(): Resources {
+        let total: Resources;
         // TODO logic
-        const { level } = this.get(DeuteriumSynthesizer);
-        const minesProduction = Resources.Partial({
-            deuterium: 10,
-            energy: -20,
-        }).map(x => x * level * Math.pow(1.1, level));
-        const totalProduction = BASIC_INCOME.add(minesProduction);
-        // TODO energy adjustements
-        return totalProduction.map((amount, key) =>
-            key === 'energy' ? 0 : amount,
-        );
+        const productions: Resources[] = [
+            this.get(MetalMine).getProduction(),
+            this.get(CrystalMine).getProduction(),
+            this.get(DeuteriumSynthesizer).getProduction(),
+            this.get(SolarPlant).getProduction(),
+        ];
+
+        total = Resources.sum(productions);
+        if (total.energy < 0) {
+            //  energy adjustements
+            const positive = Resources.reduce(productions, (acc, x) =>
+                add(acc, x > 0 ? x : 0),
+            );
+            const negative = total.subtract(positive);
+
+            const power = positive.energy;
+            const consumption = -negative.energy;
+            const productionFactor = Math.min(power / consumption, 1);
+
+            total = Resources.sum([
+                positive.multiply(productionFactor),
+                negative,
+            ]);
+        }
+
+        // TODO multiply per speed (UNI?, officers?)
+        // TODO apply bonus officers, temperature, plasma tech, items...
+
+        return BASIC_INCOME.add({ ...total, energy: 0 });
     }
 
     private produce(ms: number): void {
