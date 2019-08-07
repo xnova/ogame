@@ -1,96 +1,77 @@
-import { CommandBus, CqrsModule, EventBus } from '@nestjs/cqrs';
-import { Test } from '@nestjs/testing';
+import * as t from 'io-ts';
 
-import { Clock } from '../src/planet/clock';
 import { PlayerJoinCommand } from '../src/planet/commands';
 import {
     PlanetAlreadyCreatedException,
     PlayerAlreadyJoinedException,
     PointAlreadyOccupiedException,
 } from '../src/planet/exceptions';
-import { CommandHandlers } from '../src/planet/handlers';
-import { PlanetRepository } from '../src/planet/planet.repository';
 import { PointT } from '../src/shared/Point';
 import { Resources } from '../src/shared/resources';
+import { valueOrThrow } from '../src/shared/types';
 
-import { MemoryPlanetRepository } from './memory-planet.repository';
-import { TimeTravelClock } from './TimeTravelClock';
-import { generateUUID, niceError, resourceDist } from './utils';
+import { PlanetTestModule } from './PlanetTestModule';
+import { generateUUID, resourceDist } from './utils';
 
 const EPSILON = 0.01;
 const INITIAL_RESOURCES = Resources.Partial({ metal: 500, crystal: 500 });
 
+const int = valueOrThrow(t.Int);
+
 describe('PlanetModule', () => {
-    let command$: CommandBus;
-    let event$: EventBus;
-    const clock = new TimeTravelClock();
-    const planetRepo = new MemoryPlanetRepository(clock);
+    let module: PlanetTestModule;
 
-    const joinCommand = new PlayerJoinCommand({
-        ms: clock.now(),
-        playerId: generateUUID(),
-        planetId: generateUUID(),
-        point: {
-            x: 1 as any,
-            y: 1 as any,
-            z: 8 as any,
-            t: 1 as any,
-        },
-        temperature: 69 as any,
-    });
+    const playerId = generateUUID();
+    const planetId = generateUUID();
+    const point: PointT = {
+        x: 1 as any,
+        y: 1 as any,
+        z: 8 as any,
+        t: 1 as any,
+    };
+    const otherPoint: PointT = { ...point, x: (point.x + 1) as any };
+    const temperature = int(69);
 
-    beforeAll(async () => {
-        const module = await Test.createTestingModule({
-            imports: [CqrsModule],
-            providers: [PlanetRepository, ...CommandHandlers],
-        })
-            .overrideProvider(PlanetRepository)
-            .useValue(planetRepo)
-            .overrideProvider(Clock)
-            .useValue(clock)
-            .compile();
-
-        command$ = module.get<CommandBus>(CommandBus);
-        event$ = module.get<EventBus>(EventBus);
-
-        // EventStore
-        event$.subscribe(event => {
-            planetRepo.events.push(event);
+    const joinCommand = () =>
+        new PlayerJoinCommand({
+            ms: module.clock.now(),
+            playerId,
+            planetId,
+            point,
+            temperature,
         });
 
-        // TODO check why ExplorerSerice is not working
-        console.log('HANDLERS', (command$ as any).handlers);
-        command$.register(CommandHandlers);
-        console.log('HANDLERS', (command$ as any).handlers);
+    beforeAll(async () => {
+        module = new PlanetTestModule();
+        await module.init();
     });
 
     describe('PlayerJoin', () => {
         it('can send command', async () => {
-            const { planetId, point, temperature } = joinCommand.payload;
-
-            const byId = niceError(planetRepo.getById(planetId));
-            const byPoint = niceError(planetRepo.getByPoint(point));
+            const byId = module.getPlanetById(planetId);
+            const byPoint = module.getPlanetByPoint(point);
             expect(await byId).toBe(undefined);
             expect(await byPoint).toBe(undefined);
 
-            const request = niceError(command$.execute(joinCommand));
+            const request = module.execute(joinCommand());
             expect(await request).toBe(undefined);
 
-            const planet = await niceError(planetRepo.getById(planetId));
+            const planet = await module.getPlanetById(planetId);
             if (!planet) {
                 return fail('planet not found');
             }
             expect(planet.id).toBe(planetId);
             expect(planet.temperature).toBe(temperature);
+            // TODO move to production tests
             expect(
                 resourceDist(planet.resources)(INITIAL_RESOURCES),
             ).toBeLessThan(EPSILON);
         });
 
         it('find planet by position', async () => {
-            const { point, planetId } = joinCommand.payload;
-            // we want to be sure is not being matched by reference
-            const planet = await niceError(planetRepo.getByPoint({ ...point }));
+            // destructuring is to create a new copy,
+            // because we want to be sure is not being matched by reference
+            const planet = await module.getPlanetByPoint({ ...point });
             if (!planet) {
                 return fail('planet not found');
             }
@@ -98,26 +79,20 @@ describe('PlanetModule', () => {
         });
 
         it('only creates one planet', async () => {
-            const { point } = joinCommand.payload;
-
-            const withOtherId = niceError(planetRepo.getById(generateUUID()));
+            const withOtherId = module.getPlanetById(generateUUID());
             expect(await withOtherId).toBe(undefined);
 
-            const diffPoint: PointT = { ...point, x: (point.x + 1) as any };
-            const withOtherGalaxy = niceError(planetRepo.getByPoint(diffPoint));
+            const withOtherGalaxy = module.getPlanetByPoint(otherPoint);
             expect(await withOtherGalaxy).toBe(undefined);
         });
 
         it('player cannot join again', async () => {
-            const { point } = joinCommand.payload;
-            const diffPoint: PointT = { ...point, x: (point.x + 1) as any };
-
             const command = new PlayerJoinCommand({
-                ...joinCommand.payload,
+                ...joinCommand().payload,
                 planetId: generateUUID(),
-                point: diffPoint,
+                point: otherPoint,
             });
-            const request = niceError(command$.execute(command));
+            const request = module.execute(command);
             await expect(request).rejects.toThrowError(
                 PlayerAlreadyJoinedException,
             );
@@ -125,26 +100,23 @@ describe('PlanetModule', () => {
 
         it('cannot create a planet on the same place', async () => {
             const command = new PlayerJoinCommand({
-                ...joinCommand.payload,
+                ...joinCommand().payload,
                 playerId: generateUUID(),
                 planetId: generateUUID(),
             });
-            const request = niceError(command$.execute(command));
+            const request = module.execute(command);
             await expect(request).rejects.toThrowError(
                 PointAlreadyOccupiedException,
             );
         });
 
         it('cannot create a planet with the same id', async () => {
-            const { point } = joinCommand.payload;
-            const diffPoint: PointT = { ...point, x: (point.x + 1) as any };
-
             const command = new PlayerJoinCommand({
-                ...joinCommand.payload,
+                ...joinCommand().payload,
                 playerId: generateUUID(),
-                point: diffPoint,
+                point: otherPoint,
             });
-            const request = niceError(command$.execute(command));
+            const request = module.execute(command);
             await expect(request).rejects.toThrowError(
                 PlanetAlreadyCreatedException,
             );
