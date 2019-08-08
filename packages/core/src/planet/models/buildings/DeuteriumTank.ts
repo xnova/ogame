@@ -8,17 +8,18 @@
 
 import { Resources } from '../../../shared/resources';
 
-import { Building } from './Building';
+import { Warehouse } from './Warehouse';
 
 const name = 'Deuterium Tank';
 
 /**
  * http://ogame.wikia.com/wiki/Deuterium_Tank
  */
-export class DeuteriumTank extends Building {}
+export class DeuteriumTank extends Warehouse {}
 
 DeuteriumTank.prototype.name = name;
 DeuteriumTank.prototype.baseCost = Resources.Partial({
     metal: 1000,
     crystal: 1000,
 });
+DeuteriumTank.prototype.baseStorage = Resources.Partial({ deuterium: 10000 });

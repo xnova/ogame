@@ -8,16 +8,17 @@
 
 import { Resources } from '../../../shared/resources';
 
-import { Building } from './Building';
+import { Warehouse } from './Warehouse';
 
 const name = 'Metal Storage';
 
 /**
  * http://ogame.wikia.com/wiki/Metal_Storage
  */
-export class MetalStorage extends Building {}
+export class MetalStorage extends Warehouse {}
 
 MetalStorage.prototype.name = name;
 MetalStorage.prototype.baseCost = Resources.Partial({
     metal: 1000,
 });
+MetalStorage.prototype.baseStorage = Resources.Partial({ metal: 10000 });

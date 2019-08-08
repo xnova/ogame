@@ -8,6 +8,8 @@ import { generateUUID } from './utils';
 const BASIC_INCOME: Resources = Resources.Partial({ metal: 45, crystal: 15 });
 const INITIAL_RESOURCES = Resources.Partial({ metal: 500, crystal: 500 });
 
+const formatNum = (n: number): string => Number(n).toLocaleString();
+
 describe('PlanetModule', () => {
     let module: PlanetTestModule;
     const planetId = generateUUID();
@@ -128,6 +130,98 @@ describe('PlanetModule', () => {
 
     describe('Storage', () => {
         // TODO
+
+        beforeEach(async () => {
+            // ensure enough production
+            await module.mockBuildings(planetId, {
+                MetalMine: 40,
+                CrystalMine: 40,
+                DeuteriumSynthesizer: 40,
+                SolarPlant: 60,
+            });
+        });
+
+        it(`new planet only produces up to ${formatNum(10000)}`, async () => {
+            module.clock.fastForward(30 * 24 * 3600 * 1000);
+            const { resources } = await module.getPlanet(planetId);
+            expect(resources).toBeResources(
+                Resources.Partial({
+                    metal: 10000,
+                    crystal: 10000,
+                    deuterium: 10000,
+                }),
+            );
+        });
+
+        const testCapacity = ({
+            level,
+            resource,
+            capacity,
+            buildingId,
+        }: {
+            buildingId: string;
+            resource: string;
+            level: number;
+            capacity: number;
+        }) => {
+            it(`${buildingId}@${level} can hold up to ${formatNum(
+                capacity,
+            )} ${resource}`, async () => {
+                await module.mockBuildings(planetId, { [buildingId]: level });
+                module.clock.fastForward(12 * 30 * 24 * 3600 * 1000);
+                const { resources } = await module.getPlanet(planetId);
+                expect(resources).toBeResources(
+                    Resources.Partial({
+                        metal: 10000,
+                        crystal: 10000,
+                        deuterium: 10000,
+                        [resource]: capacity,
+                    }),
+                );
+            });
+        };
+
+        const STORAGES = [
+            10,
+            20,
+            40,
+            75,
+            140,
+            255,
+            470,
+            865,
+            1590,
+            2920,
+            5355,
+            9820,
+            18005,
+            33005,
+            60510,
+            110925,
+        ].map(x => x * 1000);
+        for (const [level, capacity] of STORAGES.entries()) {
+            testCapacity({
+                buildingId: 'MetalStorage',
+                resource: 'metal',
+                level,
+                capacity,
+            });
+            testCapacity({
+                buildingId: 'CrystalStorage',
+                resource: 'crystal',
+                level,
+                capacity,
+            });
+            testCapacity({
+                buildingId: 'DeuteriumTank',
+                resource: 'deuterium',
+                level,
+                capacity,
+            });
+        }
+
+        // TODO if resources is overflow, production doesnt eliminate it.
+        // ie. storage is only a limit to produced resources
 
         it.todo('cannot store energy');
     });

@@ -25,10 +25,14 @@ import {
 import {
     Building,
     CrystalMine,
+    CrystalStorage,
     DeuteriumSynthesizer,
+    DeuteriumTank,
     MetalMine,
+    MetalStorage,
     SolarPlant,
 } from './buildings';
+import { Warehouse } from './buildings/Warehouse';
 import { createBuilding } from './createBuilding';
 import { Unit } from './defenses/Unit';
 import { Technology } from './technologies';
@@ -57,6 +61,11 @@ export const PlanetC = t.type({
 export type PlanetT = t.TypeOf<typeof PlanetC>;
 
 const BASIC_INCOME: Resources = Resources.Partial({ metal: 45, crystal: 15 });
+const WAREHOUSES: Array<Type<Warehouse>> = [
+    MetalStorage,
+    CrystalStorage,
+    DeuteriumTank,
+];
 
 export type Type<T> = new (...args: any[]) => T;
 
@@ -136,17 +145,24 @@ export class PlanetModel extends AggregateRoot implements PlanetT {
         return BASIC_INCOME.add({ ...total, energy: 0 });
     }
 
+    public getStorage(): Resources {
+        return Resources.sum(
+            WAREHOUSES.map(type => this.get(type).getStorage()),
+        );
+    }
+
     private produce(ms: number): void {
         if (ms === 0) {
             return;
         }
         // TODO speed production
         const hours: number = ms / 1000 / 3600;
-        const production = this.getProduction();
-        this.resources = this.resources.map(
-            (amount, resource) => amount + hours * production[resource],
-        );
-        // TODO cap by storage
+        const production: Resources = this.getProduction();
+        const storage: Resources = this.getStorage();
+        this.resources = this.resources
+            .map((amount, resource) => amount + hours * production[resource])
+            // cap by storage
+            .map((amount, resource) => Math.min(amount, storage[resource]));
     }
 
     public deposit(resources: Resources): void {
