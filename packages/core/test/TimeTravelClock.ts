@@ -2,10 +2,12 @@ import { Clock } from '../src/planet/clock';
 
 export class TimeTravelClock extends Clock {
     private offset: number;
+    private start: number;
 
     constructor() {
         super();
         this.offset = 0;
+        this.start = Date.now();
     }
 
     public getOffset() {
@@ -21,6 +23,6 @@ export class TimeTravelClock extends Clock {
     }
 
     public now(): number {
-        return super.now() + this.offset;
+        return this.start + this.offset;
     }
 }

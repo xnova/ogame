@@ -20,10 +20,9 @@ import { MetalMine } from '../src/planet/models/buildings';
 import { PlanetModel } from '../src/planet/models/planet.model';
 import { Resources } from '../src/shared/resources';
 
+import './jest-extender';
 import { PlanetTestModule } from './PlanetTestModule';
-import { failure, generateUUID, int, resourceDist, success } from './utils';
-
-const EPSILON = 0.001;
+import { failure, generateUUID, int, success } from './utils';
 
 describe('PlanetModule', () => {
     let module: PlanetTestModule;
@@ -80,7 +79,7 @@ describe('PlanetModule', () => {
             testConstruction(planet);
 
             const paid = beforePlanet.resources.subtract(planet.resources);
-            expect(resourceDist(paid)(options.cost)).toBeLessThan(EPSILON);
+            expect(paid).toBeResources(options.cost);
         };
         const canCancel = async () => {
             const beforePlanet = await module.getPlanet(planetId);
@@ -93,7 +92,7 @@ describe('PlanetModule', () => {
             expect(planet.construction).toBeNull();
 
             const restored = planet.resources.subtract(beforePlanet.resources);
-            expect(resourceDist(restored)(options.cost)).toBeLessThan(EPSILON);
+            expect(restored).toBeResources(options.cost);
         };
         const canFinish = async () => {
             module.clock.fastForward(options.duration);
@@ -306,11 +305,10 @@ describe('PlanetModule', () => {
                 RoboticsFactory: 2,
                 // give 100 deuterium
                 DeuteriumSynthesizer: 1,
-                // TODO add solar plant to have enough energy
+                // add solar plant to have enough energy for producing deuterium
+                SolarPlant: 5,
             });
-
             module.clock.fastForward(7 * 24 * 3600 * 1000);
-
             await shipyard.canStart();
         });
     });

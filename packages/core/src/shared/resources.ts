@@ -95,4 +95,23 @@ export class Resources implements ResourcesT {
         const diff = this.subtract(other).values();
         return diff.every(x => x >= 0);
     }
+
+    public equals(other: ResourcesT): boolean {
+        for (const resource of RESOURCE_KEYS) {
+            if (this[resource] !== other[resource]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public toString(): string {
+        const representation: Partial<ResourcesT> = {};
+        for (const resource of RESOURCE_KEYS) {
+            if (this[resource] !== 0) {
+                representation[resource] = this[resource];
+            }
+        }
+        return JSON.stringify(representation);
+    }
 }

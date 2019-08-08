@@ -5,13 +5,9 @@ import {
     PointAlreadyOccupiedException,
 } from '../src/planet/exceptions';
 import { PointT } from '../src/shared/Point';
-import { Resources } from '../src/shared/resources';
 
 import { PlanetTestModule } from './PlanetTestModule';
-import { failure, generateUUID, int, resourceDist, success } from './utils';
-
-const EPSILON = 0.01;
-const INITIAL_RESOURCES = Resources.Partial({ metal: 500, crystal: 500 });
+import { failure, generateUUID, int, success } from './utils';
 
 describe('PlanetModule', () => {
     let module: PlanetTestModule;
@@ -60,10 +56,6 @@ describe('PlanetModule', () => {
             }
             expect(planet.id).toBe(planetId);
             expect(planet.temperature).toBe(temperature);
-            // TODO move to production tests
-            expect(
-                resourceDist(planet.resources)(INITIAL_RESOURCES),
-            ).toBeLessThan(EPSILON);
         });
 
         it('find planet by position', async () => {

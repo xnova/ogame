@@ -1,11 +1,12 @@
 import { Resource, Resources } from '../src/shared/resources';
 
+import './jest-extender';
 import { PlanetTestModule } from './PlanetTestModule';
-import { generateUUID, resourceDist } from './utils';
+import { generateUUID } from './utils';
 
-const EPSILON = 0.001;
 // TODO is a constant or a parameter???
 const BASIC_INCOME: Resources = Resources.Partial({ metal: 45, crystal: 15 });
+const INITIAL_RESOURCES = Resources.Partial({ metal: 500, crystal: 500 });
 
 describe('PlanetModule', () => {
     let module: PlanetTestModule;
@@ -30,10 +31,14 @@ describe('PlanetModule', () => {
     });
 
     describe('Production', () => {
+        it('new planet has inital resources', async () => {
+            const { resources } = await module.getPlanet(planetId);
+            expect(resources).toBeResources(INITIAL_RESOURCES);
+        });
+
         it('new planet has basic income', async () => {
             const produced = await getProduction({});
-            const diff = resourceDist(BASIC_INCOME)(produced);
-            expect(diff).toBeLessThan(EPSILON);
+            expect(produced).toBeResources(BASIC_INCOME);
         });
 
         const cannotProduceWithoutEnergy = (
@@ -43,8 +48,7 @@ describe('PlanetModule', () => {
             it(`${buildingId} cannot produce ${resource} without energy`, async () => {
                 const produced = await getProduction({ [buildingId]: 1 });
                 const producedByMine = produced.subtract(BASIC_INCOME);
-
-                expect(producedByMine[resource]).toBeLessThan(EPSILON);
+                expect(producedByMine[resource]).toBe(0);
                 expect(produced.energy).toBe(0);
                 // TODO productionFactor is 0?
             });
@@ -57,6 +61,7 @@ describe('PlanetModule', () => {
         const canProduceWithEnoughEnergy = (
             resource: Resource,
             buildingId: string,
+            expected: number,
         ) => {
             it(`${buildingId} produces ${resource} given enough energy`, async () => {
                 const produced = await getProduction({
@@ -64,16 +69,15 @@ describe('PlanetModule', () => {
                     SolarPlant: 10,
                 });
                 const producedByMine = produced.subtract(BASIC_INCOME);
-
-                expect(producedByMine[resource]).toBeGreaterThan(EPSILON);
+                expect(producedByMine[resource]).toBe(expected);
                 expect(produced.energy).toBe(0);
                 // TODO productionFactor is 1?
             });
         };
 
-        canProduceWithEnoughEnergy('metal', 'MetalMine');
-        canProduceWithEnoughEnergy('crystal', 'CrystalMine');
-        canProduceWithEnoughEnergy('deuterium', 'DeuteriumSynthesizer');
+        canProduceWithEnoughEnergy('metal', 'MetalMine', 33);
+        canProduceWithEnoughEnergy('crystal', 'CrystalMine', 22);
+        canProduceWithEnoughEnergy('deuterium', 'DeuteriumSynthesizer', 11);
 
         describe('is monotonic', () => {
             // increasing a mine level cannot produce less resources
@@ -109,6 +113,13 @@ describe('PlanetModule', () => {
         // it.todo('cannot produce energy');
 
         it.todo('SolarPlant produces energy');
+        it.todo('FusionReactor produces energy and consumes deuterium');
+        it.todo('SolarSatellite produces energy');
+        it.todo('SolarSatellite production is influenced by temperature');
+
+        it.todo('PlasmaTechnology boosts produced resources');
+
+        it.todo('deuterium production is influenced by temperature');
 
         it.todo('production factor auto?');
 
