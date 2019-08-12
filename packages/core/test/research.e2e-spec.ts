@@ -50,6 +50,43 @@ describe('PlanetModule', () => {
         module.clock.fastForwardOneMonth();
     };
 
+    const canStart = async ({
+        planetId,
+        techId,
+        level,
+        cost,
+    }: {
+        planetId: UUID;
+        techId: string;
+        level: number;
+        cost: Resources;
+    }) => {
+        await mockResources(planetId);
+        const beforePlanet = await module.getPlanet(planetId);
+        expect(beforePlanet.research).toBeNull();
+
+        const request = researchStart({
+            planetId,
+            techId,
+            level,
+        });
+        await success(request);
+
+        const { research, resources } = await module.getPlanet(planetId);
+        if (!research) {
+            return fail('planet research not found');
+        }
+        expect(research.id).toBe(techId);
+        expect(research.level).toBe(level);
+
+        const paid = beforePlanet.resources.subtract(resources);
+        expect(paid).toBeResources(cost);
+
+        const duration = research.end - research.start;
+        // duration is positive
+        expect(duration).toBeGreaterThan(0);
+    };
+
     beforeEach(async () => {
         module = new PlanetTestModule();
         await module.init();
@@ -129,53 +166,33 @@ describe('PlanetModule', () => {
             await failure(request, PlanetNotEnoughResourcesException);
         });
 
-        it('can start researching EnergyTechnology', async () => {
-            await mockResources(planetId);
-            const beforePlanet = await module.getPlanet(planetId);
-            expect(beforePlanet.research).toBeNull();
-
-            const request = researchStart({
+        const canStartEnergy1 = () =>
+            canStart({
                 planetId,
                 techId: 'EnergyTechnology',
                 level: 1,
+                cost: Resources.Partial({ crystal: 800, deuterium: 400 }),
             });
-            await success(request);
 
-            const { research, resources } = await module.getPlanet(planetId);
-            if (!research) {
-                return fail('planet research not found');
-            }
-            expect(research.id).toBe('EnergyTechnology');
-            expect(research.level).toBe(1);
+        it('can start researching EnergyTechnology', () => canStartEnergy1());
 
-            const paid = beforePlanet.resources.subtract(resources);
-            const cost = Resources.Partial({ crystal: 800, deuterium: 400 });
-            expect(paid).toBeResources(cost);
-
-            const duration = research.end - research.start;
-            // duration is positive
-            expect(duration).toBeGreaterThan(0);
+        it('can start researching ArmourTechnology', async () => {
+            await canStart({
+                planetId,
+                techId: 'ArmourTechnology',
+                level: 1,
+                cost: Resources.Partial({ metal: 1000 }),
+            });
         });
 
         it('cannot research if already researching', async () => {
-            const { research } = await module.getPlanet(planetId);
-            expect(research).toBeNull();
-
-            await mockResources(planetId);
+            await canStartEnergy1();
             const request = researchStart({
-                planetId,
-                techId: 'EnergyTechnology',
-                level: 1,
-            });
-            await success(request);
-
-            // FIXME awful name: request2
-            const request2 = researchStart({
                 planetId,
                 techId: 'ArmourTechnology',
                 level: 1,
             });
-            await failure(request2, PlanetAlreadyResearchingException);
+            await failure(request, PlanetAlreadyResearchingException);
         });
 
         it.todo('cannot research if another Colony is researching');

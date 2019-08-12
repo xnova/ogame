@@ -320,7 +320,7 @@ export class PlanetModel extends AggregateRoot implements PlanetT {
         const event = new ResearchStartedEvent({
             ms: now,
             planetId: this.id,
-            techId: 'EnergyTechnology', // TODO force var by tests
+            techId: technology.id,
             level: int(1), // TODO force var by tests
             start: now,
             end: now + duration,
