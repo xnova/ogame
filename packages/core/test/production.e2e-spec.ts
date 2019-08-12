@@ -81,7 +81,9 @@ describe('PlanetModule', () => {
                 const producedByMine = produced.subtract(BASIC_INCOME);
                 expect(producedByMine[resource]).toBe(0);
                 expect(produced.energy).toBe(0);
-                // TODO productionFactor is 0?
+
+                const planet = await module.getPlanet(planetId);
+                expect(planet.productionFactor).toBe(0);
             });
         };
 
@@ -102,7 +104,9 @@ describe('PlanetModule', () => {
                 const producedByMine = produced.subtract(BASIC_INCOME);
                 expect(producedByMine[resource]).toBe(expected);
                 expect(produced.energy).toBe(0);
-                // TODO productionFactor is 1?
+
+                const planet = await module.getPlanet(planetId);
+                expect(planet.productionFactor).toBe(1);
             });
         };
 
