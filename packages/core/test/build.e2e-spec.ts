@@ -7,7 +7,6 @@ import {
 } from '../src/planet/commands';
 import {
     BuildingNotFoundException,
-    BuildingTooMuchException,
     InvalidLevelException,
     PlanetAlreadyBuildingException,
     PlanetNotBuildingException,
@@ -15,6 +14,7 @@ import {
     PlanetNotEnoughResourcesException,
     PlanetNotFinishedBuildingException,
     RequirementsAreNotMeetException,
+    TooMuchLevelException,
 } from '../src/planet/exceptions';
 import { MetalMine } from '../src/planet/models/buildings';
 import { PlanetModel } from '../src/planet/models/planet.model';
@@ -27,11 +27,7 @@ import { failure, generateUUID, int, success } from './utils';
 describe('PlanetModule', () => {
     let module: PlanetTestModule;
 
-    const build = ({
-        planetId,
-        buildingId,
-        level,
-    }: {
+    const build = (options: {
         planetId: UUID;
         buildingId: string;
         level: number;
@@ -39,9 +35,8 @@ describe('PlanetModule', () => {
         module.execute(
             new BuildStartCommand({
                 ms: module.clock.now(),
-                planetId,
-                buildingId,
-                level: int(level),
+                ...options,
+                level: int(options.level),
             }),
         );
 
@@ -71,7 +66,7 @@ describe('PlanetModule', () => {
             if (!construction) {
                 return fail('planet construction not found');
             }
-            expect(construction.buildingId).toBe(options.buildingId);
+            expect(construction.id).toBe(options.buildingId);
             expect(construction.level).toBe(options.level);
             const duration = construction.end - construction.start;
             expect(duration).toBe(options.duration);
@@ -92,6 +87,7 @@ describe('PlanetModule', () => {
 
             const paid = beforePlanet.resources.subtract(planet.resources);
             expect(paid).toBeResources(options.cost);
+            // TODO start is when command was dispatched
         };
         const canCancel = async () => {
             const beforePlanet = await module.getPlanet(planetId);
@@ -195,7 +191,7 @@ describe('PlanetModule', () => {
                 buildingId: 'MetalMine',
                 level: 2,
             });
-            await failure(request, BuildingTooMuchException);
+            await failure(request, TooMuchLevelException);
         });
 
         it('cannot build if not enough resources', async () => {
@@ -296,6 +292,8 @@ describe('PlanetModule', () => {
         });
 
         it.todo('can dismantle a building');
+        it.todo('robotics factory level improves building speed');
+        it.todo('nanite factory level improves building speed');
 
         // TODO another module
         it.todo('new planet fields is a function of diameter');

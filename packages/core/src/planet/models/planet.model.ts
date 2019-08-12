@@ -12,15 +12,17 @@ import {
     BuildFinishedEvent,
     BuildStartedEvent,
     PlayerJoinedEvent,
+    ResearchStartedEvent,
 } from '../events';
 import {
-    BuildingTooMuchException,
     PlanetAlreadyBuildingException,
+    PlanetAlreadyResearchingException,
     PlanetNotBuildingException,
     PlanetNotEnoughFieldsException,
     PlanetNotEnoughResourcesException,
     PlanetNotFinishedBuildingException,
     RequirementsAreNotMeetException,
+    TooMuchLevelException,
 } from '../exceptions';
 
 import {
@@ -35,11 +37,12 @@ import {
 } from './buildings';
 import { Warehouse } from './buildings/Warehouse';
 import { createBuilding } from './createBuilding';
+import { createTechnology } from './createTechnology';
 import { Unit } from './defenses/Unit';
 import { Technology } from './technologies';
 
 const ConstructionC = t.type({
-    buildingId: t.string,
+    id: t.string,
     level: t.Int,
     start: t.number,
     end: t.number,
@@ -56,6 +59,7 @@ export const PlanetC = t.type({
     fields: t.Int,
     occupiedFields: t.Int,
     construction: t.union([t.null, ConstructionC]),
+    research: t.union([t.null, ConstructionC]),
     buildings: t.record(t.string, t.Int),
 });
 
@@ -88,6 +92,7 @@ export class PlanetModel extends AggregateRoot implements PlanetT {
     public fields: t.Int;
     public occupiedFields: t.Int;
     public construction: ConstructionT | null;
+    public research: ConstructionT | null;
     public buildings: Record<string, t.Int>;
 
     constructor(public readonly id: UUID) {
@@ -100,6 +105,7 @@ export class PlanetModel extends AggregateRoot implements PlanetT {
         this.fields = int(DEFAULT_FIELDS);
         this.occupiedFields = 0 as any;
         this.construction = null;
+        this.research = null;
         this.buildings = {};
     }
 
@@ -210,7 +216,7 @@ export class PlanetModel extends AggregateRoot implements PlanetT {
         }
         const currentLevel: number = this.getBuildingLevel(building.id);
         if (building.level !== currentLevel + 1) {
-            throw new BuildingTooMuchException();
+            throw new TooMuchLevelException();
         }
         if (!this.resources.includes(building.getCost())) {
             throw new PlanetNotEnoughResourcesException();
@@ -233,7 +239,7 @@ export class PlanetModel extends AggregateRoot implements PlanetT {
 
     protected onBuildStartedEvent({ payload }: BuildStartedEvent) {
         this.construction = {
-            buildingId: payload.buildingId,
+            id: payload.buildingId,
             level: payload.level,
             start: payload.start,
             end: payload.end,
@@ -252,7 +258,7 @@ export class PlanetModel extends AggregateRoot implements PlanetT {
         const event = new BuildCancelledEvent({
             ms: now,
             planetId: this.id,
-            buildingId: construction.buildingId,
+            buildingId: construction.id,
             level: construction.level,
         });
         this.apply(event);
@@ -277,7 +283,7 @@ export class PlanetModel extends AggregateRoot implements PlanetT {
         const event = new BuildFinishedEvent({
             ms: now,
             planetId: this.id,
-            buildingId: construction.buildingId,
+            buildingId: construction.id,
             level: construction.level,
         });
         this.apply(event);
@@ -289,6 +295,48 @@ export class PlanetModel extends AggregateRoot implements PlanetT {
         const currentLevel: number = this.getBuildingLevel(payload.buildingId);
         this.occupiedFields += (payload.level - currentLevel) as any;
         this.buildings[payload.buildingId] = payload.level;
+    }
+
+    public researchStart(technology: Technology, now: number) {
+        // TODO logic...
+        if (this.research) {
+            throw new PlanetAlreadyResearchingException();
+        }
+        if (!this.meetsRequirements(technology)) {
+            throw new RequirementsAreNotMeetException();
+        }
+        // TODO getTechnologyLevel
+        const currentLevel: number = this.getBuildingLevel(technology.id);
+        if (technology.level !== currentLevel + 1) {
+            throw new TooMuchLevelException();
+        }
+        if (!this.resources.includes(technology.getCost())) {
+            throw new PlanetNotEnoughResourcesException();
+        }
+
+        // const researchSpeed = 1; // TODO universe, lab, irn
+        // const duration = technology.getDurationMs(researchSpeed);
+        const duration = 1;
+        const event = new ResearchStartedEvent({
+            ms: now,
+            planetId: this.id,
+            techId: 'EnergyTechnology', // TODO force var by tests
+            level: int(1), // TODO force var by tests
+            start: now,
+            end: now + duration,
+        });
+        this.apply(event);
+    }
+
+    protected onResearchStartedEvent({ payload }: ResearchStartedEvent) {
+        this.research = {
+            id: payload.techId,
+            level: payload.level,
+            start: payload.start,
+            end: payload.end,
+        };
+        const technology = createTechnology(payload.techId, payload.level);
+        this.withdraw(technology.getCost());
     }
 
     public loadFromHistory(history: PlanetEvent[], now: number = Date.now()) {
