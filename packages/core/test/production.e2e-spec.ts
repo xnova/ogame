@@ -181,47 +181,67 @@ describe('PlanetModule', () => {
             });
         };
 
-        const STORAGES = [
-            10,
-            20,
-            40,
-            75,
-            140,
-            255,
-            470,
-            865,
-            1590,
-            2920,
-            5355,
-            9820,
-            18005,
-            33005,
-            60510,
-            110925,
-        ].map(x => x * 1000);
-        for (const [level, capacity] of STORAGES.entries()) {
-            testCapacity({
-                buildingId: 'MetalStorage',
-                resource: 'metal',
-                level,
-                capacity,
-            });
-            testCapacity({
-                buildingId: 'CrystalStorage',
-                resource: 'crystal',
-                level,
-                capacity,
-            });
-            testCapacity({
-                buildingId: 'DeuteriumTank',
-                resource: 'deuterium',
-                level,
-                capacity,
-            });
-        }
+        describe('Capacity', () => {
+            const STORAGES = [
+                10,
+                20,
+                40,
+                75,
+                140,
+                255,
+                470,
+                865,
+                1590,
+                2920,
+                5355,
+                9820,
+                18005,
+                33005,
+                60510,
+                110925,
+            ].map(x => x * 1000);
+            for (const [level, capacity] of STORAGES.entries()) {
+                testCapacity({
+                    buildingId: 'MetalStorage',
+                    resource: 'metal',
+                    level,
+                    capacity,
+                });
+                testCapacity({
+                    buildingId: 'CrystalStorage',
+                    resource: 'crystal',
+                    level,
+                    capacity,
+                });
+                testCapacity({
+                    buildingId: 'DeuteriumTank',
+                    resource: 'deuterium',
+                    level,
+                    capacity,
+                });
+            }
+        });
 
-        // TODO if resources is overflow, production doesnt eliminate it.
-        // ie. storage is only a limit to produced resources
+        // if resources overflow, production doesnt eliminate it.
+        it('storage is only a limit to produced resources', async () => {
+            await module.mockBuildings(planetId, {
+                MetalStorage: 10,
+                CrystalStorage: 10,
+                DeuteriumSynthesizer: 10,
+            });
+            module.clock.fastForward(24 * 3600 * 1000);
+            const beforePlanet = await module.getPlanet(planetId);
+
+            await module.mockBuildings(planetId, {
+                MetalStorage: 0,
+                CrystalStorage: 0,
+                DeuteriumSynthesizer: 0,
+            });
+            module.clock.fastForward(24 * 3600 * 1000);
+            const planet = await module.getPlanet(planetId);
+
+            expect(planet.resources).toBeResources(beforePlanet.resources);
+        });
 
         it.todo('cannot store energy');
     });

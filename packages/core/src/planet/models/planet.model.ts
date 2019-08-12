@@ -159,10 +159,16 @@ export class PlanetModel extends AggregateRoot implements PlanetT {
         const hours: number = ms / 1000 / 3600;
         const production: Resources = this.getProduction();
         const storage: Resources = this.getStorage();
-        this.resources = this.resources
-            .map((amount, resource) => amount + hours * production[resource])
-            // cap by storage
-            .map((amount, resource) => Math.min(amount, storage[resource]));
+        this.resources = this.resources.map((amount, resource) =>
+            Math.max(
+                amount,
+                // cap by storage
+                Math.min(
+                    amount + hours * production[resource],
+                    storage[resource],
+                ),
+            ),
+        );
     }
 
     public deposit(resources: Resources): void {
