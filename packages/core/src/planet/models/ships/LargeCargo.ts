@@ -24,4 +24,7 @@ LargeCargo.prototype.cost = Resources.Partial({
     metal: 6000,
     crystal: 6000,
 });
-LargeCargo.prototype.requirements = [new Shipyard(4), new CombustionDrive(6)];
+LargeCargo.prototype.requirements = [
+    new Shipyard({ level: 4 }),
+    new CombustionDrive({ level: 6 }),
+];

@@ -24,4 +24,4 @@ Shipyard.prototype.baseCost = Resources.Partial({
     crystal: 200,
     deuterium: 100,
 });
-Shipyard.prototype.requirements = [new RoboticsFactory(2)];
+Shipyard.prototype.requirements = [new RoboticsFactory({ level: 2 })];

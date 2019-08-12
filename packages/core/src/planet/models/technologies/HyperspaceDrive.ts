@@ -26,6 +26,6 @@ HyperspaceDrive.prototype.baseCost = Resources.Partial({
     deuterium: 6000,
 });
 HyperspaceDrive.prototype.requirements = [
-    new ResearchLab(7),
-    new HyperspaceTechnology(3),
+    new ResearchLab({ level: 7 }),
+    new HyperspaceTechnology({ level: 3 }),
 ];

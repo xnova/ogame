@@ -70,7 +70,7 @@ export class PlanetTestModule {
         point: PointT = {
             x: 1 as any,
             y: 1 as any,
-            z: 8 as any,
+            z: 1 as any,
             t: 1 as any,
         },
     ) {
@@ -79,7 +79,7 @@ export class PlanetTestModule {
             playerId: generateUUID(),
             planetId,
             point,
-            temperature: 69 as any,
+            temperature: 0 as any,
         });
         const request = this.execute(joinCommand);
         await success(request);

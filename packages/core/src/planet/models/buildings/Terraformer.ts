@@ -26,6 +26,6 @@ Terraformer.prototype.baseCost = Resources.Partial({
     energy: 1000,
 });
 Terraformer.prototype.requirements = [
-    new NaniteFactory(10),
-    new EnergyTechnology(12),
+    new NaniteFactory({ level: 10 }),
+    new EnergyTechnology({ level: 12 }),
 ];

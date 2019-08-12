@@ -11,6 +11,7 @@ import { Resources } from '../../../shared/resources';
 import { Mine } from './Mine';
 
 const name = 'Deuterium Synthesizer';
+const COST_FACTOR = 1.5;
 
 /**
  * http://ogame.wikia.com/wiki/Deuterium_Synthesizer
@@ -22,7 +23,7 @@ DeuteriumSynthesizer.prototype.baseCost = Resources.Partial({
     metal: 225,
     crystal: 75,
 });
-DeuteriumSynthesizer.prototype.costFactor = 1.5;
+DeuteriumSynthesizer.prototype.costFactor = COST_FACTOR;
 DeuteriumSynthesizer.prototype.baseProduction = Resources.Partial({
     deuterium: 10,
     energy: -20,

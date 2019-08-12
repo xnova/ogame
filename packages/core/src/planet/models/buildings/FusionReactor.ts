@@ -13,6 +13,7 @@ import { Building } from './Building';
 import { DeuteriumSynthesizer } from './DeuteriumSynthesizer';
 
 const name = 'Fusion Reactor';
+const COST_FACTOR = 1.8;
 
 /**
  * http://ogame.wikia.com/wiki/Fusion_Reactor
@@ -25,8 +26,8 @@ FusionReactor.prototype.baseCost = Resources.Partial({
     crystal: 360,
     deuterium: 180,
 });
-FusionReactor.prototype.costFactor = 1.8;
+FusionReactor.prototype.costFactor = COST_FACTOR;
 FusionReactor.prototype.requirements = [
-    new DeuteriumSynthesizer(5),
-    new EnergyTechnology(3),
+    new DeuteriumSynthesizer({ level: 5 }),
+    new EnergyTechnology({ level: 3 }),
 ];

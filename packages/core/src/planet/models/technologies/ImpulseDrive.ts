@@ -26,6 +26,6 @@ ImpulseDrive.prototype.baseCost = Resources.Partial({
     deuterium: 600,
 });
 ImpulseDrive.prototype.requirements = [
-    new ResearchLab(2),
-    new EnergyTechnology(1),
+    new ResearchLab({ level: 2 }),
+    new EnergyTechnology({ level: 1 }),
 ];

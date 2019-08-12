@@ -26,6 +26,6 @@ NaniteFactory.prototype.baseCost = Resources.Partial({
     deuterium: 100000,
 });
 NaniteFactory.prototype.requirements = [
-    new RoboticsFactory(10),
-    new ComputerTechnology(10),
+    new RoboticsFactory({ level: 10 }),
+    new ComputerTechnology({ level: 10 }),
 ];

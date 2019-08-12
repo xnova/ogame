@@ -17,11 +17,11 @@ describe('PlanetModule', () => {
     const point: PointT = {
         x: int(1),
         y: int(1),
-        z: int(8),
+        z: int(1),
         t: int(1),
     };
     const otherPoint: PointT = { ...point, x: int(point.x + 1) };
-    const temperature = int(69);
+    const temperature = 69;
 
     const join = (payload: Partial<PlayerJoinCommand['payload']> = {}) => {
         const command = new PlayerJoinCommand({
@@ -29,7 +29,7 @@ describe('PlanetModule', () => {
             playerId,
             planetId,
             point,
-            temperature,
+            temperature: int(temperature),
             ...payload,
         });
         return module.execute(command);

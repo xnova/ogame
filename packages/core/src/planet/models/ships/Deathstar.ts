@@ -28,8 +28,8 @@ Deathstar.prototype.cost = Resources.Partial({
     deuterium: 1000000,
 });
 Deathstar.prototype.requirements = [
-    new Shipyard(12),
-    new GravitonTechnology(1),
-    new HyperspaceDrive(7),
-    new HyperspaceTechnology(6),
+    new Shipyard({ level: 12 }),
+    new GravitonTechnology({ level: 1 }),
+    new HyperspaceDrive({ level: 7 }),
+    new HyperspaceTechnology({ level: 6 }),
 ];

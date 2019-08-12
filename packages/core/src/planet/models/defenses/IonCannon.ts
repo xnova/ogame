@@ -24,4 +24,7 @@ IonCannon.prototype.cost = Resources.Partial({
     metal: 2000,
     crystal: 6000,
 });
-IonCannon.prototype.requirements = [new Shipyard(4), new IonTechnology(4)];
+IonCannon.prototype.requirements = [
+    new Shipyard({ level: 4 }),
+    new IonTechnology({ level: 4 }),
+];

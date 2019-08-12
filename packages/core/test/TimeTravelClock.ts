@@ -1,4 +1,5 @@
 import { Clock } from '../src/planet/clock';
+import { DAY, MONTH, WEEK, YEAR } from '../src/utils';
 
 export class TimeTravelClock extends Clock {
     private offset: number;
@@ -20,6 +21,22 @@ export class TimeTravelClock extends Clock {
 
     public fastForward(ms: number) {
         this.offset = this.offset + ms;
+    }
+
+    public fastForwardOneDay() {
+        this.fastForward(DAY);
+    }
+
+    public fastForwardOneWeek() {
+        this.fastForward(WEEK);
+    }
+
+    public fastForwardOneMonth() {
+        this.fastForward(MONTH);
+    }
+
+    public fastForwardOneYear() {
+        this.fastForward(YEAR);
     }
 
     public now(): number {

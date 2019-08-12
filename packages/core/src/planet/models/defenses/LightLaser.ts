@@ -26,7 +26,7 @@ LightLaser.prototype.cost = Resources.Partial({
     crystal: 500,
 });
 LightLaser.prototype.requirements = [
-    new EnergyTechnology(1),
-    new Shipyard(4),
-    new LaserTechnology(3),
+    new EnergyTechnology({ level: 1 }),
+    new Shipyard({ level: 4 }),
+    new LaserTechnology({ level: 3 }),
 ];

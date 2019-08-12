@@ -16,6 +16,13 @@ export const subtract: Subtract<PointT> = a => b => ({
     t: (a.t - b.t) as any,
 });
 
+const affine = (options: { slope: number; n: number }) => (x: number): number =>
+    options.slope * x + options.n;
+
+const distanceX = affine({ slope: 20000, n: 0 }); // linear
+const distanceY = affine({ slope: 95, n: 2700 });
+const distanceZ = affine({ slope: 5, n: 1000 });
+const distanceT = affine({ slope: 0, n: 5 }); // constant
 /**
  * http://ogame.wikia.com/wiki/Distance
  * @param {*} p
@@ -24,13 +31,13 @@ export const subtract: Subtract<PointT> = a => b => ({
 export const distance = (p: PointT) => (q: PointT): number => {
     const diff = subtract(p)(q);
     if (diff.x !== 0) {
-        return 20000 * Math.abs(diff.x);
+        return distanceX(Math.abs(diff.x));
     } else if (diff.y !== 0) {
-        return 2700 + 95 * Math.abs(diff.y);
+        return distanceY(Math.abs(diff.y));
     } else if (diff.z !== 0) {
-        return 1000 + 5 * Math.abs(diff.z);
+        return distanceZ(Math.abs(diff.z));
     } else if (diff.t !== 0) {
-        return 5;
+        return distanceT(Math.abs(diff.t));
     }
 
     return 0;

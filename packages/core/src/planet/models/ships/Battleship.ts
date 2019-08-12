@@ -24,4 +24,7 @@ Battleship.prototype.cost = Resources.Partial({
     metal: 45000,
     crystal: 15000,
 });
-Battleship.prototype.requirements = [new Shipyard(7), new HyperspaceDrive(4)];
+Battleship.prototype.requirements = [
+    new Shipyard({ level: 7 }),
+    new HyperspaceDrive({ level: 4 }),
+];

@@ -19,6 +19,7 @@ export abstract class Warehouse extends Building {
     public getStorage(): Resources {
         const { level } = this;
         return this.baseStorage.multiply(
+            // tslint:disable-next-line: no-magic-numbers
             0.5 * Math.floor(2.5 * Math.exp((20 * level) / 33)),
         );
     }

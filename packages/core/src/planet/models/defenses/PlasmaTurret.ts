@@ -26,6 +26,6 @@ PlasmaTurret.prototype.cost = Resources.Partial({
     deuterium: 30000,
 });
 PlasmaTurret.prototype.requirements = [
-    new Shipyard(8),
-    new PlasmaTechnology(7),
+    new Shipyard({ level: 8 }),
+    new PlasmaTechnology({ level: 7 }),
 ];

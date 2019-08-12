@@ -24,4 +24,4 @@ EspionageTechnology.prototype.baseCost = Resources.Partial({
     crystal: 1000,
     deuterium: 200,
 });
-EspionageTechnology.prototype.requirements = [new ResearchLab(3)];
+EspionageTechnology.prototype.requirements = [new ResearchLab({ level: 3 })];

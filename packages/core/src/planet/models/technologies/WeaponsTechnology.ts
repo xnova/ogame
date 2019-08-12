@@ -23,4 +23,4 @@ WeaponsTechnology.prototype.baseCost = Resources.Partial({
     metal: 800,
     crystal: 200,
 });
-WeaponsTechnology.prototype.requirements = [new ResearchLab(4)];
+WeaponsTechnology.prototype.requirements = [new ResearchLab({ level: 4 })];

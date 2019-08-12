@@ -27,7 +27,7 @@ Cruiser.prototype.cost = Resources.Partial({
     deuterium: 2000,
 });
 Cruiser.prototype.requirements = [
-    new Shipyard(5),
-    new ImpulseDrive(4),
-    new IonTechnology(2),
+    new Shipyard({ level: 5 }),
+    new ImpulseDrive({ level: 4 }),
+    new IonTechnology({ level: 2 }),
 ];

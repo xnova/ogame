@@ -25,4 +25,7 @@ ColonyShip.prototype.cost = Resources.Partial({
     crystal: 20000,
     deuterium: 10000,
 });
-ColonyShip.prototype.requirements = [new Shipyard(4), new ImpulseDrive(3)];
+ColonyShip.prototype.requirements = [
+    new Shipyard({ level: 4 }),
+    new ImpulseDrive({ level: 3 }),
+];

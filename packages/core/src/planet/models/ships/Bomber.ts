@@ -27,7 +27,7 @@ Bomber.prototype.cost = Resources.Partial({
     deuterium: 15000,
 });
 Bomber.prototype.requirements = [
-    new ImpulseDrive(6),
-    new Shipyard(8),
-    new PlasmaTechnology(5),
+    new ImpulseDrive({ level: 6 }),
+    new Shipyard({ level: 8 }),
+    new PlasmaTechnology({ level: 5 }),
 ];

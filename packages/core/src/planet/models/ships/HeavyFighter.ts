@@ -26,7 +26,7 @@ HeavyFighter.prototype.cost = Resources.Partial({
     crystal: 4000,
 });
 HeavyFighter.prototype.requirements = [
-    new Shipyard(3),
-    new ArmourTechnology(2),
-    new ImpulseDrive(2),
+    new Shipyard({ level: 3 }),
+    new ArmourTechnology({ level: 2 }),
+    new ImpulseDrive({ level: 2 }),
 ];

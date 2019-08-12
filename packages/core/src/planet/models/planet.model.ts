@@ -4,7 +4,8 @@ import * as t from 'io-ts';
 import { UUID } from 'io-ts-types/lib/UUID';
 
 import { Resources, ResourcesC } from '../../shared/resources';
-import { add } from '../../utils';
+import { valueOrThrow } from '../../shared/types';
+import { add, HOUR } from '../../utils';
 import { PlayerJoinCommandT } from '../commands';
 import {
     BuildCancelledEvent,
@@ -60,12 +61,16 @@ export const PlanetC = t.type({
 
 export type PlanetT = t.TypeOf<typeof PlanetC>;
 
+const DEFAULT_DIAMETER = 12800;
+const DEFAULT_FIELDS = 163;
 const BASIC_INCOME: Resources = Resources.Partial({ metal: 45, crystal: 15 });
 const WAREHOUSES: Array<Type<Warehouse>> = [
     MetalStorage,
     CrystalStorage,
     DeuteriumTank,
 ];
+
+export const int = valueOrThrow(t.Int);
 
 export type Type<T> = new (...args: any[]) => T;
 
@@ -88,10 +93,10 @@ export class PlanetModel extends AggregateRoot implements PlanetT {
         super();
         this.name = '';
         // TODO constant? config?
-        this.diameter = 12800 as any;
+        this.diameter = int(DEFAULT_DIAMETER);
         // TODO config? Universe?
         this.resources = Resources.Partial({ metal: 500, crystal: 500 });
-        this.fields = 163 as any;
+        this.fields = int(DEFAULT_FIELDS);
         this.occupiedFields = 0 as any;
         this.construction = null;
         this.buildings = {};
@@ -103,7 +108,7 @@ export class PlanetModel extends AggregateRoot implements PlanetT {
 
     public get<T extends Unit>(type: Type<T>): T {
         if (Technology.isPrototypeOf(type)) {
-            return new type(this.getBuildingLevel(type.name));
+            return new type({ level: this.getBuildingLevel(type.name) });
         }
         return new type();
     }
@@ -156,7 +161,7 @@ export class PlanetModel extends AggregateRoot implements PlanetT {
             return;
         }
         // TODO speed production
-        const hours: number = ms / 1000 / 3600;
+        const hours: number = ms / HOUR;
         const production: Resources = this.getProduction();
         const storage: Resources = this.getStorage();
         this.resources = this.resources.map((amount, resource) =>

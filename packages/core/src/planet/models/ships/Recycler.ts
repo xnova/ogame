@@ -27,7 +27,7 @@ Recycler.prototype.cost = Resources.Partial({
     deuterium: 2000,
 });
 Recycler.prototype.requirements = [
-    new Shipyard(4),
-    new CombustionDrive(6),
-    new ShieldingTechnology(2),
+    new Shipyard({ level: 4 }),
+    new CombustionDrive({ level: 6 }),
+    new ShieldingTechnology({ level: 2 }),
 ];

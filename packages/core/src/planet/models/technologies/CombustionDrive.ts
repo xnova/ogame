@@ -25,6 +25,6 @@ CombustionDrive.prototype.baseCost = Resources.Partial({
     crystal: 600,
 });
 CombustionDrive.prototype.requirements = [
-    new ResearchLab(1),
-    new EnergyTechnology(1),
+    new ResearchLab({ level: 1 }),
+    new EnergyTechnology({ level: 1 }),
 ];

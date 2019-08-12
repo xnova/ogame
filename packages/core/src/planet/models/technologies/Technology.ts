@@ -13,12 +13,14 @@ import { valueOrThrow } from '../../../shared/types';
 import { InvalidLevelException } from '../../exceptions';
 import { Unit } from '../defenses/Unit';
 
+const DEFAULT_COST_FACTOR = 2;
+
 export abstract class Technology extends Unit {
     public readonly level: t.Int;
     public baseCost: Resources;
     public costFactor: number;
 
-    constructor(level: number) {
+    constructor({ level }: { level: number }) {
         super();
         if (level < 0) {
             throw new InvalidLevelException();
@@ -45,4 +47,4 @@ export abstract class Technology extends Unit {
 
 Technology.prototype.name = 'Unnamed Technology';
 Technology.prototype.baseCost = Resources.Partial({ metal: 1, crystal: 1 });
-Technology.prototype.costFactor = 2;
+Technology.prototype.costFactor = DEFAULT_COST_FACTOR;

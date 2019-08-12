@@ -5,7 +5,10 @@
  *
  * This code is licensed under MIT license (see LICENSE.md for details)
  */
+import { HOUR } from '../../../utils';
 import { Technology } from '../technologies/Technology';
+
+const STRUCURAL_INTEGRITY_PER_HOUR = 2500;
 
 export abstract class Building extends Technology {
     public dismantlable: boolean;
@@ -16,9 +19,10 @@ export abstract class Building extends Technology {
      */
     public getDurationMs(buildingSpeed: number): number {
         const cost = this.getCost();
-        const baseHours = (cost.metal + cost.crystal) / 2500;
+        const structuralIntegrity = cost.metal + cost.crystal;
+        const baseHours = structuralIntegrity / STRUCURAL_INTEGRITY_PER_HOUR;
         const hours = baseHours / buildingSpeed;
-        return hours * 3600 * 1000;
+        return hours * HOUR;
     }
 }
 Building.prototype.name = 'Unnamed Building';

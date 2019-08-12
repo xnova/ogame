@@ -28,8 +28,8 @@ GaussCannon.prototype.cost = Resources.Partial({
     deuterium: 2000,
 });
 GaussCannon.prototype.requirements = [
-    new Shipyard(6),
-    new EnergyTechnology(6),
-    new WeaponsTechnology(3),
-    new ShieldingTechnology(1),
+    new Shipyard({ level: 6 }),
+    new EnergyTechnology({ level: 6 }),
+    new WeaponsTechnology({ level: 3 }),
+    new ShieldingTechnology({ level: 1 }),
 ];

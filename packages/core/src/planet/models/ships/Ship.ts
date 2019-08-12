@@ -22,4 +22,4 @@ Ship.prototype.cost = Resources.Partial({
     metal: 1,
     crystal: 1,
 });
-Ship.prototype.requirements = [new Shipyard(2)];
+Ship.prototype.requirements = [new Shipyard({ level: 2 })];

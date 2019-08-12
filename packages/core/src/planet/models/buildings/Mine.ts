@@ -17,7 +17,8 @@ export abstract class Mine extends Building {
      */
     public getProduction(): Resources {
         const { level } = this;
-        return this.baseProduction.map(x => x * level * Math.pow(1.1, level));
+        // tslint:disable-next-line: no-magic-numbers
+        return this.baseProduction.multiply(level * Math.pow(1.1, level));
     }
 }
 Mine.prototype.baseProduction = Resources.Zero();

@@ -26,6 +26,7 @@
         "max-params": [true, 3],
         "no-implicit-dependencies": [true],
         "no-floating-promises": true,
+        "no-magic-numbers": [true, 0, 1],
         "deprecation": true
     },
     "rulesDirectory": []

@@ -26,7 +26,7 @@ HyperspaceTechnology.prototype.baseCost = Resources.Partial({
     crystal: 2000,
 });
 HyperspaceTechnology.prototype.requirements = [
-    new ResearchLab(7),
-    new EnergyTechnology(5),
-    new ShieldingTechnology(5),
+    new ResearchLab({ level: 7 }),
+    new EnergyTechnology({ level: 5 }),
+    new ShieldingTechnology({ level: 5 }),
 ];

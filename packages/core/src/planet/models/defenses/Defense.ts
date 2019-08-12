@@ -25,5 +25,5 @@ Defense.prototype.cost = Resources.Partial({
     metal: 1,
     crystal: 1,
 });
-Defense.prototype.requirements = [new Shipyard(1)];
+Defense.prototype.requirements = [new Shipyard({ level: 1 })];
 Defense.prototype.max = Number.POSITIVE_INFINITY;

@@ -25,7 +25,7 @@ EspionageProbe.prototype.cost = Resources.Partial({
     crystal: 1000,
 });
 EspionageProbe.prototype.requirements = [
-    new Shipyard(3),
-    new CombustionDrive(3),
-    new EspionageTechnology(2),
+    new Shipyard({ level: 3 }),
+    new CombustionDrive({ level: 3 }),
+    new EspionageTechnology({ level: 2 }),
 ];

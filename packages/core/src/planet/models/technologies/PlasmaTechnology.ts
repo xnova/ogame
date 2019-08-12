@@ -28,8 +28,8 @@ PlasmaTechnology.prototype.baseCost = Resources.Partial({
     deuterium: 1000,
 });
 PlasmaTechnology.prototype.requirements = [
-    new ResearchLab(4),
-    new EnergyTechnology(8),
-    new LaserTechnology(10),
-    new IonTechnology(5),
+    new ResearchLab({ level: 4 }),
+    new EnergyTechnology({ level: 8 }),
+    new LaserTechnology({ level: 10 }),
+    new IonTechnology({ level: 5 }),
 ];

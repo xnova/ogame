@@ -26,7 +26,7 @@ HeavyLaser.prototype.cost = Resources.Partial({
     crystal: 2000,
 });
 HeavyLaser.prototype.requirements = [
-    new EnergyTechnology(3),
-    new Shipyard(4),
-    new LaserTechnology(6),
+    new EnergyTechnology({ level: 3 }),
+    new Shipyard({ level: 4 }),
+    new LaserTechnology({ level: 6 }),
 ];

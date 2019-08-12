@@ -27,7 +27,15 @@ import { failure, generateUUID, int, success } from './utils';
 describe('PlanetModule', () => {
     let module: PlanetTestModule;
 
-    const build = (planetId: UUID, buildingId: string, level: number) =>
+    const build = ({
+        planetId,
+        buildingId,
+        level,
+    }: {
+        planetId: UUID;
+        buildingId: string;
+        level: number;
+    }) =>
         module.execute(
             new BuildStartCommand({
                 ms: module.clock.now(),
@@ -72,7 +80,11 @@ describe('PlanetModule', () => {
             const beforePlanet = await module.getPlanet(planetId);
             expect(beforePlanet.construction).toBeNull();
 
-            const request = build(planetId, options.buildingId, options.level);
+            const request = build({
+                planetId,
+                buildingId: options.buildingId,
+                level: options.level,
+            });
             await success(request);
 
             const planet = await module.getPlanet(planetId);
@@ -133,7 +145,7 @@ describe('PlanetModule', () => {
             const beforePlanet = await module.getPlanet(planetId);
             expect(beforePlanet.construction).toBeNull();
 
-            const request = build(planetId, 'Foo', 1);
+            const request = build({ planetId, buildingId: 'Foo', level: 1 });
             await failure(request, BuildingNotFoundException);
         });
 
@@ -141,7 +153,11 @@ describe('PlanetModule', () => {
             const beforePlanet = await module.getPlanet(planetId);
             expect(beforePlanet.construction).toBeNull();
 
-            const request = build(planetId, 'MetalMine', -1);
+            const request = build({
+                planetId,
+                buildingId: 'MetalMine',
+                level: -1,
+            });
             await failure(request, InvalidLevelException);
         });
 
@@ -149,14 +165,18 @@ describe('PlanetModule', () => {
             planetId,
             buildingId: 'MetalMine',
             level: 1,
-            duration: 108 * 1000,
+            duration: 108000,
             cost: Resources.Partial({ metal: 60, crystal: 15 }),
         });
 
         it('can start building MetalMine', metalMine.canStart);
 
         it('cannot start building if already building', async () => {
-            const request = build(planetId, 'CrystalMine', 1);
+            const request = build({
+                planetId,
+                buildingId: 'CrystalMine',
+                level: 1,
+            });
             await failure(request, PlanetAlreadyBuildingException);
         });
 
@@ -170,7 +190,11 @@ describe('PlanetModule', () => {
             const beforePlanet = await module.getPlanet(planetId);
             expect(beforePlanet.construction).toBeNull();
 
-            const request = build(planetId, 'MetalMine', 2);
+            const request = build({
+                planetId,
+                buildingId: 'MetalMine',
+                level: 2,
+            });
             await failure(request, BuildingTooMuchException);
         });
 
@@ -178,7 +202,11 @@ describe('PlanetModule', () => {
             const beforePlanet = await module.getPlanet(planetId);
             expect(beforePlanet.construction).toBeNull();
 
-            const request = build(planetId, 'ResearchLab', 1);
+            const request = build({
+                planetId,
+                buildingId: 'ResearchLab',
+                level: 1,
+            });
             await failure(request, PlanetNotEnoughResourcesException);
         });
 
@@ -244,7 +272,7 @@ describe('PlanetModule', () => {
 
         it('cannot build if not enough available fields', async () => {
             // mock a lot of buildings
-            module.clock.fastForward(30 * 24 * 3600 * 1000);
+            module.clock.fastForwardOneMonth();
             await module.mockBuildings(planetId, {
                 MetalMine: 50,
                 CrystalMine: 50,
@@ -259,7 +287,11 @@ describe('PlanetModule', () => {
             expect(planet.construction).toBeNull();
 
             // expect error when doing ampliation
-            const request = build(planetId, 'MetalStorage', 1);
+            const request = build({
+                planetId,
+                buildingId: 'MetalStorage',
+                level: 1,
+            });
             await failure(request, PlanetNotEnoughFieldsException);
         });
 
@@ -283,7 +315,11 @@ describe('PlanetModule', () => {
             const beforePlanet = await module.getPlanet(planetId);
             expect(beforePlanet.construction).toBeNull();
 
-            const request = build(planetId, 'Shipyard', 1);
+            const request = build({
+                planetId,
+                buildingId: 'Shipyard',
+                level: 1,
+            });
             await failure(request, RequirementsAreNotMeetException);
         });
 
@@ -291,7 +327,7 @@ describe('PlanetModule', () => {
             planetId,
             buildingId: 'Shipyard',
             level: 1,
-            duration: 864 * 1000,
+            duration: 864000,
             cost: Resources.Partial({
                 metal: 400,
                 crystal: 200,
@@ -300,7 +336,7 @@ describe('PlanetModule', () => {
         });
 
         it('can build a Shipyard when requirements are meet', async () => {
-            module.mockBuildings(planetId, {
+            await module.mockBuildings(planetId, {
                 // mock shipyard requirements
                 RoboticsFactory: 2,
                 // give 100 deuterium
@@ -308,7 +344,7 @@ describe('PlanetModule', () => {
                 // add solar plant to have enough energy for producing deuterium
                 SolarPlant: 5,
             });
-            module.clock.fastForward(7 * 24 * 3600 * 1000);
+            module.clock.fastForwardOneWeek();
             await shipyard.canStart();
         });
     });

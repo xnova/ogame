@@ -28,8 +28,8 @@ Battlecruiser.prototype.cost = Resources.Partial({
     deuterium: 15000,
 });
 Battlecruiser.prototype.requirements = [
-    new HyperspaceTechnology(5),
-    new LaserTechnology(12),
-    new HyperspaceDrive(5),
-    new Shipyard(8),
+    new HyperspaceTechnology({ level: 5 }),
+    new LaserTechnology({ level: 12 }),
+    new HyperspaceDrive({ level: 5 }),
+    new Shipyard({ level: 8 }),
 ];

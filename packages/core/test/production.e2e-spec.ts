@@ -1,4 +1,5 @@
 import { Resource, Resources } from '../src/shared/resources';
+import { HOUR } from '../src/utils';
 
 import './jest-extender';
 import { PlanetTestModule } from './PlanetTestModule';
@@ -8,6 +9,34 @@ import { generateUUID } from './utils';
 const BASIC_INCOME: Resources = Resources.Partial({ metal: 45, crystal: 15 });
 const INITIAL_RESOURCES = Resources.Partial({ metal: 500, crystal: 500 });
 
+const MINES_1_PRODUCTION = Resources.Partial({
+    metal: 33,
+    crystal: 22,
+    deuterium: 11,
+});
+
+const MAP_LEVEL_CAPACITY = {
+    1: 20,
+    2: 40,
+    3: 75,
+    4: 140,
+    5: 255,
+    6: 470,
+    7: 865,
+    8: 1590,
+    9: 2920,
+    10: 5355,
+    11: 9820,
+    12: 18005,
+    13: 33005,
+    14: 60510,
+    15: 110925,
+};
+const KILO = 1000;
+Object.keys(MAP_LEVEL_CAPACITY).map(key => {
+    MAP_LEVEL_CAPACITY[key] *= KILO;
+});
+
 const formatNum = (n: number): string => Number(n).toLocaleString();
 
 describe('PlanetModule', () => {
@@ -16,7 +45,7 @@ describe('PlanetModule', () => {
 
     const getProduction = async (
         mines: Record<string, number>,
-        time: number = 3600 * 1000,
+        time: number = HOUR,
     ): Promise<Resources> => {
         const beforePlanet = await module.getPlanet(planetId);
         await module.mockBuildings(planetId, mines);
@@ -77,9 +106,21 @@ describe('PlanetModule', () => {
             });
         };
 
-        canProduceWithEnoughEnergy('metal', 'MetalMine', 33);
-        canProduceWithEnoughEnergy('crystal', 'CrystalMine', 22);
-        canProduceWithEnoughEnergy('deuterium', 'DeuteriumSynthesizer', 11);
+        canProduceWithEnoughEnergy(
+            'metal',
+            'MetalMine',
+            MINES_1_PRODUCTION.metal,
+        );
+        canProduceWithEnoughEnergy(
+            'crystal',
+            'CrystalMine',
+            MINES_1_PRODUCTION.crystal,
+        );
+        canProduceWithEnoughEnergy(
+            'deuterium',
+            'DeuteriumSynthesizer',
+            MINES_1_PRODUCTION.deuterium,
+        );
 
         describe('is monotonic', () => {
             // increasing a mine level cannot produce less resources
@@ -105,7 +146,8 @@ describe('PlanetModule', () => {
                 });
             };
 
-            for (let level = 1; level <= 30; level += 1) {
+            const MAX_LEVEL = 30;
+            for (let level = 1; level <= MAX_LEVEL; level += 1) {
                 atLevel(level);
             }
         });
@@ -141,8 +183,8 @@ describe('PlanetModule', () => {
             });
         });
 
-        it(`new planet only produces up to ${formatNum(10000)}`, async () => {
-            module.clock.fastForward(30 * 24 * 3600 * 1000);
+        it(`new planet only produces up to 10,000`, async () => {
+            module.clock.fastForwardOneMonth();
             const { resources } = await module.getPlanet(planetId);
             expect(resources).toBeResources(
                 Resources.Partial({
@@ -168,7 +210,7 @@ describe('PlanetModule', () => {
                 capacity,
             )} ${resource}`, async () => {
                 await module.mockBuildings(planetId, { [buildingId]: level });
-                module.clock.fastForward(12 * 30 * 24 * 3600 * 1000);
+                module.clock.fastForwardOneYear();
                 const { resources } = await module.getPlanet(planetId);
                 expect(resources).toBeResources(
                     Resources.Partial({
@@ -182,41 +224,25 @@ describe('PlanetModule', () => {
         };
 
         describe('Capacity', () => {
-            const STORAGES = [
-                10,
-                20,
-                40,
-                75,
-                140,
-                255,
-                470,
-                865,
-                1590,
-                2920,
-                5355,
-                9820,
-                18005,
-                33005,
-                60510,
-                110925,
-            ].map(x => x * 1000);
-            for (const [level, capacity] of STORAGES.entries()) {
+            for (const [level, capacity] of Object.entries(
+                MAP_LEVEL_CAPACITY,
+            )) {
                 testCapacity({
                     buildingId: 'MetalStorage',
                     resource: 'metal',
-                    level,
+                    level: parseInt(level, 10),
                     capacity,
                 });
                 testCapacity({
                     buildingId: 'CrystalStorage',
                     resource: 'crystal',
-                    level,
+                    level: parseInt(level, 10),
                     capacity,
                 });
                 testCapacity({
                     buildingId: 'DeuteriumTank',
                     resource: 'deuterium',
-                    level,
+                    level: parseInt(level, 10),
                     capacity,
                 });
             }
@@ -229,7 +255,7 @@ describe('PlanetModule', () => {
                 CrystalStorage: 10,
                 DeuteriumSynthesizer: 10,
             });
-            module.clock.fastForward(24 * 3600 * 1000);
+            module.clock.fastForwardOneDay();
             const beforePlanet = await module.getPlanet(planetId);
 
             await module.mockBuildings(planetId, {
@@ -237,7 +263,7 @@ describe('PlanetModule', () => {
                 CrystalStorage: 0,
                 DeuteriumSynthesizer: 0,
             });
-            module.clock.fastForward(24 * 3600 * 1000);
+            module.clock.fastForwardOneDay();
             const planet = await module.getPlanet(planetId);
 
             expect(planet.resources).toBeResources(beforePlanet.resources);

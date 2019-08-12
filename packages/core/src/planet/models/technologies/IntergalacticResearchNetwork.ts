@@ -27,7 +27,7 @@ IntergalacticResearchNetwork.prototype.baseCost = Resources.Partial({
     deuterium: 160000,
 });
 IntergalacticResearchNetwork.prototype.requirements = [
-    new ComputerTechnology(8),
-    new HyperspaceTechnology(8),
-    new ResearchLab(10),
+    new ComputerTechnology({ level: 8 }),
+    new HyperspaceTechnology({ level: 8 }),
+    new ResearchLab({ level: 10 }),
 ];

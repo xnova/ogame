@@ -23,4 +23,4 @@ SolarSatellite.prototype.cost = Resources.Partial({
     crystal: 2000,
     deuterium: 500,
 });
-SolarSatellite.prototype.requirements = [new Shipyard(1)];
+SolarSatellite.prototype.requirements = [new Shipyard({ level: 1 })];

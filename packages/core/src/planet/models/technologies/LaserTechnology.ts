@@ -25,6 +25,6 @@ LaserTechnology.prototype.baseCost = Resources.Partial({
     crystal: 100,
 });
 LaserTechnology.prototype.requirements = [
-    new ResearchLab(1),
-    new EnergyTechnology(2),
+    new ResearchLab({ level: 1 }),
+    new EnergyTechnology({ level: 2 }),
 ];

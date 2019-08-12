@@ -5,8 +5,10 @@
  *
  * This code is licensed under MIT license (see LICENSE.md for details)
  */
-
 import { Resources } from '../../../shared/resources';
+import { HOUR } from '../../../utils';
+
+const STRUCURAL_INTEGRITY_PER_HOUR = 2500;
 
 export abstract class Unit {
     public name: string;
@@ -20,9 +22,10 @@ export abstract class Unit {
 
     public getDurationMs(speed: number): number {
         const cost = this.getCost();
-        const baseHours = (cost.metal + cost.crystal) / 2500;
+        const structuralIntegrity = cost.metal + cost.crystal;
+        const baseHours = structuralIntegrity / STRUCURAL_INTEGRITY_PER_HOUR;
         const hours = baseHours / speed;
-        return hours * 3600 * 1000;
+        return hours * HOUR;
     }
 }
 

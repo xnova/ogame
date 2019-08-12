@@ -27,7 +27,7 @@ Destroyer.prototype.cost = Resources.Partial({
     deuterium: 15000,
 });
 Destroyer.prototype.requirements = [
-    new Shipyard(9),
-    new HyperspaceDrive(6),
-    new HyperspaceTechnology(5),
+    new Shipyard({ level: 9 }),
+    new HyperspaceDrive({ level: 6 }),
+    new HyperspaceTechnology({ level: 5 }),
 ];

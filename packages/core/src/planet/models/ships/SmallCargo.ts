@@ -24,4 +24,7 @@ SmallCargo.prototype.cost = Resources.Partial({
     metal: 2000,
     crystal: 2000,
 });
-SmallCargo.prototype.requirements = [new Shipyard(2), new CombustionDrive(2)];
+SmallCargo.prototype.requirements = [
+    new Shipyard({ level: 2 }),
+    new CombustionDrive({ level: 2 }),
+];

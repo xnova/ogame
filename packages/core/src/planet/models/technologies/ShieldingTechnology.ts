@@ -25,6 +25,6 @@ ShieldingTechnology.prototype.baseCost = Resources.Partial({
     crystal: 600,
 });
 ShieldingTechnology.prototype.requirements = [
-    new EnergyTechnology(3),
-    new ResearchLab(6),
+    new EnergyTechnology({ level: 3 }),
+    new ResearchLab({ level: 6 }),
 ];

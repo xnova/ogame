@@ -22,4 +22,4 @@ ArmourTechnology.prototype.name = name;
 ArmourTechnology.prototype.baseCost = Resources.Partial({
     metal: 1000,
 });
-ArmourTechnology.prototype.requirements = [new ResearchLab(2)];
+ArmourTechnology.prototype.requirements = [new ResearchLab({ level: 2 })];

@@ -23,4 +23,4 @@ ComputerTechnology.prototype.baseCost = Resources.Partial({
     crystal: 400,
     deuterium: 600,
 });
-ComputerTechnology.prototype.requirements = [new ResearchLab(1)];
+ComputerTechnology.prototype.requirements = [new ResearchLab({ level: 1 })];

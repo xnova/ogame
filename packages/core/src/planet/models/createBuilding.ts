@@ -12,5 +12,5 @@ export function createBuilding(
     if (!Type) {
         throw new BuildingNotFoundException();
     }
-    return new Type(level);
+    return new Type({ level });
 }

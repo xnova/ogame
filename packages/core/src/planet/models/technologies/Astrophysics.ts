@@ -14,6 +14,7 @@ import { ImpulseDrive } from './ImpulseDrive';
 import { Technology } from './Technology';
 
 const name = 'Astrophysics';
+const COST_FACTOR = 1.75;
 
 /**
  * http://ogame.wikia.com/wiki/Astrophysics
@@ -26,9 +27,9 @@ Astrophysics.prototype.baseCost = Resources.Partial({
     crystal: 8000,
     deuterium: 4000,
 });
-Astrophysics.prototype.costFactor = 1.75;
+Astrophysics.prototype.costFactor = COST_FACTOR;
 Astrophysics.prototype.requirements = [
-    new ResearchLab(3),
-    new EspionageTechnology(4),
-    new ImpulseDrive(3),
+    new ResearchLab({ level: 3 }),
+    new EspionageTechnology({ level: 4 }),
+    new ImpulseDrive({ level: 3 }),
 ];

@@ -24,4 +24,4 @@ MissileSilo.prototype.baseCost = Resources.Partial({
     crystal: 20000,
     deuterium: 1000,
 });
-MissileSilo.prototype.requirements = [new Shipyard(1)];
+MissileSilo.prototype.requirements = [new Shipyard({ level: 1 })];

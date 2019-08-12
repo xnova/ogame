@@ -24,4 +24,7 @@ LightFighter.prototype.cost = Resources.Partial({
     metal: 3000,
     crystal: 1000,
 });
-LightFighter.prototype.requirements = [new Shipyard(1), new CombustionDrive(1)];
+LightFighter.prototype.requirements = [
+    new Shipyard({ level: 1 }),
+    new CombustionDrive({ level: 1 }),
+];

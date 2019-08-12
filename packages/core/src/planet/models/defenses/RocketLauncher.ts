@@ -22,4 +22,4 @@ RocketLauncher.prototype.name = name;
 RocketLauncher.prototype.cost = Resources.Partial({
     metal: 2000,
 });
-RocketLauncher.prototype.requirements = [new Shipyard(1)];
+RocketLauncher.prototype.requirements = [new Shipyard({ level: 1 })];

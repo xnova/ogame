@@ -11,6 +11,7 @@ import { Resources } from '../../../shared/resources';
 import { Mine } from './Mine';
 
 const name = 'Crystal Mine';
+const COST_FACTOR = 1.6;
 
 /**
  * http://ogame.wikia.com/wiki/Crystal_Mine
@@ -22,7 +23,7 @@ CrystalMine.prototype.baseCost = Resources.Partial({
     metal: 48,
     crystal: 24,
 });
-CrystalMine.prototype.costFactor = 1.6;
+CrystalMine.prototype.costFactor = COST_FACTOR;
 CrystalMine.prototype.baseProduction = Resources.Partial({
     crystal: 20,
     energy: -10,

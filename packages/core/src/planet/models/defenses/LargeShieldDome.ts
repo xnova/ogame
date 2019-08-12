@@ -26,6 +26,6 @@ LargeShieldDome.prototype.cost = Resources.Partial({
 });
 LargeShieldDome.prototype.max = 1;
 LargeShieldDome.prototype.requirements = [
-    new ShieldingTechnology(6),
-    new Shipyard(6),
+    new ShieldingTechnology({ level: 6 }),
+    new Shipyard({ level: 6 }),
 ];

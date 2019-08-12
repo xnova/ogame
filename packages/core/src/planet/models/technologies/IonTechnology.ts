@@ -27,7 +27,7 @@ IonTechnology.prototype.baseCost = Resources.Partial({
     deuterium: 100,
 });
 IonTechnology.prototype.requirements = [
-    new ResearchLab(4),
-    new LaserTechnology(5),
-    new EnergyTechnology(4),
+    new ResearchLab({ level: 4 }),
+    new LaserTechnology({ level: 5 }),
+    new EnergyTechnology({ level: 4 }),
 ];
