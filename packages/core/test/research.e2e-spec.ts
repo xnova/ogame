@@ -197,6 +197,20 @@ describe('PlanetModule', () => {
 
         it.todo('cannot research if another Colony is researching');
 
+        it('can cancel', async () => {
+            await canStartEnergy1();
+
+            const beforePlanet = await module.getPlanet(planetId);
+            const request = cancel(planetId);
+            await success(request);
+
+            const planet = await module.getPlanet(planetId);
+            expect(planet.research).toBeNull();
+            const cost = Resources.Partial({ crystal: 800, deuterium: 400 });
+            const restored = planet.resources.subtract(beforePlanet.resources);
+            expect(restored).toBeResources(cost);
+        });
+
         // TODO same cost resources
         // TODO finish
         // TODO cancel
