@@ -6,6 +6,9 @@ import { Resources } from '../src/shared/resources';
 import { valueOrThrow } from '../src/shared/types';
 import { sum, Type } from '../src/utils';
 
+// https://stackoverflow.com/a/54719658
+export type ArgsType<T> = T extends (...args: infer U) => any ? U : never;
+
 export const niceError = async <T>(promise: Promise<T>): Promise<T> => {
     try {
         return await promise;

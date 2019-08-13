@@ -1,13 +1,16 @@
 import { UUID } from 'io-ts-types/lib/UUID';
+import { type } from 'os';
 
 import {
     ResearchCancelCommand,
+    ResearchFinishCommand,
     ResearchStartCommand,
 } from '../src/planet/commands';
 import {
     InvalidLevelException,
     PlanetAlreadyResearchingException,
     PlanetNotEnoughResourcesException,
+    PlanetNotFinishedResearchingException,
     PlanetNotResearchingException,
     RequirementsAreNotMeetException,
     TechnologyNotFoundException,
@@ -17,7 +20,7 @@ import { Resources } from '../src/shared/resources';
 
 import './jest-extender';
 import { PlanetTestModule } from './PlanetTestModule';
-import { failure, generateUUID, int, success } from './utils';
+import { ArgsType, failure, generateUUID, int, success } from './utils';
 
 describe('PlanetModule', () => {
     let module: PlanetTestModule;
@@ -40,6 +43,11 @@ describe('PlanetModule', () => {
             new ResearchCancelCommand({ ms: module.clock.now(), planetId }),
         );
 
+    const finish = (planetId: UUID) =>
+        module.execute(
+            new ResearchFinishCommand({ ms: module.clock.now(), planetId }),
+        );
+
     const mockResources = async (planetId: UUID) => {
         await module.mockBuildings(planetId, {
             MetalMine: 20,
@@ -50,12 +58,9 @@ describe('PlanetModule', () => {
         module.clock.fastForwardOneMonth();
     };
 
-    interface Payload {
-        planetId: UUID;
-        techId: string;
-        level: number;
+    type Payload = ArgsType<typeof researchStart>[0] & {
         cost: Resources;
-    }
+    };
 
     const canStart = async ({ planetId, techId, level, cost }: Payload) => {
         await mockResources(planetId);
@@ -82,7 +87,7 @@ describe('PlanetModule', () => {
         const duration = research.end - research.start;
         // duration is positive
         expect(duration).toBeGreaterThan(0);
-        return research;
+        return { ...research, duration };
     };
 
     const canCancel = async (options: Payload) => {
@@ -98,9 +103,21 @@ describe('PlanetModule', () => {
         expect(restored).toBeResources(options.cost);
     };
 
+    const canFinish = async (options: Payload) => {
+        const { duration } = await canStart(options);
+        module.clock.fastForward(duration);
+        const request = finish(options.planetId);
+        await success(request);
+
+        const planet = await module.getPlanet(options.planetId);
+        expect(planet.research).toBeNull();
+        expect(planet.levels[options.techId]).toBe(options.level);
+    };
+
     const TestResearch = (options: Payload) => ({
         canStart: () => canStart(options),
         canCancel: () => canCancel(options),
+        canFinish: () => canFinish(options),
     });
 
     beforeEach(async () => {
@@ -193,6 +210,13 @@ describe('PlanetModule', () => {
             cost: Resources.Partial({ metal: 1000 }),
         });
 
+        const armour2 = TestResearch({
+            planetId,
+            techId: 'ArmourTechnology',
+            level: 2,
+            cost: Resources.Partial({ metal: 2000 }),
+        });
+
         it('can start researching EnergyTechnology', () => energy1.canStart());
 
         it('can start researching ArmourTechnology', () => armour1.canStart());
@@ -222,8 +246,33 @@ describe('PlanetModule', () => {
             it('can cancel ArmourTechnology', () => armour1.canCancel());
         });
 
+        describe('Finish', () => {
+            it('cannot finish if not researching', async () => {
+                const beforePlanet = await module.getPlanet(planetId);
+                expect(beforePlanet.research).toBeNull();
+
+                const request = finish(planetId);
+                await failure(request, PlanetNotResearchingException);
+            });
+
+            it('cannot finish research before it ends', async () => {
+                await energy1.canStart();
+                module.clock.fastForward(1);
+
+                const request = finish(planetId);
+                await failure(request, PlanetNotFinishedResearchingException);
+            });
+
+            it('can finish EnergyTechnology@1', () => energy1.canFinish());
+            it('can finish ArmourTechnology@1', () => armour1.canFinish());
+            // can finish other levels
+            it('can finish ArmourTechnology@2', async () => {
+                await armour1.canFinish();
+                await armour2.canFinish();
+            });
+        });
+
         // TODO same cost resources
-        // TODO finish
 
         it('research level must be +1 than current level', async () => {
             const beforePlanet = await module.getPlanet(planetId);
@@ -240,16 +289,14 @@ describe('PlanetModule', () => {
         describe('Duration', () => {
             it('EnergyTechnology has same duration', async () => {
                 await module.mockBuildings(planetId, { ResearchLab: 1 });
-                const { end, start } = await energy1.canStart();
-                const duration = end - start;
+                const { duration } = await energy1.canStart();
                 // tslint:disable-next-line: no-magic-numbers
                 expect(duration).toBe(1440000);
             });
 
             it('ArmourTechnology has same duration', async () => {
                 await module.mockBuildings(planetId, { ResearchLab: 2 });
-                const { end, start } = await armour1.canStart();
-                const duration = end - start;
+                const { duration } = await armour1.canStart();
                 // tslint:disable-next-line: no-magic-numbers
                 expect(duration).toBe(1200000);
             });
@@ -263,9 +310,8 @@ describe('PlanetModule', () => {
                     await module.mockBuildings(planetId, {
                         ResearchLab: level,
                     });
-                    const { end, start } = await energy1.canStart();
+                    const { duration } = await energy1.canStart();
                     await success(cancel(planetId));
-                    const duration = end - start;
                     expect(duration).toBeLessThan(lastDuration);
                     const speed = 1 + level;
                     if (level > 1) {
@@ -277,7 +323,7 @@ describe('PlanetModule', () => {
                 }
             });
 
-            it.todo('Intergalactic Researcg Network');
+            it.todo('Intergalactic Research Network');
         });
     });
 });
