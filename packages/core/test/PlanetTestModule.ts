@@ -160,4 +160,30 @@ export class PlanetTestModule {
     public getPlanetByPoint(point: PointT) {
         return niceError(this.planetRepo.getByPoint(point));
     }
+
+    public async expectImprovesSpeed(options: {
+        planetId: UUID;
+        buildingId: string;
+        speed: (level: number) => number;
+        duration: () => Promise<number>;
+    }) {
+        const MAX_LEVEL = 30;
+        let lastDuration: number = Number.POSITIVE_INFINITY;
+        let mass: number = 0;
+
+        for (let level = 1; level <= MAX_LEVEL; level += 1) {
+            await this.mockBuildings(options.planetId, {
+                [options.buildingId]: level,
+            });
+            const duration = await options.duration();
+            expect(duration).toBeLessThan(lastDuration);
+            const speed = options.speed(level);
+            if (level > 1) {
+                expect(duration * speed).toBeApprox(mass);
+            } else {
+                mass = duration * speed;
+            }
+            lastDuration = duration;
+        }
+    }
 }

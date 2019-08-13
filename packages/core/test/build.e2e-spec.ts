@@ -50,6 +50,21 @@ describe('PlanetModule', () => {
             new BuildFinishCommand({ ms: module.clock.now(), planetId }),
         );
 
+    const peekDuration = async (options: {
+        planetId: UUID;
+        buildingId: string;
+        level: number;
+    }) => {
+        await success(build(options));
+        const { construction } = await module.getPlanet(options.planetId);
+        if (!construction) {
+            return fail('planet construction not found!');
+        }
+        const duration = construction.end - construction.start;
+        await success(cancel(options.planetId));
+        return duration;
+    };
+
     const TestBuilding = (options: {
         planetId: UUID;
         buildingId: string;
@@ -294,8 +309,9 @@ describe('PlanetModule', () => {
         });
 
         it.todo('can dismantle a building');
-        it.todo('robotics factory level improves building speed');
-        it.todo('nanite factory level improves building speed');
+
+        it.todo('has same costs');
+        it.todo('has same duration');
 
         // TODO another module
         it.todo('new planet fields is a function of diameter');
@@ -327,7 +343,6 @@ describe('PlanetModule', () => {
             planetId,
             buildingId: 'Shipyard',
             level: 1,
-            duration: 864000,
             cost: Resources.Partial({
                 metal: 400,
                 crystal: 200,
@@ -339,12 +354,8 @@ describe('PlanetModule', () => {
             await module.mockBuildings(planetId, {
                 // mock shipyard requirements
                 RoboticsFactory: 2,
-                // give 100 deuterium
-                DeuteriumSynthesizer: 1,
-                // add solar plant to have enough energy for producing deuterium
-                SolarPlant: 5,
             });
-            module.clock.fastForwardOneWeek();
+            await module.mockResources(planetId);
             await shipyard.canStart();
         });
 
@@ -370,5 +381,41 @@ describe('PlanetModule', () => {
             await module.mockResources(planetId);
             await nanite.canStart();
         });
+    });
+
+    describe('Duration', () => {
+        const planetId = generateUUID();
+
+        beforeEach(async () => {
+            module = new PlanetTestModule();
+            await module.init();
+            await module.createPlanet(planetId);
+            await module.mockBuildings(planetId, { DeuteriumTank: 9 });
+            await module.mockResources(planetId);
+        });
+
+        const duration = () =>
+            peekDuration({
+                planetId,
+                buildingId: 'DeuteriumTank',
+                level: 10,
+            });
+
+        it(`RoboticsFactory level improves building speed`, () =>
+            module.expectImprovesSpeed({
+                planetId,
+                buildingId: 'RoboticsFactory',
+                speed: level => 1 + level,
+                duration,
+            }));
+
+        const BASE_SPEED = 2;
+        it(`NaniteFactory level improves building speed`, () =>
+            module.expectImprovesSpeed({
+                planetId,
+                buildingId: 'NaniteFactory',
+                speed: level => Math.pow(BASE_SPEED, level),
+                duration,
+            }));
     });
 });

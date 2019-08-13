@@ -37,7 +37,9 @@ import {
     DeuteriumTank,
     MetalMine,
     MetalStorage,
+    NaniteFactory,
     ResearchLab,
+    RoboticsFactory,
     SolarPlant,
 } from './buildings';
 import { Warehouse } from './buildings/Warehouse';
@@ -230,7 +232,11 @@ export class PlanetModel extends AggregateRoot implements PlanetT {
             throw new PlanetNotEnoughFieldsException();
         }
 
-        const buildingSpeed = 1; // TODO universe, robots, nanite
+        // TODO universe, robots, nanite
+        const baseNaniteSpeed = 2;
+        const buildingSpeed =
+            (1 + this.get(RoboticsFactory).level) *
+            Math.pow(baseNaniteSpeed, this.get(NaniteFactory).level);
         const event = new BuildStartedEvent({
             ms: now,
             planetId: this.id,

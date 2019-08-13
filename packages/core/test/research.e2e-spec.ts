@@ -310,27 +310,17 @@ describe('PlanetModule', () => {
                 expect(duration).toBe(1200000);
             });
 
-            it('ResearchLab improves research speed', async () => {
-                let lastDuration: number = Number.POSITIVE_INFINITY;
-                let mass: number = 0;
-
-                const MAX_LEVEL = 30;
-                for (let level = 1; level <= MAX_LEVEL; level += 1) {
-                    await module.mockBuildings(planetId, {
-                        ResearchLab: level,
-                    });
-                    const { duration } = await energy1.canStart();
-                    await success(cancel(planetId));
-                    expect(duration).toBeLessThan(lastDuration);
-                    const speed = 1 + level;
-                    if (level > 1) {
-                        expect(duration * speed).toBeApprox(mass);
-                    } else {
-                        mass = duration * speed;
-                    }
-                    lastDuration = duration;
-                }
-            });
+            it('ResearchLab improves research speed', () =>
+                module.expectImprovesSpeed({
+                    planetId,
+                    buildingId: 'ResearchLab',
+                    speed: level => 1 + level,
+                    duration: async () => {
+                        const { duration } = await energy1.canStart();
+                        await success(cancel(planetId));
+                        return duration;
+                    },
+                }));
 
             it.todo('Intergalactic Research Network');
         });
