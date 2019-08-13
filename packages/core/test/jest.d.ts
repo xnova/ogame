@@ -5,6 +5,7 @@ import { Resources } from '../src/shared/resources';
 declare global {
     namespace jest {
         interface Matchers<R> {
+            toBeApprox(value: number): CustomMatcherResult;
             toBeResources(value: Resources): CustomMatcherResult;
         }
     }

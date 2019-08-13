@@ -35,6 +35,7 @@ import {
     DeuteriumTank,
     MetalMine,
     MetalStorage,
+    ResearchLab,
     SolarPlant,
 } from './buildings';
 import { Warehouse } from './buildings/Warehouse';
@@ -209,7 +210,7 @@ export class PlanetModel extends AggregateRoot implements PlanetT {
     }
 
     public buildStart(building: Building, now: number) {
-        // TODO logic...
+        // logic...
         if (this.construction) {
             throw new PlanetAlreadyBuildingException();
         }
@@ -251,7 +252,7 @@ export class PlanetModel extends AggregateRoot implements PlanetT {
     }
 
     public buildCancel(now: number) {
-        // TODO logic...
+        // logic...
         const construction = this.construction;
         if (!construction) {
             throw new PlanetNotBuildingException();
@@ -273,7 +274,7 @@ export class PlanetModel extends AggregateRoot implements PlanetT {
     }
 
     public buildFinish(now: number) {
-        // TODO logic...
+        // logic...
         const construction = this.construction;
         if (!construction) {
             throw new PlanetNotBuildingException();
@@ -300,7 +301,7 @@ export class PlanetModel extends AggregateRoot implements PlanetT {
     }
 
     public researchStart(technology: Technology, now: number) {
-        // TODO logic...
+        // logic...
         if (this.research) {
             throw new PlanetAlreadyResearchingException();
         }
@@ -316,9 +317,9 @@ export class PlanetModel extends AggregateRoot implements PlanetT {
             throw new PlanetNotEnoughResourcesException();
         }
 
-        // const researchSpeed = 1; // TODO universe, lab, irn
-        // const duration = technology.getDurationMs(researchSpeed);
-        const duration = 1;
+        // TODO universe, lab, irn
+        const researchSpeed = 1 + this.get(ResearchLab).level;
+        const duration = technology.getDurationMs(researchSpeed);
         const event = new ResearchStartedEvent({
             ms: now,
             planetId: this.id,
@@ -342,7 +343,7 @@ export class PlanetModel extends AggregateRoot implements PlanetT {
     }
 
     public researchCancel(now: number) {
-        // TODO logic...
+        // logic...
         const research = this.research;
         if (!research) {
             throw new PlanetNotResearchingException();

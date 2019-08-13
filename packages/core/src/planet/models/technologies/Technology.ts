@@ -10,10 +10,12 @@ import * as t from 'io-ts';
 
 import { Resources } from '../../../shared/resources';
 import { valueOrThrow } from '../../../shared/types';
+import { HOUR } from '../../../utils';
 import { InvalidLevelException } from '../../exceptions';
 import { Unit } from '../defenses/Unit';
 
 const DEFAULT_COST_FACTOR = 2;
+const STRUCURAL_INTEGRITY_PER_HOUR = 1000;
 
 export abstract class Technology extends Unit {
     public readonly level: t.Int;
@@ -42,6 +44,17 @@ export abstract class Technology extends Unit {
     public getAccumulatedCost(): Resources {
         const { level, costFactor: k } = this;
         return this.baseCost.map(b => (b * k * (k ** level - 1)) / (k - 1));
+    }
+
+    /**
+     * https://ogame.fandom.com/wiki/Research
+     */
+    public getDurationMs(researchSpeed: number): number {
+        const cost = this.getCost();
+        const structuralIntegrity = cost.metal + cost.crystal;
+        const baseHours = structuralIntegrity / STRUCURAL_INTEGRITY_PER_HOUR;
+        const hours = baseHours / researchSpeed;
+        return hours * HOUR;
     }
 }
 
