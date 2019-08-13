@@ -11,7 +11,10 @@ import { UUID } from 'io-ts-types/lib/UUID';
 
 import { Clock } from '../src/planet/clock';
 import { PlayerJoinCommand } from '../src/planet/commands';
-import { BuildFinishedEvent } from '../src/planet/events';
+import {
+    BuildFinishedEvent,
+    ResearchFinishedEvent,
+} from '../src/planet/events';
 import { CommandHandlers } from '../src/planet/handlers';
 import { PlanetRepository } from '../src/planet/planet.repository';
 import { PointT } from '../src/shared/Point';
@@ -108,6 +111,46 @@ export class PlanetTestModule {
                 }),
         );
         events.forEach(event => this.publish(event));
+    }
+
+    public async mockTechnologies(
+        planetId: UUID,
+        technologies: Record<string, number>,
+    ) {
+        const events = Object.entries(technologies).map(
+            ([techId, level]) =>
+                new ResearchFinishedEvent({
+                    ms: this.clock.now(),
+                    planetId,
+                    techId,
+                    level: int(level),
+                }),
+        );
+        events.forEach(event => this.publish(event));
+    }
+
+    public async mockResources(planetId: UUID) {
+        const { levels } = await this.getPlanet(planetId);
+        await this.mockBuildings(planetId, {
+            MetalMine: 50,
+            CrystalMine: 50,
+            DeuteriumSynthesizer: 50,
+            SolarPlant: 70,
+            MetalStorage: 10,
+            CrystalStorage: 10,
+            DeuteriumTank: 10,
+        });
+        this.clock.fastForwardOneMonth();
+        // restore original levels
+        await this.mockBuildings(planetId, {
+            MetalMine: levels.MetalMine || 0,
+            CrystalMine: levels.CrystalMine || 0,
+            DeuteriumSynthesizer: levels.DeuteriumSynthesizer || 0,
+            SolarPlant: levels.SolarPlant || 0,
+            MetalStorage: levels.MetalStorage || 0,
+            CrystalStorage: levels.CrystalStorage || 0,
+            DeuteriumTank: levels.DeuteriumTank || 0,
+        });
     }
 
     public getPlanetById(id: UUID) {

@@ -54,7 +54,7 @@ describe('PlanetModule', () => {
         planetId: UUID;
         buildingId: string;
         level: number;
-        duration: number;
+        duration?: number;
         cost: Resources;
     }): {
         canStart: () => Promise<any>;
@@ -69,7 +69,9 @@ describe('PlanetModule', () => {
             expect(construction.id).toBe(options.buildingId);
             expect(construction.level).toBe(options.level);
             const duration = construction.end - construction.start;
-            expect(duration).toBe(options.duration);
+            if (options.duration) {
+                expect(duration).toBe(options.duration);
+            }
         };
         const canStart = async () => {
             const beforePlanet = await module.getPlanet(planetId);
@@ -103,7 +105,7 @@ describe('PlanetModule', () => {
             expect(restored).toBeResources(options.cost);
         };
         const canFinish = async () => {
-            module.clock.fastForward(options.duration);
+            module.clock.fastForward(options.duration || 0);
             const request = finish(planetId);
             await success(request);
 
@@ -344,6 +346,29 @@ describe('PlanetModule', () => {
             });
             module.clock.fastForwardOneWeek();
             await shipyard.canStart();
+        });
+
+        const nanite = TestBuilding({
+            planetId,
+            buildingId: 'NaniteFactory',
+            level: 1,
+            cost: Resources.Partial({
+                metal: 1000000,
+                crystal: 500000,
+                deuterium: 100000,
+            }),
+        });
+
+        it('can build a NaniteFactory when requirements are meet', async () => {
+            // mock nanite requirements
+            await module.mockBuildings(planetId, {
+                RoboticsFactory: 10,
+            });
+            await module.mockTechnologies(planetId, {
+                ComputerTechnology: 10,
+            });
+            await module.mockResources(planetId);
+            await nanite.canStart();
         });
     });
 });

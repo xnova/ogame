@@ -46,13 +46,13 @@ describe('PlanetModule', () => {
     const getProduction = async (
         mines: Record<string, number>,
         time: number = HOUR,
-    ): Promise<Resources> => {
+    ): Promise<{ produced: Resources; productionFactor: number }> => {
         const beforePlanet = await module.getPlanet(planetId);
         await module.mockBuildings(planetId, mines);
         module.clock.fastForward(time);
-        const { resources } = await module.getPlanet(planetId);
-        const produced = resources.subtract(beforePlanet.resources);
-        return produced;
+        const planet = await module.getPlanet(planetId);
+        const produced = planet.resources.subtract(beforePlanet.resources);
+        return { produced, productionFactor: planet.productionFactor };
     };
 
     beforeEach(async () => {
@@ -68,7 +68,7 @@ describe('PlanetModule', () => {
         });
 
         it('new planet has basic income', async () => {
-            const produced = await getProduction({});
+            const { produced } = await getProduction({});
             expect(produced).toBeResources(BASIC_INCOME);
         });
 
@@ -77,13 +77,13 @@ describe('PlanetModule', () => {
             buildingId: string,
         ) => {
             it(`${buildingId} cannot produce ${resource} without energy`, async () => {
-                const produced = await getProduction({ [buildingId]: 1 });
+                const { produced, productionFactor } = await getProduction({
+                    [buildingId]: 1,
+                });
                 const producedByMine = produced.subtract(BASIC_INCOME);
                 expect(producedByMine[resource]).toBe(0);
                 expect(produced.energy).toBe(0);
-
-                const planet = await module.getPlanet(planetId);
-                expect(planet.productionFactor).toBe(0);
+                expect(productionFactor).toBe(0);
             });
         };
 
@@ -97,16 +97,14 @@ describe('PlanetModule', () => {
             expected: number,
         ) => {
             it(`${buildingId} produces ${resource} given enough energy`, async () => {
-                const produced = await getProduction({
+                const { produced, productionFactor } = await getProduction({
                     [buildingId]: 1,
                     SolarPlant: 10,
                 });
                 const producedByMine = produced.subtract(BASIC_INCOME);
                 expect(producedByMine[resource]).toBe(expected);
                 expect(produced.energy).toBe(0);
-
-                const planet = await module.getPlanet(planetId);
-                expect(planet.productionFactor).toBe(1);
+                expect(productionFactor).toBe(1);
             });
         };
 
@@ -131,10 +129,11 @@ describe('PlanetModule', () => {
             // even if no enough energy is provided
             let metal: number = 0;
             let crystal: number = Number.POSITIVE_INFINITY;
+            let lastFactor: number = Number.POSITIVE_INFINITY;
 
             const atLevel = (level: number) => {
                 it(`at level ${level}`, async () => {
-                    const produced = await getProduction({
+                    const { produced, productionFactor } = await getProduction({
                         MetalMine: level,
                         CrystalMine: 1,
                         SolarPlant: 5,
@@ -147,6 +146,8 @@ describe('PlanetModule', () => {
                     // at first, when given enough energy, crystal is constant
                     expect(producedByMine.crystal).toBeLessThanOrEqual(crystal);
                     crystal = producedByMine.crystal;
+                    expect(productionFactor).toBeLessThanOrEqual(lastFactor);
+                    lastFactor = productionFactor;
                 });
             };
 

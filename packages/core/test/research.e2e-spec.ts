@@ -1,5 +1,4 @@
 import { UUID } from 'io-ts-types/lib/UUID';
-import { type } from 'os';
 
 import {
     ResearchCancelCommand,
@@ -21,6 +20,25 @@ import { Resources } from '../src/shared/resources';
 import './jest-extender';
 import { PlanetTestModule } from './PlanetTestModule';
 import { ArgsType, failure, generateUUID, int, success } from './utils';
+
+const TECHNOLOGIES = [
+    'EnergyTechnology',
+    'LaserTechnology',
+    'IonTechnology',
+    'HyperspaceTechnology',
+    'PlasmaTechnology',
+    'CombustionDrive',
+    'ImpulseDrive',
+    'HyperspaceDrive',
+    'EspionageTechnology',
+    'ComputerTechnology',
+    'Astrophysics',
+    'IntergalacticResearchNetwork',
+    'WeaponsTechnology',
+    'ShieldingTechnology',
+    'ArmourTechnology',
+    'GravitonTechnology',
+];
 
 describe('PlanetModule', () => {
     let module: PlanetTestModule;
@@ -48,22 +66,12 @@ describe('PlanetModule', () => {
             new ResearchFinishCommand({ ms: module.clock.now(), planetId }),
         );
 
-    const mockResources = async (planetId: UUID) => {
-        await module.mockBuildings(planetId, {
-            MetalMine: 20,
-            CrystalMine: 20,
-            DeuteriumSynthesizer: 20,
-            SolarPlant: 35,
-        });
-        module.clock.fastForwardOneMonth();
-    };
-
     type Payload = ArgsType<typeof researchStart>[0] & {
         cost: Resources;
     };
 
     const canStart = async ({ planetId, techId, level, cost }: Payload) => {
-        await mockResources(planetId);
+        await module.mockResources(planetId);
         const beforePlanet = await module.getPlanet(planetId);
         expect(beforePlanet.research).toBeNull();
 
@@ -176,8 +184,9 @@ describe('PlanetModule', () => {
                 });
             };
 
-            noLab('EnergyTechnology');
-            noLab('ArmourTechnology');
+            for (const techId of TECHNOLOGIES) {
+                noLab(techId);
+            }
 
             // TODO cannot research other technologies without lab
             // even if not in requirements and other requirements are meet
