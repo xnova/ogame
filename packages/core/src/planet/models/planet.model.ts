@@ -12,6 +12,7 @@ import {
     BuildFinishedEvent,
     BuildStartedEvent,
     PlayerJoinedEvent,
+    ResearchCancelledEvent,
     ResearchStartedEvent,
 } from '../events';
 import {
@@ -21,6 +22,7 @@ import {
     PlanetNotEnoughFieldsException,
     PlanetNotEnoughResourcesException,
     PlanetNotFinishedBuildingException,
+    PlanetNotResearchingException,
     RequirementsAreNotMeetException,
     TooMuchLevelException,
 } from '../exceptions';
@@ -337,6 +339,28 @@ export class PlanetModel extends AggregateRoot implements PlanetT {
         };
         const technology = createTechnology(payload.techId, payload.level);
         this.withdraw(technology.getCost());
+    }
+
+    public researchCancel(now: number) {
+        // TODO logic...
+        const research = this.research;
+        if (!research) {
+            throw new PlanetNotResearchingException();
+        }
+
+        const event = new ResearchCancelledEvent({
+            ms: now,
+            planetId: this.id,
+            techId: research.id,
+            level: research.level,
+        });
+        this.apply(event);
+    }
+
+    protected onResearchCancelledEvent({ payload }: ResearchCancelledEvent) {
+        this.research = null;
+        const technology = createTechnology(payload.techId, payload.level);
+        this.deposit(technology.getCost());
     }
 
     public loadFromHistory(history: PlanetEvent[], now: number = Date.now()) {
