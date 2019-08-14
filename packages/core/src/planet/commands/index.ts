@@ -5,3 +5,5 @@ export * from './player-join.command';
 export * from './research-cancel.command';
 export * from './research-finish.command';
 export * from './research-start.command';
+export * from './shipyard-finish.command';
+export * from './shipyard-start.command';

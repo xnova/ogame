@@ -7,6 +7,18 @@ export const add = (a: number, b: number) => a + b;
 
 export const sum = (xs: number[]): number => xs.reduce(add, 0);
 
+/**
+ * https://en.wikipedia.org/wiki/Linear_interpolation
+ */
+export const lerp = (v0: number, v1: number, t: number): number =>
+    (1 - t) * v0 + t * v1;
+
+/**
+ * https://en.wikipedia.org/wiki/Clamping_(graphics)
+ */
+export const clamp = (n: number, min: number, max: number): number =>
+    Math.min(Math.max(n, min), max);
+
 // TODO this belongs to utils? common?
 
 const MS_IN_SECOND = 1000;

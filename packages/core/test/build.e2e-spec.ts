@@ -8,11 +8,11 @@ import {
 import {
     BuildingNotFoundException,
     InvalidLevelException,
-    PlanetAlreadyBuildingException,
-    PlanetNotBuildingException,
+    PlanetAlreadyBusyException,
+    PlanetNotBusyException,
     PlanetNotEnoughFieldsException,
     PlanetNotEnoughResourcesException,
-    PlanetNotFinishedBuildingException,
+    PlanetNotFinishedException,
     RequirementsAreNotMeetException,
     TooMuchLevelException,
 } from '../src/planet/exceptions';
@@ -151,7 +151,7 @@ describe('PlanetModule', () => {
             expect(beforePlanet.construction).toBeNull();
 
             const request = cancel(planetId);
-            await failure(request, PlanetNotBuildingException);
+            await failure(request, PlanetNotBusyException);
         });
 
         it('cannot build non existing building', async () => {
@@ -190,7 +190,7 @@ describe('PlanetModule', () => {
                 buildingId: 'CrystalMine',
                 level: 1,
             });
-            await failure(request, PlanetAlreadyBuildingException);
+            await failure(request, PlanetAlreadyBusyException);
         });
 
         // In case CancelCommand carries id of construction
@@ -240,14 +240,14 @@ describe('PlanetModule', () => {
             expect(beforePlanet.construction).toBeNull();
 
             const request = finish(planetId);
-            await failure(request, PlanetNotBuildingException);
+            await failure(request, PlanetNotBusyException);
         });
 
         it('cannot finish building before construction ends', async () => {
             await metalMine.canStart();
 
             const request = finish(planetId);
-            await failure(request, PlanetNotFinishedBuildingException);
+            await failure(request, PlanetNotFinishedException);
         });
 
         it('can finish building when construction ends', metalMine.canFinish);

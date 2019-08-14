@@ -14,6 +14,7 @@ import { PlayerJoinCommand } from '../src/planet/commands';
 import {
     BuildFinishedEvent,
     ResearchFinishedEvent,
+    ShipyardFinishedEvent,
 } from '../src/planet/events';
 import { CommandHandlers } from '../src/planet/handlers';
 import { PlanetRepository } from '../src/planet/planet.repository';
@@ -129,6 +130,19 @@ export class PlanetTestModule {
         events.forEach(event => this.publish(event));
     }
 
+    public async mockShipyard(planetId: UUID, ships: Record<string, number>) {
+        const events = Object.entries(ships).map(
+            ([unitId, quantity]) =>
+                new ShipyardFinishedEvent({
+                    ms: this.clock.now(),
+                    planetId,
+                    unitId,
+                    quantity: int(quantity),
+                }),
+        );
+        events.forEach(event => this.publish(event));
+    }
+
     public async mockResources(planetId: UUID) {
         const { levels } = await this.getPlanet(planetId);
         await this.mockBuildings(planetId, {
@@ -167,7 +181,7 @@ export class PlanetTestModule {
         speed: (level: number) => number;
         duration: () => Promise<number>;
     }) {
-        const MAX_LEVEL = 30;
+        const MAX_LEVEL = 20;
         let lastDuration: number = Number.POSITIVE_INFINITY;
         let mass: number = 0;
 

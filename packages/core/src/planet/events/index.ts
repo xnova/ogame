@@ -5,3 +5,5 @@ export * from './player-joined.event';
 export * from './research-cancelled.event';
 export * from './research-finished.event';
 export * from './research-started.event';
+export * from './shipyard-finished.event';
+export * from './shipyard-started.event';

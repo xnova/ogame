@@ -7,10 +7,10 @@ import {
 } from '../src/planet/commands';
 import {
     InvalidLevelException,
-    PlanetAlreadyResearchingException,
+    PlanetAlreadyBusyException,
+    PlanetNotBusyException,
     PlanetNotEnoughResourcesException,
-    PlanetNotFinishedResearchingException,
-    PlanetNotResearchingException,
+    PlanetNotFinishedException,
     RequirementsAreNotMeetException,
     TechnologyNotFoundException,
     TooMuchLevelException,
@@ -75,11 +75,7 @@ describe('PlanetModule', () => {
         const beforePlanet = await module.getPlanet(planetId);
         expect(beforePlanet.research).toBeNull();
 
-        const request = researchStart({
-            planetId,
-            techId,
-            level,
-        });
+        const request = researchStart({ planetId, techId, level });
         await success(request);
 
         const { research, resources } = await module.getPlanet(planetId);
@@ -237,7 +233,7 @@ describe('PlanetModule', () => {
                 techId: 'ArmourTechnology',
                 level: 1,
             });
-            await failure(request, PlanetAlreadyResearchingException);
+            await failure(request, PlanetAlreadyBusyException);
         });
 
         it.todo('cannot research if another Colony is researching');
@@ -248,7 +244,7 @@ describe('PlanetModule', () => {
                 expect(beforePlanet.research).toBeNull();
 
                 const request = cancel(planetId);
-                await failure(request, PlanetNotResearchingException);
+                await failure(request, PlanetNotBusyException);
             });
 
             it('can cancel EnergyTechnology', () => energy1.canCancel());
@@ -261,7 +257,7 @@ describe('PlanetModule', () => {
                 expect(beforePlanet.research).toBeNull();
 
                 const request = finish(planetId);
-                await failure(request, PlanetNotResearchingException);
+                await failure(request, PlanetNotBusyException);
             });
 
             it('cannot finish research before it ends', async () => {
@@ -269,7 +265,7 @@ describe('PlanetModule', () => {
                 module.clock.fastForward(1);
 
                 const request = finish(planetId);
-                await failure(request, PlanetNotFinishedResearchingException);
+                await failure(request, PlanetNotFinishedException);
             });
 
             it('can finish EnergyTechnology@1', () => energy1.canFinish());

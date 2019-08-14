@@ -5,7 +5,7 @@ import { UUID } from 'io-ts-types/lib/UUID';
 
 import { Resources, ResourcesC } from '../../shared/resources';
 import { valueOrThrow } from '../../shared/types';
-import { HOUR } from '../../utils';
+import { clamp, HOUR, lerp } from '../../utils';
 import { PlayerJoinCommandT } from '../commands';
 import {
     BuildCancelledEvent,
@@ -15,16 +15,16 @@ import {
     ResearchCancelledEvent,
     ResearchFinishedEvent,
     ResearchStartedEvent,
+    ShipyardFinishedEvent,
+    ShipyardStartedEvent,
 } from '../events';
 import {
-    PlanetAlreadyBuildingException,
-    PlanetAlreadyResearchingException,
-    PlanetNotBuildingException,
+    InvalidLevelException,
+    PlanetAlreadyBusyException,
+    PlanetNotBusyException,
     PlanetNotEnoughFieldsException,
     PlanetNotEnoughResourcesException,
-    PlanetNotFinishedBuildingException,
-    PlanetNotFinishedResearchingException,
-    PlanetNotResearchingException,
+    PlanetNotFinishedException,
     RequirementsAreNotMeetException,
     TooMuchLevelException,
 } from '../exceptions';
@@ -40,12 +40,16 @@ import {
     NaniteFactory,
     ResearchLab,
     RoboticsFactory,
+    Shipyard,
     SolarPlant,
 } from './buildings';
 import { Warehouse } from './buildings/Warehouse';
 import { createBuilding } from './createBuilding';
 import { createTechnology } from './createTechnology';
+import { createUnit } from './createUnit';
+import { Defense } from './defenses/Defense';
 import { Unit } from './defenses/Unit';
+import { Ship } from './ships/Ship';
 import { Technology } from './technologies';
 
 const ConstructionC = t.type({
@@ -56,6 +60,16 @@ const ConstructionC = t.type({
 });
 
 type ConstructionT = t.TypeOf<typeof ConstructionC>;
+
+// TODO abstract construction & shipyard???
+const ShipyardC = t.type({
+    id: t.string,
+    quantity: t.Int,
+    start: t.number,
+    end: t.number,
+});
+
+type ShipyardT = t.TypeOf<typeof ShipyardC>;
 
 export const PlanetC = t.type({
     id: UUID,
@@ -68,6 +82,7 @@ export const PlanetC = t.type({
     construction: t.union([t.null, ConstructionC]),
     research: t.union([t.null, ConstructionC]),
     levels: t.record(t.string, t.Int),
+    quantities: t.record(t.string, t.Int),
 });
 
 export type PlanetT = t.TypeOf<typeof PlanetC>;
@@ -100,7 +115,9 @@ export class PlanetModel extends AggregateRoot implements PlanetT {
     public occupiedFields: t.Int;
     public construction: ConstructionT | null;
     public research: ConstructionT | null;
+    public shipyard: ShipyardT | null;
     public levels: Record<string, t.Int>;
+    public quantities: Record<string, t.Int>;
 
     constructor(public readonly id: UUID) {
         super();
@@ -113,11 +130,17 @@ export class PlanetModel extends AggregateRoot implements PlanetT {
         this.occupiedFields = 0 as any;
         this.construction = null;
         this.research = null;
+        this.shipyard = null;
         this.levels = {};
+        this.quantities = {};
     }
 
-    private getLevel(buildingId: string): number {
-        return this.levels[buildingId] || 0;
+    private getLevel(buildingId: string): t.Int {
+        return this.levels[buildingId] || int(0);
+    }
+
+    private getQuantity(id: string): t.Int {
+        return this.quantities[id] || int(0);
     }
 
     public get<T extends Unit>(type: Type<T>): T {
@@ -216,7 +239,7 @@ export class PlanetModel extends AggregateRoot implements PlanetT {
     public buildStart(building: Building, now: number) {
         // logic...
         if (this.construction) {
-            throw new PlanetAlreadyBuildingException();
+            throw new PlanetAlreadyBusyException();
         }
         if (!this.meetsRequirements(building)) {
             throw new RequirementsAreNotMeetException();
@@ -263,7 +286,7 @@ export class PlanetModel extends AggregateRoot implements PlanetT {
         // logic...
         const construction = this.construction;
         if (!construction) {
-            throw new PlanetNotBuildingException();
+            throw new PlanetNotBusyException();
         }
 
         const event = new BuildCancelledEvent({
@@ -285,10 +308,10 @@ export class PlanetModel extends AggregateRoot implements PlanetT {
         // logic...
         const construction = this.construction;
         if (!construction) {
-            throw new PlanetNotBuildingException();
+            throw new PlanetNotBusyException();
         }
         if (now < construction.end) {
-            throw new PlanetNotFinishedBuildingException();
+            throw new PlanetNotFinishedException();
         }
 
         const event = new BuildFinishedEvent({
@@ -311,7 +334,7 @@ export class PlanetModel extends AggregateRoot implements PlanetT {
     public researchStart(technology: Technology, now: number) {
         // logic...
         if (this.research) {
-            throw new PlanetAlreadyResearchingException();
+            throw new PlanetAlreadyBusyException('researching');
         }
         if (!this.meetsRequirements(technology)) {
             throw new RequirementsAreNotMeetException();
@@ -353,7 +376,7 @@ export class PlanetModel extends AggregateRoot implements PlanetT {
         // logic...
         const research = this.research;
         if (!research) {
-            throw new PlanetNotResearchingException();
+            throw new PlanetNotBusyException('researching');
         }
 
         const event = new ResearchCancelledEvent({
@@ -375,10 +398,10 @@ export class PlanetModel extends AggregateRoot implements PlanetT {
         // logic...
         const research = this.research;
         if (!research) {
-            throw new PlanetNotResearchingException();
+            throw new PlanetNotBusyException('researching');
         }
         if (now < research.end) {
-            throw new PlanetNotFinishedResearchingException();
+            throw new PlanetNotFinishedException('researching');
         }
         const event = new ResearchFinishedEvent({
             ms: now,
@@ -392,6 +415,82 @@ export class PlanetModel extends AggregateRoot implements PlanetT {
     protected onResearchFinishedEvent({ payload }: ResearchFinishedEvent) {
         this.research = null;
         this.levels[payload.techId] = payload.level;
+    }
+
+    public shipyardStart(unit: Ship | Defense, quantity: t.Int, now: number) {
+        // logic...
+        if (quantity < 1) {
+            // TODO not really level, its a quantity
+            throw new InvalidLevelException();
+        }
+        if (this.shipyard) {
+            throw new PlanetAlreadyBusyException();
+        }
+        if (!this.meetsRequirements(unit)) {
+            throw new RequirementsAreNotMeetException();
+        }
+        // TODO force max by tests
+        // const currentLevel: number = this.getLevel(technology.id);
+        // if (technology.level !== currentLevel + 1) {
+        //     throw new TooMuchLevelException();
+        // }
+        const cost = unit.getCost().multiply(quantity);
+        if (!this.resources.includes(cost)) {
+            throw new PlanetNotEnoughResourcesException();
+        }
+
+        // TODO universe, shipyard, nanite
+        const baseNaniteSpeed = 2;
+        const shipyardSpeed =
+            (1 + this.get(Shipyard).level) *
+            Math.pow(baseNaniteSpeed, this.get(NaniteFactory).level);
+        const duration = (HOUR * quantity) / shipyardSpeed; // TODO force var(quantity, unit) by tests
+        const event = new ShipyardStartedEvent({
+            ms: now,
+            planetId: this.id,
+            unitId: unit.id,
+            quantity,
+            start: now,
+            end: now + duration,
+        });
+        this.apply(event);
+    }
+
+    protected onShipyardStartedEvent({ payload }: ShipyardStartedEvent) {
+        this.shipyard = {
+            id: payload.unitId,
+            quantity: payload.quantity,
+            start: payload.start,
+            end: payload.end,
+        };
+        const unit = createUnit(payload.unitId);
+        const cost = unit.getCost().multiply(payload.quantity);
+        this.withdraw(cost);
+    }
+
+    public shipyardFinish(now: number) {
+        // logic...
+        const shipyard = this.shipyard;
+        if (!shipyard) {
+            throw new PlanetNotBusyException();
+        }
+        if (now < shipyard.end) {
+            throw new PlanetNotFinishedException();
+        }
+        const event = new ShipyardFinishedEvent({
+            ms: now,
+            planetId: this.id,
+            unitId: shipyard.id,
+            quantity: shipyard.quantity,
+        });
+        this.apply(event);
+    }
+
+    protected onShipyardFinishedEvent({
+        payload: { unitId, quantity },
+    }: ShipyardFinishedEvent) {
+        this.shipyard = null;
+        this.quantities[unitId] = (this.getQuantity(unitId) + quantity) as any;
     }
 
     public loadFromHistory(history: PlanetEvent[], now: number = Date.now()) {
@@ -417,5 +516,16 @@ export class PlanetModel extends AggregateRoot implements PlanetT {
         // produce resources until NOW
         this.produce(now - lastUpdate);
         lastUpdate = now;
+
+        // produce ships until NOW (LERP)
+        const { shipyard } = this;
+        if (shipyard) {
+            const duration = shipyard.end - shipyard.start;
+            const elapsed = now - shipyard.start;
+            const v0 = this.getQuantity(shipyard.id);
+            const v1 = v0 + shipyard.quantity;
+            const p = clamp(elapsed / duration, 0, 1);
+            this.quantities[shipyard.id] = Math.floor(lerp(v0, v1, p)) as any;
+        }
     }
 }

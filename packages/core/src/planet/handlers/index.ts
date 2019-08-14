@@ -5,6 +5,8 @@ import { PlayerJoinHandler } from './player-join.handler';
 import { ResearchCancelHandler } from './research-cancel.handler';
 import { ResearchFinishHandler } from './research-finish.handler';
 import { ResearchStartHandler } from './research-start.handler';
+import { ShipyardFinishHandler } from './shipyard-finish.handler';
+import { ShipyardStartHandler } from './shipyard-start.handler';
 
 export const CommandHandlers = [
     BuildCancelHandler,
@@ -14,4 +16,6 @@ export const CommandHandlers = [
     ResearchCancelHandler,
     ResearchFinishHandler,
     ResearchStartHandler,
+    ShipyardFinishHandler,
+    ShipyardStartHandler,
 ];
