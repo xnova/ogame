@@ -9,16 +9,9 @@
 import { Resources } from '../../../shared/resources';
 import { Shipyard } from '../buildings/Shipyard';
 
-import { Unit } from './Unit';
+import { ShipyardUnit } from './ShipyardUnit';
 
-export abstract class Defense extends Unit {
-    public cost: Resources;
-    public max: number;
-
-    public getCost(): Resources {
-        return this.cost;
-    }
-}
+export abstract class Defense extends ShipyardUnit {}
 
 Defense.prototype.name = 'Unnamed Defense';
 Defense.prototype.cost = Resources.Partial({
@@ -26,4 +19,3 @@ Defense.prototype.cost = Resources.Partial({
     crystal: 1,
 });
 Defense.prototype.requirements = [new Shipyard({ level: 1 })];
-Defense.prototype.max = Number.POSITIVE_INFINITY;

@@ -2,15 +2,14 @@ import { UnitNotFoundException } from '../exceptions';
 
 import * as defenses from './defenses';
 import { Defense } from './defenses/Defense';
+import { ShipyardUnit } from './defenses/ShipyardUnit';
 import * as ships from './ships';
 import { Ship } from './ships/Ship';
 
 const units = { ...ships, ...defenses };
 
-type Unit = Ship | Defense;
-
 // https://stackoverflow.com/a/35787628
-export function createUnit(className: string): Unit {
+export function createUnit(className: string): ShipyardUnit {
     const Type = (units as any)[className];
     if (!Type) {
         throw new UnitNotFoundException();

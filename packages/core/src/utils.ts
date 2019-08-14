@@ -17,7 +17,7 @@ export const lerp = (v0: number, v1: number, t: number): number =>
  * https://en.wikipedia.org/wiki/Clamping_(graphics)
  */
 export const clamp = (n: number, min: number, max: number): number =>
-    Math.min(Math.max(n, min), max);
+    Math.max(Math.min(n, max), min);
 
 // TODO this belongs to utils? common?
 

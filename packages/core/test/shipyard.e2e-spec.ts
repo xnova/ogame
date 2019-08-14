@@ -11,6 +11,7 @@ import {
     PlanetNotEnoughResourcesException,
     PlanetNotFinishedException,
     RequirementsAreNotMeetException,
+    TooMuchLevelException,
     UnitNotFoundException,
 } from '../src/planet/exceptions';
 import { Resources } from '../src/shared/resources';
@@ -356,7 +357,90 @@ describe('PlanetModule', () => {
 
         // TODO same cost resources
 
-        // TODO max small dome, large dome
+        describe('1 MAX ShieldDomes', () => {
+            beforeEach(async () => {
+                await module.mockResources(planetId);
+                // mocks requirements
+                await module.mockBuildings(planetId, { Shipyard: 6 });
+                await module.mockTechnologies(planetId, {
+                    ShieldingTechnology: 6,
+                });
+            });
+
+            it('cannot build more than 1 SmallShieldDome', async () => {
+                const beforePlanet = await module.getPlanet(planetId);
+                expect(beforePlanet.shipyard).toBeNull();
+
+                const request = start({
+                    planetId,
+                    unitId: 'SmallShieldDome',
+                    quantity: 2,
+                });
+                await failure(request, TooMuchLevelException);
+            });
+
+            it('cannot build more than 1 LargeShieldDome', async () => {
+                const beforePlanet = await module.getPlanet(planetId);
+                expect(beforePlanet.shipyard).toBeNull();
+
+                const request = start({
+                    planetId,
+                    unitId: 'LargeShieldDome',
+                    quantity: 2,
+                });
+                await failure(request, TooMuchLevelException);
+            });
+
+            it('cannot have more than 1 SmallShieldDome', async () => {
+                await module.mockShipyard(planetId, { SmallShieldDome: 1 });
+                const beforePlanet = await module.getPlanet(planetId);
+                expect(beforePlanet.shipyard).toBeNull();
+
+                const request = start({
+                    planetId,
+                    unitId: 'SmallShieldDome',
+                    quantity: 1,
+                });
+                await failure(request, TooMuchLevelException);
+            });
+
+            it('cannot have more than 1 LargeShieldDome', async () => {
+                await module.mockShipyard(planetId, { LargeShieldDome: 1 });
+                const beforePlanet = await module.getPlanet(planetId);
+                expect(beforePlanet.shipyard).toBeNull();
+
+                const request = start({
+                    planetId,
+                    unitId: 'LargeShieldDome',
+                    quantity: 1,
+                });
+                await failure(request, TooMuchLevelException);
+            });
+
+            it('can build exactly 1 SmallShieldDome', async () => {
+                const beforePlanet = await module.getPlanet(planetId);
+                expect(beforePlanet.shipyard).toBeNull();
+
+                const request = start({
+                    planetId,
+                    unitId: 'SmallShieldDome',
+                    quantity: 1,
+                });
+                await success(request);
+            });
+
+            it('can build exactly 1 LargeShieldDome', async () => {
+                const beforePlanet = await module.getPlanet(planetId);
+                expect(beforePlanet.shipyard).toBeNull();
+
+                const request = start({
+                    planetId,
+                    unitId: 'LargeShieldDome',
+                    quantity: 1,
+                });
+                await success(request);
+            });
+        });
 
         describe('Duration', () => {
             beforeEach(async () => {

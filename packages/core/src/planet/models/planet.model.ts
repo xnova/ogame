@@ -47,9 +47,8 @@ import { Warehouse } from './buildings/Warehouse';
 import { createBuilding } from './createBuilding';
 import { createTechnology } from './createTechnology';
 import { createUnit } from './createUnit';
-import { Defense } from './defenses/Defense';
+import { ShipyardUnit } from './defenses/ShipyardUnit';
 import { Unit } from './defenses/Unit';
-import { Ship } from './ships/Ship';
 import { Technology } from './technologies';
 
 const ConstructionC = t.type({
@@ -196,13 +195,11 @@ export class PlanetModel extends AggregateRoot implements PlanetT {
         const production: Resources = this.getProduction();
         const storage: Resources = this.getStorage();
         this.resources = this.resources.map((amount, resource) =>
-            Math.max(
+            // cap by storage
+            clamp(
+                amount + hours * production[resource],
                 amount,
-                // cap by storage
-                Math.min(
-                    amount + hours * production[resource],
-                    storage[resource],
-                ),
+                storage[resource],
             ),
         );
     }
@@ -417,7 +414,7 @@ export class PlanetModel extends AggregateRoot implements PlanetT {
         this.levels[payload.techId] = payload.level;
     }
 
-    public shipyardStart(unit: Ship | Defense, quantity: t.Int, now: number) {
+    public shipyardStart(unit: ShipyardUnit, quantity: t.Int, now: number) {
         // logic...
         if (quantity < 1) {
             // TODO not really level, its a quantity
@@ -430,10 +427,9 @@ export class PlanetModel extends AggregateRoot implements PlanetT {
             throw new RequirementsAreNotMeetException();
         }
         // TODO force max by tests
-        // const currentLevel: number = this.getLevel(technology.id);
-        // if (technology.level !== currentLevel + 1) {
-        //     throw new TooMuchLevelException();
-        // }
+        if (this.getQuantity(unit.id) + quantity > unit.max) {
+            throw new TooMuchLevelException();
+        }
         const cost = unit.getCost().multiply(quantity);
         if (!this.resources.includes(cost)) {
             throw new PlanetNotEnoughResourcesException();

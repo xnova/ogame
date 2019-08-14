@@ -8,15 +8,10 @@
 
 import { Resources } from '../../../shared/resources';
 import { Shipyard } from '../buildings/Shipyard';
-import { Unit } from '../defenses/Unit';
+import { ShipyardUnit } from '../defenses/ShipyardUnit';
 
-export abstract class Ship extends Unit {
-    public cost: Resources;
+export abstract class Ship extends ShipyardUnit {}
 
-    public getCost(): Resources {
-        return this.cost;
-    }
-}
 Ship.prototype.name = 'Unnamed Ship';
 Ship.prototype.cost = Resources.Partial({
     metal: 1,
