@@ -153,10 +153,23 @@ export class PlanetModel extends AggregateRoot implements PlanetT {
      * Resources produced in this planet per hour.
      */
     public getProduction(): Resources {
+        const ENERGY_PER_SAT: number = 50;
+        const solarStalliteEfficiency = clamp(
+            // tslint:disable-next-line: no-magic-numbers
+            (this.temperature - -160) / 300,
+            0,
+            1,
+        );
         const positive = Resources.sum([
             this.get(SolarPlant).getProduction(),
+            // TODO better
+            Resources.Partial({
+                energy:
+                    ENERGY_PER_SAT *
+                    solarStalliteEfficiency *
+                    this.getQuantity('SolarSatellite'),
+            }),
             // TODO FusionReactor
-            // TODO SolarSatellite
         ]);
         const negative = Resources.sum([
             this.get(MetalMine).getProduction(),
@@ -426,8 +439,8 @@ export class PlanetModel extends AggregateRoot implements PlanetT {
         if (!this.meetsRequirements(unit)) {
             throw new RequirementsAreNotMeetException();
         }
-        // TODO force max by tests
         if (this.getQuantity(unit.id) + quantity > unit.max) {
+            // TODO not really level, its a quantit
             throw new TooMuchLevelException();
         }
         const cost = unit.getCost().multiply(quantity);

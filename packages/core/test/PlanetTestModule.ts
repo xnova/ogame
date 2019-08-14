@@ -71,6 +71,7 @@ export class PlanetTestModule {
 
     public async createPlanet(
         planetId: UUID,
+        temperature: number = 0,
         point: PointT = {
             x: 1 as any,
             y: 1 as any,
@@ -83,7 +84,7 @@ export class PlanetTestModule {
             playerId: generateUUID(),
             planetId,
             point,
-            temperature: 0 as any,
+            temperature: int(temperature),
         });
         const request = this.execute(joinCommand);
         await success(request);

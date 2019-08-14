@@ -163,8 +163,52 @@ describe('PlanetModule', () => {
 
         it.todo('SolarPlant produces energy');
         it.todo('FusionReactor produces energy and consumes deuterium');
-        it.todo('SolarSatellite produces energy');
-        it.todo('SolarSatellite production is influenced by temperature');
+
+        it('SolarSatellite produces energy', async () => {
+            await module.mockShipyard(planetId, { SolarSatellite: 100 });
+            const { produced, productionFactor } = await getProduction({
+                MetalMine: 10,
+                CrystalMine: 10,
+                DeuteriumSynthesizer: 10,
+            });
+            const producedByMine = produced.subtract(BASIC_INCOME);
+            expect(producedByMine.metal).toBeGreaterThan(0);
+            expect(producedByMine.crystal).toBeGreaterThan(0);
+            expect(producedByMine.deuterium).toBeGreaterThan(0);
+            expect(produced.energy).toBe(0);
+            expect(productionFactor).toBe(1);
+        });
+
+        it('SolarSatellite production is influenced by temperature', async () => {
+            const getProductionFactor = async (temperature: number) => {
+                module = new PlanetTestModule();
+                await module.init();
+                await module.createPlanet(planetId, temperature);
+                await module.mockShipyard(planetId, { SolarSatellite: 1 });
+                const { productionFactor } = await getProduction({
+                    MetalMine: 10,
+                });
+                return productionFactor;
+            };
+
+            let lastFactor: number = Number.NEGATIVE_INFINITY;
+            const MIN_TEMP = -160;
+            const MAX_TEMP = 140;
+            const MARGIN = 100;
+            for (let temp = MIN_TEMP - MARGIN; temp <= MIN_TEMP; temp += 1) {
+                const productionFactor = await getProductionFactor(temp);
+                expect(productionFactor).toBe(0);
+            }
+            for (let temp = MIN_TEMP; temp <= MAX_TEMP; temp += 1) {
+                const productionFactor = await getProductionFactor(temp);
+                expect(productionFactor).toBeGreaterThan(lastFactor);
+                lastFactor = productionFactor;
+            }
+            for (let temp = MAX_TEMP; temp <= MAX_TEMP + MARGIN; temp += 1) {
+                const productionFactor = await getProductionFactor(temp);
+                expect(productionFactor).toBe(lastFactor);
+            }
+        });
 
         it.todo('PlasmaTechnology boosts produced resources');
 
