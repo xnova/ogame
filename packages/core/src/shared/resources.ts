@@ -18,6 +18,13 @@ const ZERO: ResourcesT = {
     energy: 0,
 };
 
+const ONE: ResourcesT = {
+    metal: 1,
+    crystal: 1,
+    deuterium: 1,
+    energy: 1,
+};
+
 export type Resource = keyof ResourcesT;
 
 const RESOURCE_KEYS: Resource[] = ['metal', 'crystal', 'deuterium', 'energy'];
@@ -37,6 +44,10 @@ export class Resources implements ResourcesT {
 
     public static Zero(): Resources {
         return new Resources(ZERO);
+    }
+
+    public static One(): Resources {
+        return new Resources(ONE);
     }
 
     public static Partial(partial: Partial<ResourcesT>): Resources {
@@ -81,6 +92,10 @@ export class Resources implements ResourcesT {
 
     public multiply(k: number): Resources {
         return this.map(x => k * x);
+    }
+
+    public dotMultiply(other: ResourcesT): Resources {
+        return this.map((amount, resource) => amount * other[resource]);
     }
 
     public add(other: ResourcesT): Resources {

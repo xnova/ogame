@@ -89,6 +89,10 @@ export type PlanetT = t.TypeOf<typeof PlanetC>;
 const DEFAULT_DIAMETER = 12800;
 const DEFAULT_FIELDS = 163;
 const BASIC_INCOME: Resources = Resources.Partial({ metal: 45, crystal: 15 });
+const SATELLITE_ZERO_TEMP = -160;
+const SATELLITE_NEUTRAL_TEMP = 140; // max
+const DEUTERIUM_ZERO_TEMP = 340;
+const DEUTERIUM_NEUTRAL_TEMP = 90;
 const WAREHOUSES: Array<Type<Warehouse>> = [
     MetalStorage,
     CrystalStorage,
@@ -155,11 +159,16 @@ export class PlanetModel extends AggregateRoot implements PlanetT {
     public getProduction(): Resources {
         const ENERGY_PER_SAT: number = 50;
         const solarStalliteEfficiency = clamp(
-            // tslint:disable-next-line: no-magic-numbers
-            (this.temperature - -160) / 300,
+            (this.temperature - SATELLITE_ZERO_TEMP) /
+                (SATELLITE_NEUTRAL_TEMP - SATELLITE_ZERO_TEMP),
             0,
             1,
         );
+        // equivalent to = 1.36 - 0.004 * this.tempareature
+        const deuteriumEfficiency =
+            (this.temperature - DEUTERIUM_ZERO_TEMP) /
+            (DEUTERIUM_NEUTRAL_TEMP - DEUTERIUM_ZERO_TEMP);
+
         const positive = Resources.sum([
             this.get(SolarPlant).getProduction(),
             // TODO better
@@ -174,7 +183,12 @@ export class PlanetModel extends AggregateRoot implements PlanetT {
         const negative = Resources.sum([
             this.get(MetalMine).getProduction(),
             this.get(CrystalMine).getProduction(),
-            this.get(DeuteriumSynthesizer).getProduction(),
+            this.get(DeuteriumSynthesizer)
+                .getProduction()
+                .dotMultiply({
+                    ...Resources.One(),
+                    deuterium: deuteriumEfficiency,
+                }),
         ]);
 
         const power = positive.energy;

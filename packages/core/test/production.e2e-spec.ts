@@ -8,6 +8,7 @@ import { generateUUID } from './utils';
 // TODO is a constant or a parameter???
 const BASIC_INCOME: Resources = Resources.Partial({ metal: 45, crystal: 15 });
 const INITIAL_RESOURCES = Resources.Partial({ metal: 500, crystal: 500 });
+const NEUTRAL_DEUTERIUM_TEMPERATURE = 90;
 
 const MINES_1_PRODUCTION = Resources.Partial({
     metal: 33,
@@ -58,7 +59,7 @@ describe('PlanetModule', () => {
     beforeEach(async () => {
         module = new PlanetTestModule();
         await module.init();
-        await module.createPlanet(planetId);
+        await module.createPlanet(planetId, NEUTRAL_DEUTERIUM_TEMPERATURE);
     });
 
     describe('Production', () => {
@@ -179,7 +180,7 @@ describe('PlanetModule', () => {
             expect(productionFactor).toBe(1);
         });
 
-        it('SolarSatellite production is influenced by temperature', async () => {
+        it('SolarSatellite production increases by temperature', async () => {
             const getProductionFactor = async (temperature: number) => {
                 module = new PlanetTestModule();
                 await module.init();
@@ -199,12 +200,12 @@ describe('PlanetModule', () => {
                 const productionFactor = await getProductionFactor(temp);
                 expect(productionFactor).toBe(0);
             }
-            for (let temp = MIN_TEMP; temp <= MAX_TEMP; temp += 1) {
+            for (let temp = MIN_TEMP; temp <= MAX_TEMP; temp += 10) {
                 const productionFactor = await getProductionFactor(temp);
                 expect(productionFactor).toBeGreaterThan(lastFactor);
                 lastFactor = productionFactor;
             }
-            for (let temp = MAX_TEMP; temp <= MAX_TEMP + MARGIN; temp += 1) {
+            for (let temp = MAX_TEMP; temp <= MAX_TEMP + MARGIN; temp += 10) {
                 const productionFactor = await getProductionFactor(temp);
                 expect(productionFactor).toBe(lastFactor);
             }
@@ -212,7 +213,32 @@ describe('PlanetModule', () => {
 
         it.todo('PlasmaTechnology boosts produced resources');
 
-        it.todo('deuterium production is influenced by temperature');
+        it('deuterium production decreases by temperature', async () => {
+            const getDeuterium = async (temperature: number) => {
+                module = new PlanetTestModule();
+                await module.init();
+                await module.createPlanet(planetId, temperature);
+                const { produced } = await getProduction({
+                    DeuteriumSynthesizer: 10,
+                    SolarPlant: 30,
+                });
+                return produced.deuterium;
+            };
+
+            let lastDeuterium: number = Number.POSITIVE_INFINITY;
+            const MIN_TEMP = -290;
+            const MAX_TEMP = 340;
+            const MARGIN = 100;
+            for (let temp = MIN_TEMP; temp <= MAX_TEMP; temp += 10) {
+                const deuterium = await getDeuterium(temp);
+                expect(deuterium).toBeLessThan(lastDeuterium);
+                lastDeuterium = deuterium;
+            }
+            for (let temp = MAX_TEMP; temp <= MAX_TEMP + MARGIN; temp += 10) {
+                const deuterium = await getDeuterium(temp);
+                expect(deuterium).toBe(0);
+            }
+        });
 
         it.todo('production factor auto?');
 
