@@ -15,7 +15,7 @@
     "gaussian": "^1.1.0",
     "graphql": "^0.11.3",
     "graphql-relay": "^0.5.2",
-    "moment": "^2.18.1",
+    "moment": "^2.29.2",
     "passport": "^0.4.0",
     "redis": "^2.8.0",
     "redlock": "^3.0.0",
